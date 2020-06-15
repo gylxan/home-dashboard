@@ -1,0 +1,28 @@
+{
+	"name": "home-dashboard",
+	"version": "0.1.0",
+	"private": true,
+	"author": {
+		"name": "Guido Lange",
+		"email": "guidolange90@gmail.com",
+		"url": "https://github.com/gylxan"
+	},
+	"scripts": {
+		"postinstall": "(cd ./server && npm install); (cd ./client && npm install);",
+		"start": "concurrently --kill-others-on-fail \"npm run start:server\" \"npm run start:client\"",
+		"start:client": "cd client && npm start",
+		"start:server": "cd server && npm start",
+		"copy-server": "cpx -C ./server.js ./build && cpx -C ./server/**/*.{ts,service} ./build/server",
+		"copy-client": "cpx -C ./client/build/**/*.* ./build/client",
+		"build": "npm run build-client && npm run copy-client && npm run build-server && npm run copy-server",
+		"build:client": "cd client && npm run build",
+		"build:server": "cpx -C ./package.json ./build && del-cli ./build/node_modules && cd ./build && npm install --production && del-cli -f ./package.json",
+		"start2": "cross-env NODE_ENV=production node ./server.js"
+	},
+	"devDependencies": {
+		"concurrently": "4.0.1",
+		"cpx": "^1.5.0",
+		"cross-env": "^7.0.2",
+		"del-cli": "^3.0.1"
+	}
+}
