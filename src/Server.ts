@@ -10,12 +10,12 @@ class Server {
     this.app = express();
     this.initializeMiddlewares();
     this.initializeControllers();
-    this.initializeErrorHandling()
+    this.initializeErrorHandling();
   }
 
   private initializeMiddlewares(): void {
     this.app.use(bodyParser.json());
-    this.app.use(bodyParser.urlencoded({extended: true}));
+    this.app.use(bodyParser.urlencoded({ extended: true }));
   }
 
   private initializeControllers(): void {
@@ -31,26 +31,30 @@ class Server {
   }
 
   private initializeErrorHandling(): void {
-    this.app.use(function errorMiddleware(error: any, request: express.Request, response: express.Response) {
+    this.app.use(function errorMiddleware(
+      error: any,
+      request: express.Request,
+      response: express.Response,
+      next: express.NextFunction,
+    ) {
+      console.log(response);
       const status = error.status || 500;
       const message = error.message || 'Something went wrong';
-      response
-        .status(status)
-        .send({
-          status,
-          message,
-        })
-    })
+      response.status(status).send({
+        status,
+        message,
+      });
+    });
   }
 
   private serveFrontend(): void {
     const dir = path.join(__dirname, 'public/client/');
     // Set the static and views directory
-    this.app.set('views',  dir);
+    this.app.set('views', dir);
     this.app.use(express.static(dir));
     // Serve front-end content
     this.app.get('*', (req, res) => {
-      res.sendFile('index.html', {root: dir});
+      res.sendFile('index.html', { root: dir });
     });
   }
 
