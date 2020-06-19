@@ -1,8 +1,8 @@
 import { Router } from "express";
 const router = Router();
-import projectRoutes from "./projects";
+import boardRoutes from "./boards";
 
 // Define routes to use
-router.use("/projects", projectRoutes);
+router.use("/boards", boardRoutes);
 
 export default router;
