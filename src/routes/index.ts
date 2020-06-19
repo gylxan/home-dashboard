@@ -1,8 +1,8 @@
-import {Router} from 'express';
+import { Router } from "express";
 const router = Router();
-import projectRoutes from './projects';
+import projectRoutes from "./projects";
 
 // Define routes to use
-router.use('/projects', projectRoutes);
+router.use("/projects", projectRoutes);
 
 export default router;

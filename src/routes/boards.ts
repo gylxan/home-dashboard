@@ -1,16 +1,16 @@
-import {Router} from 'express';
+import { Router } from "express";
 const router = Router();
 
-const INDICATOR = 'boards';
+const INDICATOR = "boards";
 // Root without parameter
-router.route('/')
-  .get((req, res) => {
-    res.send([{
-      "name" : "skipbo",
-      "label" : "Skip Bo"
-    }]);
-  })
-
+router.route("/").get((req, res) => {
+  res.send([
+    {
+      name: "skipbo",
+      label: "Skip Bo",
+    },
+  ]);
+});
 
 // Root with name identifier
 // router.route('/:name')

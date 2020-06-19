@@ -1,14 +1,14 @@
-import React, {useEffect} from 'react';
-import logo from './logo.svg';
-import './App.css';
-import {getBoards} from "./util/apiclient";
+import React, { useEffect } from "react";
+import logo from "./logo.svg";
+import "./App.css";
+import { getBoards } from "./util/apiclient";
 
 function App() {
   useEffect(() => {
-
-    getBoards().then((data) => alert("I loaded some data from the API: " + JSON.stringify(data)));
-
-  },[])
+    getBoards().then((data) =>
+      alert("I loaded some data from the API: " + JSON.stringify(data))
+    );
+  }, []);
   return (
     <div className="App">
       <header className="App-header">

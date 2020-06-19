@@ -1,9 +1,9 @@
-import axios from 'axios';
+import axios from "axios";
 
 const client = axios.create({
-  baseURL: '/api',
+  baseURL: "/api",
   headers: {
-    Accept: 'application/json',
+    Accept: "application/json",
   },
 });
 
@@ -11,15 +11,13 @@ client.interceptors.request.use(
   (request) => request,
   (error) => {
     return Promise.reject(error);
-  },
+  }
 );
 
 // Always unpack the payload (data) from the response
 client.interceptors.response.use(
   (response) => response.data,
-  (error) => Promise.reject(error),
+  (error) => Promise.reject(error)
 );
 
-
-export const getBoards = (): Promise<any> =>
-  client.get('boards')
+export const getBoards = (): Promise<any> => client.get("boards");
