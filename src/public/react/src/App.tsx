@@ -1,8 +1,14 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import logo from './logo.svg';
 import './App.css';
+import {getProjects} from "./util/apiclient";
 
 function App() {
+  useEffect(() => {
+
+    getProjects().then((data) => alert("I loaded some data from the API: " + JSON.stringify(data)));
+
+  },[])
   return (
     <div className="App">
       <header className="App-header">
