@@ -1,5 +1,5 @@
 {
-	"name": "server-client-boilerplate",
+	"name": "home-dashboard",
 	"version": "0.1.0",
 	"private": true,
 	"author": {
@@ -14,7 +14,8 @@
 		"start:dev": "concurrently --kill-others-on-fail \"npm run start:dev-server\" \"npm run start:dev-client\"",
 		"start:dev-server": "nodemon --config \"./utils/nodemon.json\"/",
 		"start:dev-client": "cd ./src/public/react && npm start",
-		"build": "./utils/build.sh"
+		"build": "./utils/build.sh",
+		"prettify": "prettier --write 'src/public/react/src/**/*.{js,css,json,ts,tsx}' 'src/**/!(public)/*.{js,css,json,ts,tsx}'"
 	},
 	"dependencies": {
 		"express": "4.16.4",
@@ -22,10 +23,11 @@
 		"minimist": "^1.2.5"
 	},
 	"devDependencies": {
-		"@types/node": "^12.12.47",
 		"@types/express": "^4.17.6",
+		"@types/node": "^12.12.47",
 		"concurrently": "^5.2.0",
 		"nodemon": "^2.0.4",
+		"prettier": "^2.0.5",
 		"ts-node": "^8.10.2",
 		"tslint": "^6.1.2",
 		"typescript": "^3.9.5"
