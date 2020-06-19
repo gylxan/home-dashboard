@@ -21,5 +21,5 @@ client.interceptors.response.use(
 );
 
 
-export const getProjects = (): Promise<any> =>
-  client.get('projects')
+export const getBoards = (): Promise<any> =>
+  client.get('boards')
