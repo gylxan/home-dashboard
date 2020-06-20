@@ -1,13 +1,13 @@
 import { Router } from "express";
 const router = Router();
 
-const INDICATOR = "boards";
+export const ROUTE = "/boards";
 // Root without parameter
 router.route("/").get((req, res) => {
   res.send([
     {
       name: "skipbo",
-      label: "Skip Bo",
+      label: "Skip-Bo",
     },
   ]);
 });

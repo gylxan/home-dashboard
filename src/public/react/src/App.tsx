@@ -1,30 +1,22 @@
-import React, { useEffect } from "react";
-import logo from "./logo.svg";
-import "./App.css";
-import { getBoards } from "./util/apiclient";
+import React from 'react';
+import './App.css';
+import routes from './util/routes';
+import { Route, Switch } from 'react-router-dom';
+import HomePage from './pages/Home/HomePage';
+import SkipboPage from './pages/Skipbo/SkipboPage';
 
 function App() {
-  useEffect(() => {
-    getBoards().then((data) =>
-      alert("I loaded some data from the API: " + JSON.stringify(data))
-    );
-  }, []);
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <header className="App-header" />
+      <Switch>
+        <Route path={routes.skipbo}>
+          <SkipboPage />
+        </Route>
+        <Route path={routes.home}>
+          <HomePage />
+        </Route>
+      </Switch>
     </div>
   );
 }
