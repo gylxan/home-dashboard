@@ -5,9 +5,20 @@ const db = new DataStore({ filename: './db/games.db', autoload: true });
 
 export const ROUTE = '/skipbo';
 // Root without parameter
-router.route('/').get((req, res) => {
-  res.send(db.getAllData());
-});
+router
+  .route('/')
+  .get((req, res) => {
+    db.find({})
+      .sort({ playTime: -1 })
+      .exec(function (err, docs) {
+        res.send(docs);
+      });
+  })
+  .post((req, res, next) => {
+    db.insert({ playTime: +new Date(), winner: req.body }, function (error: any, docs: any) {
+      res.send(docs);
+    });
+  });
 
 // Root with name identifier
 router

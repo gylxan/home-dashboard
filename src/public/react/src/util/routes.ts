@@ -6,6 +6,7 @@ interface Routes {
 const routes: Routes = {
   home: '/',
   skipbo: '/skipbo',
+  skipboAddGame: '/skipbo/create',
 };
 
 interface LinkTo {
@@ -17,6 +18,7 @@ interface LinkTo {
 export const linkTo: LinkTo = {
   home: (): string => '/',
   skipbo: (): string => routes.skipbo,
+  skipboAddGame: (): string => routes.skipboAddGame,
 };
 
 export default routes;

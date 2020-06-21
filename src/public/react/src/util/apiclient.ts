@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { SkipboGame } from '../interfaces/skipboGame';
+import { Player, SkipboGame } from '../interfaces/skipboGame';
 
 const client = axios.create({
   baseURL: '/api',
@@ -23,3 +23,4 @@ client.interceptors.response.use(
 
 export const getBoards = (): Promise<any> => client.get('boards');
 export const getSkipboGames = (): Promise<SkipboGame[]> => client.get('skipbo');
+export const addSkipboGame = (winner: Player): Promise<void> => client.post('skipbo', winner);
