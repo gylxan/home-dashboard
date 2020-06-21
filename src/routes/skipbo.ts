@@ -1,34 +1,12 @@
 import { Router } from 'express';
 const router = Router();
+import * as DataStore from 'nedb';
+const db = new DataStore({ filename: './db/games.db', autoload: true });
 
 export const ROUTE = '/skipbo';
-
-const GAMES = [
-  {
-    playTime: 1592651904322,
-    points: [
-      {
-        player: 'Guido',
-        place: 1,
-      },
-      {
-        player: 'Kristina',
-        place: 2,
-      },
-      {
-        player: 'Sven',
-        place: 3,
-      },
-      {
-        player: 'Anne',
-        place: 4,
-      },
-    ],
-  },
-];
 // Root without parameter
 router.route('/').get((req, res) => {
-  res.send(GAMES);
+  res.send(db.getAllData());
 });
 
 // Root with name identifier
@@ -36,8 +14,11 @@ router
   .route('/:timestamp')
   // Get one by name
   .get((req, res, next) => {
-    res.send(GAMES.find((game) => `${game.playTime}` === req.params.timestamp));
+    db.find({ playTime: req.params.timestamp }, function (error: any, docs: any[]) {
+      res.send(docs);
+    });
   });
+
 //     // Update ony by name
 //     .put((req, res, next) => {
 //         if (orderExists(req, res, next)) {

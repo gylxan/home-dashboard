@@ -1,9 +1,8 @@
 export interface SkipboGame {
   playTime: number;
-  points: Array<Point>;
+  winner: Player;
 }
 
-export interface Point {
-  player: string;
-  place: number;
+export interface Player {
+  name: string;
 }

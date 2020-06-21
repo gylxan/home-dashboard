@@ -8,6 +8,7 @@ router.route("/").get((req, res) => {
     {
       name: "skipbo",
       label: "Skip-Bo",
+      description: "Statistiken und Auswertungen zu unseren Skip-Bo-Spielen"
     },
   ]);
 });

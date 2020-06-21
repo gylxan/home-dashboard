@@ -15,11 +15,7 @@ function SkipboPage() {
         {skipboGames.map((game) => (
           <>
             <div>{new Date(game.playTime).toLocaleString('de-DE')}</div>
-            <ul>
-              {game.points.map((point) => (
-                <li>{point.player}</li>
-              ))}
-            </ul>
+            <div>Gewinner: {game.winner.name}</div>
           </>
         ))}
       </ul>

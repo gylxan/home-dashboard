@@ -17,7 +17,7 @@ function HomePage() {
   }, []);
 
   if (isLoading) {
-    return <Spinner animation="border" variant="danger" />;
+    return <Spinner animation="border" variant="primary" />;
   }
 
   return (
@@ -27,9 +27,9 @@ function HomePage() {
           <Card.Body>
             <Card.Title>{board.label}</Card.Title>
             <Card.Text>{board.description}</Card.Text>
-            <Button variant="primary">
-              <Link to={routes[board.name]}>Go to {board.label}</Link>
-            </Button>
+            <Link to={routes[board.name]}>
+              <Button variant="primary">Go to {board.label}</Button>
+            </Link>
           </Card.Body>
         </Card>
       ))}
