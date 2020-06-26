@@ -30,6 +30,34 @@ router
     });
   });
 
+router
+  .route('/statistics/general')
+  // Get one by name
+  .get((req, res, next) => {
+    db.find({})
+      .sort({ playTime: 1 })
+      .exec(function (error: any, docs: any[]) {
+        const wins = new Map();
+        for (const game of docs) {
+          if (!wins.has(game.winner.name)) {
+            wins.set(game.winner.name, 0);
+          }
+          wins.set(game.winner.name, (wins.get(game.winner.name) || 0) + 1);
+        }
+        let winner;
+        const winnerRecord = [...wins].sort((a, b) => (a[1] > b[1] && -1) || (a[1] === b[1] ? 0 : 1)).shift();
+        if (!!winnerRecord) {
+          winner = winnerRecord[0];
+        }
+        res.send({
+          lastWinner: !!docs[docs.length - 1] ? docs[docs.length - 1].winner.name : undefined,
+          lastPlayTime: !!docs[docs.length - 1] ? docs[docs.length - 1].playTime : undefined,
+          playedGamesAmount: docs.length,
+          totalWinner: winner,
+        });
+      });
+  });
+
 //     // Update ony by name
 //     .put((req, res, next) => {
 //         if (orderExists(req, res, next)) {
