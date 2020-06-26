@@ -5,3 +5,13 @@
   align-items: center;
   justify-content: center;
 }
+
+.App-header {
+  position: fixed;
+  top: 0;
+  width: 100%
+}
+
+.App-main {
+  margin-top: 4rem; /* Add a top margin to avoid content overlay */
+}
