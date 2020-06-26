@@ -4,6 +4,7 @@ import { Board } from '../../interfaces/board';
 import { Spinner, Card, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import routes from 'util/routes';
+import skipboImage from '../../assets/icons/skipbo.png';
 
 function HomePage() {
   const [isLoading, setLoading] = useState(true);
@@ -23,12 +24,13 @@ function HomePage() {
   return (
     <div className="HomePage">
       {boards.map((board) => (
-        <Card style={{ width: '18rem' }} key={board.name}>
+        <Card style={{ width: '14rem' }} key={board.name}>
+          <Card.Img variant="top" src={skipboImage} />
           <Card.Body>
             <Card.Title>{board.label}</Card.Title>
             <Card.Text>{board.description}</Card.Text>
             <Link to={routes[board.name]}>
-              <Button variant="primary">Go to {board.label}</Button>
+              <Button variant="primary">Zu {board.label}</Button>
             </Link>
           </Card.Body>
         </Card>
