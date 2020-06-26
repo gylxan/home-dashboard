@@ -32,6 +32,7 @@ function SkipboOverviewPage() {
             placeholder="Gebe den Gewinner ein"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setWinner(e.currentTarget.value)}
           />
+          {/*TODO Use a select here and select from already entered players. Also add the option to create a new user*/}
         </Form.Group>
         <Button variant="primary" type="submit" disabled={isLoading}>
           {isLoading ? (
