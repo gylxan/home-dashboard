@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import * as HighCharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 
-import styles from './PieChartStatisticCard.module.css';
 import ReloadableCard, { Props as ReloadableCardProps } from '../ReloadableCard';
+
+import styles from './PieChartStatisticCard.module.css';
 
 export interface Props extends Omit<ReloadableCardProps, 'children'> {
   title: string;

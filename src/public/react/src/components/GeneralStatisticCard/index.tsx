@@ -16,7 +16,7 @@ const GeneralStatisticCard: React.FC<Props> = ({ title, fetchData }: Props) => {
   return (
     <ReloadableCard title={title} fetchData={loadData}>
       {!data ? null : Array.isArray(data) ? null : (
-        <Table responsive striped>
+        <Table responsive>
           <tbody>
             {Object.keys(data).map((key) => {
               const currData = (data as GeneralStatistic)[key];
