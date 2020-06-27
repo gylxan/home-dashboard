@@ -8,7 +8,7 @@ router
   // Get one by name
   .get((req, res, next) => {
     db.find({})
-      .sort({ playTime: 1 })
+      .sort({ 'winner.name': 1, playTime: 1 })
       .exec(function (error: any, docs: any[]) {
         const wins = new Map();
         for (const game of docs) {
