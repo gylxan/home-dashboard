@@ -14,9 +14,9 @@ export interface Props extends Omit<ReloadableCardProps, 'children'> {
 
 const ColumnStatisticCard: React.FC<Props> = ({ title, yAxisTitle, fetchData }: Props) => {
   const [data, setData] = useState([] as { name: string; y: number }[]);
-  const loadData = (): Promise<void> => {
-    return fetchData().then((data: { name: string; y: number }[]) => setData(data));
-  };
+
+  const loadData = async (): Promise<void> => setData(await fetchData());
+
   const options: HighCharts.Options = {
     chart: {
       type: 'column',
