@@ -21,4 +21,8 @@ export const linkTo: LinkTo = {
   skipboAddGame: (): string => routes.skipboAddGame,
 };
 
+export const MAIN_TITLE = 'Home Dashboard';
+
+export const getPageTitle = (title?: string): string => MAIN_TITLE + (!!title ? ` - ${title}` : '');
+
 export default routes;
