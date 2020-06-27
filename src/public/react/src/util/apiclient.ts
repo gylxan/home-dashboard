@@ -37,4 +37,11 @@ export const getSkipboGameStatisticsGeneral = (): Promise<GeneralStatistic> =>
 export const getSkipboGamesPerWinnerStatistics = (): Promise<{ name: string; y: number }[]> =>
   client.get('skipbo/statistics/games-per-winner');
 
+export const getTopWinners = (): Promise<{ name: string; y: number }[]> =>
+  client.get('skipbo/statistics/games-per-winner').then((winners) => {
+    const topWinners = (winners as unknown) as { name: string; y: number }[];
+    topWinners.sort((a, b) => b.y - a.y);
+    return topWinners.splice(0, 5);
+  });
+
 export const getSkipboGameWinners = (): Promise<string[]> => client.get('skipbo/winners');
