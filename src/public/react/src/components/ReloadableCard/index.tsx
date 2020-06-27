@@ -27,7 +27,7 @@ class ReloadableCard extends React.PureComponent<Props, State> {
     const { fetchData } = this.props;
     this.setState({ isLoading: true });
     fetchData().finally(() => {
-      this.setState({ isLoading: false })
+      this.setState({ isLoading: false });
     });
   };
 
@@ -62,7 +62,7 @@ class ReloadableCard extends React.PureComponent<Props, State> {
               )}
             </div>
           </Card.Title>
-          <Card.Text>{children}</Card.Text>
+          <Card.Body>{children}</Card.Body>
         </Card.Body>
       </Card>
     );
