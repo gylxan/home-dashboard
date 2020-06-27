@@ -1,6 +1,6 @@
 import React from 'react';
-import { Card, Spinner, Table } from 'react-bootstrap';
-import styles from './ReloadableStatisticCard.module.css';
+import { Card, Spinner } from 'react-bootstrap';
+import styles from './ReloadableCard.module.css';
 
 interface State {
   data: any[] | any;
@@ -9,9 +9,10 @@ interface State {
 export interface Props {
   title: string;
   fetchData: () => Promise<any[] | any>;
+  children: React.ReactNode;
 }
 const INTERVAL = 10000;
-class ReloadableStatisticCard extends React.PureComponent<Props, State> {
+class ReloadableCard extends React.PureComponent<Props, State> {
   state = {
     data: [],
     isLoading: false,
@@ -25,9 +26,9 @@ class ReloadableStatisticCard extends React.PureComponent<Props, State> {
   loadData = () => {
     const { fetchData } = this.props;
     this.setState({ isLoading: true });
-    fetchData()
-      .then((data) => this.setState({ data }))
-      .finally(() => this.setState({ isLoading: false }));
+    fetchData().finally(() => {
+      this.setState({ isLoading: false })
+    });
   };
 
   startTimer = () => {
@@ -47,30 +48,8 @@ class ReloadableStatisticCard extends React.PureComponent<Props, State> {
     this.stopTimer();
   }
 
-  renderData = () => {
-    const { data } = this.state;
-    if (!data) {
-      return;
-    }
-    if (Array.isArray(data)) {
-      return <></>;
-    } else {
-      return (
-        <Table responsive striped>
-          <tbody>
-            {Object.keys(data).map((key) => (
-              <tr>
-                <td>{key}</td>
-                <td>{data[key]}</td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
-      );
-    }
-  };
   render() {
-    const { title } = this.props;
+    const { title, children } = this.props;
     const { isLoading } = this.state;
     return (
       <Card className="ReloadableStatisticCard">
@@ -78,13 +57,15 @@ class ReloadableStatisticCard extends React.PureComponent<Props, State> {
           <Card.Title>
             <div className={styles.Header}>
               <div>{title}</div>
-              {isLoading && <Spinner variant="secondary" as="span" animation="border" size="sm" role="status" aria-hidden="true" />}
+              {isLoading && (
+                <Spinner variant="secondary" as="span" animation="border" size="sm" role="status" aria-hidden="true" />
+              )}
             </div>
           </Card.Title>
-          <Card.Text>{this.renderData()}</Card.Text>
+          <Card.Text>{children}</Card.Text>
         </Card.Body>
       </Card>
     );
   }
 }
-export default ReloadableStatisticCard;
+export default ReloadableCard;
