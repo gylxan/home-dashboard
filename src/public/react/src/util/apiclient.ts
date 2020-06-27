@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Player, SkipboGame } from '../interfaces/skipboGame';
+import { GeneralStatistic, Player, SkipboGame } from '../interfaces/skipboGame';
 
 const client = axios.create({
   baseURL: '/api',
@@ -24,10 +24,15 @@ client.interceptors.response.use(
 export const getBoards = (): Promise<any> => client.get('boards');
 export const getSkipboGames = (): Promise<SkipboGame[]> => client.get('skipbo');
 export const addSkipboGame = (winner: Player): Promise<void> => client.post('skipbo', winner);
-export const getSkipboGameStatisticsGeneral = (): Promise<any> =>
+export const getSkipboGameStatisticsGeneral = (): Promise<GeneralStatistic> =>
   client.get('skipbo/statistics/general').then((data: any) => {
     if (!!data.lastPlayTime) {
-      return { ...data, lastPlayTime: new Date(data.lastPlayTime).toLocaleString('de-DE') };
+      return {
+        ...data,
+        lastPlayTime: { ...data.lastPlayTime, value: new Date(data.lastPlayTime.value).toLocaleString('de-DE') },
+      };
     }
     return data;
   });
+
+export const getSkipboGameWinners = (): Promise<string[]> => client.get('skipbo/winners');

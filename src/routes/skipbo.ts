@@ -20,6 +20,24 @@ router
     });
   });
 
+router
+  .route('/winners')
+  // Get one by name
+  .get((req, res, next) => {
+    db.find({})
+      .sort({ 'winner.name': 1 })
+      .exec(function (error: any, docs: any[]) {
+        res.send(
+          docs.reduce(
+            (prev, curr) =>
+              !prev.find((winner: string) => winner === curr.winner.name) && curr.winner.name.trim() !== ''
+                ? [...prev, curr.winner.name]
+                : prev,
+            [],
+          ),
+        );
+      });
+  });
 // Root with name identifier
 router
   .route('/:timestamp')
@@ -47,13 +65,22 @@ router
         let winner;
         const winnerRecord = [...wins].sort((a, b) => (a[1] > b[1] && -1) || (a[1] === b[1] ? 0 : 1)).shift();
         if (!!winnerRecord) {
-          winner = winnerRecord[0];
+          winner = winnerRecord;
         }
         res.send({
-          lastWinner: !!docs[docs.length - 1] ? docs[docs.length - 1].winner.name : undefined,
-          lastPlayTime: !!docs[docs.length - 1] ? docs[docs.length - 1].playTime : undefined,
-          playedGamesAmount: docs.length,
-          totalWinner: winner,
+          lastWinner: {
+            label: 'Letzter Gewinner',
+            value: !!docs[docs.length - 1] ? docs[docs.length - 1].winner.name : undefined,
+          },
+          lastPlayTime: {
+            label: 'Letzte Spielzeit',
+            value: !!docs[docs.length - 1] ? docs[docs.length - 1].playTime : undefined,
+          },
+          playedGamesAmount: { label: 'Spiele insgesamt', value: docs.length },
+          totalWinner: {
+            label: 'Gewinner',
+            value: !!winner ? `${winner[0]} (${winner[1]})` : '',
+          },
         });
       });
   });
