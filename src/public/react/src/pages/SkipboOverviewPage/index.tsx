@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { Alert, Button, CardColumns, Spinner } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import {
-  getSkipboGames,
+  getSkipboGames, getSkipboGamesHistory,
   getSkipboGamesPerWinnerStatistics,
   getSkipboGameStatisticsGeneral,
-  getTopWinners,
+  getSkipboTopWinners,
 } from '../../util/apiclient';
 import { SkipboGame } from '../../interfaces/skipboGame';
 import { getPageTitle, linkTo } from '../../util/routes';
@@ -14,6 +14,7 @@ import PieChartStatisticCard from '../../components/PieChartStatisticCard';
 import ColumnStatisticCard from '../../components/ColumnStatisticCard';
 
 import styles from './SkipboOverviewPage.module.css';
+import LineChartStatisticCard from '../../components/LineChartStatisticCard';
 
 function SkipboOverviewPage() {
   const [isLoading, setLoading] = useState(true);
@@ -44,7 +45,12 @@ function SkipboOverviewPage() {
               title="Top 5 Gewinner"
               yAxisTitle="Gewonnene Spiele"
               seriesName="Spiele"
-              fetchData={getTopWinners}
+              fetchData={getSkipboTopWinners}
+            />
+            <LineChartStatisticCard
+              title={'Spielverlauf'}
+              fetchData={getSkipboGamesHistory}
+              yAxisTitle="Anzahl Gewinne"
             />
           </CardColumns>
         )}
