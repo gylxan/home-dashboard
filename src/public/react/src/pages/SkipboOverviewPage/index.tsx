@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Button, CardColumns } from 'react-bootstrap';
+import { Button, CardColumns, Spinner, Alert } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import {
   getSkipboGames,
   getSkipboGamesPerWinnerStatistics,
   getSkipboGameStatisticsGeneral,
-  getSkipboGameWinners, getTopWinners,
+  getSkipboGameWinners,
+  getTopWinners,
 } from '../../util/apiclient';
 import { SkipboGame } from '../../interfaces/skipboGame';
 import { getPageTitle, linkTo } from '../../util/routes';
@@ -15,34 +16,40 @@ import styles from './SkipboOverviewPage.module.css';
 import PieChartStatisticCard from '../../components/PieChartStatisticCard';
 import ColumnStatisticCard from '../../components/ColumnStatisticCard';
 
+// TODO Handle the case, when there are no data
 function SkipboOverviewPage() {
+  const [isLoading, setLoading] = useState(true);
   const [skipboGames, setSkipboGames] = useState([] as SkipboGame[]);
 
   useEffect(() => {
     document.title = getPageTitle('Skip-Bo');
-    getSkipboGames().then((data) => setSkipboGames(data));
+    setLoading(true);
+    getSkipboGames()
+      .then((data) => setSkipboGames(data))
+      .finally(() => setLoading(false));
   }, []);
 
   return (
     <div className="SkipboOverviewPage">
       <div className={styles.Content}>
-        <CardColumns>
-          <GeneralStatisticCard title={'Allgemein'} fetchData={getSkipboGameStatisticsGeneral} />
-          <PieChartStatisticCard title={'Spiele pro Gewinner'} fetchData={getSkipboGamesPerWinnerStatistics} />
-          <ColumnStatisticCard
-            title="Top 5 Gewinner"
-            yAxisTitle="Gewonnene Spiele"
-            seriesName="Spiele"
-            fetchData={getTopWinners}
-          />
-        </CardColumns>
-        {/*<ul>*/}
-        {/*  {skipboGames.map((game) => (*/}
-        {/*    <li key={game.playTime}>{`${new Date(game.playTime).toLocaleString('de-DE')} - Gewinner: ${*/}
-        {/*      game.winner.name*/}
-        {/*    }`}</li>*/}
-        {/*  ))}*/}
-        {/*</ul>*/}
+        {isLoading ? (
+          <div className={styles.LoadingSpinner}>
+            <Spinner variant="secondary" as="span" animation="border" role="status" aria-hidden="true" />
+          </div>
+        ) : skipboGames.length === 0 ? (
+          <Alert variant="primary">Füge ein Spiel hinzu, um Statistiken zu bekommen</Alert>
+        ) : (
+          <CardColumns>
+            <GeneralStatisticCard title={'Allgemein'} fetchData={getSkipboGameStatisticsGeneral} />
+            <PieChartStatisticCard title={'Spiele pro Gewinner'} fetchData={getSkipboGamesPerWinnerStatistics} />
+            <ColumnStatisticCard
+              title="Top 5 Gewinner"
+              yAxisTitle="Gewonnene Spiele"
+              seriesName="Spiele"
+              fetchData={getTopWinners}
+            />
+          </CardColumns>
+        )}
       </div>
       <div className={styles.Footer}>
         <Link to={linkTo.skipboAddGame()}>
