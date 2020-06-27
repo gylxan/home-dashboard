@@ -18,12 +18,14 @@ function SkipboOverviewPage() {
 
   return (
     <div className="SkipboOverviewPage">
-      <GeneralStatisticCard title={'Allgemein'} fetchData={getSkipboGameStatisticsGeneral} />
-      <ul>
-        {skipboGames.map((game) => (
-          <li>{`${new Date(game.playTime).toLocaleString('de-DE')} - Gewinner: ${game.winner.name}`}</li>
-        ))}
-      </ul>
+      <div className={styles.Content}>
+        <GeneralStatisticCard title={'Allgemein'} fetchData={getSkipboGameStatisticsGeneral} />
+        <ul>
+          {skipboGames.map((game) => (
+            <li>{`${new Date(game.playTime).toLocaleString('de-DE')} - Gewinner: ${game.winner.name}`}</li>
+          ))}
+        </ul>
+      </div>
       <div className={styles.Footer}>
         <Link to={linkTo.skipboAddGame()}>
           <Button variant="primary" type="button">
