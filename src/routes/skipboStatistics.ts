@@ -56,4 +56,21 @@ router.route('/games-per-winner').get((req, res, next) => {
   });
 });
 
+router.route('/games-history').get((req, res, next) => {
+  db.find({})
+    .sort({ 'winner-name': 1, playTime: 1 })
+    .exec(function (error: any, docs: any[]) {
+      res.send(
+        docs.reduce((prev: { name: string; data: number[][] }[], curr) => {
+          const entryIndex = prev.findIndex((value) => value.name === curr.winner.name);
+          if (entryIndex === -1) {
+            return [...prev, { name: curr.winner.name, data: [[curr.playTime, 1]] }];
+          }
+          prev[entryIndex].data.push([curr.playTime, prev[entryIndex].data[prev[entryIndex].data.length - 1][1] + 1]);
+          return prev;
+        }, []),
+      );
+    });
+});
+
 export default router;
