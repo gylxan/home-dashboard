@@ -65,11 +65,9 @@ function SkipboOverviewPage() {
           )}
         </Form.Group>
         <div className={styles.ButtonControlBar}>
-          <Link to={linkTo.skipbo()}>
-            <Button variant="secondary" type="submit" disabled={isLoading}>
-              Zurück
-            </Button>
-          </Link>
+          <Button variant="secondary" type="submit" disabled={isLoading} onClick={() => linkTo.skipbo()}>
+            Zurück
+          </Button>
           <Button
             variant="primary"
             type="submit"
