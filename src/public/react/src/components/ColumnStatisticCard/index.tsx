@@ -42,6 +42,7 @@ const ColumnStatisticCard: React.FC<Props> = ({ title, yAxisTitle, fetchData }: 
       shared: true,
       useHTML: true,
     },
+    colors: ['#E3B505', '#95190C', '#610345', '#107E7D', '#044B7F', '#6A7B76'],
     series: [
       {
         name: 'Spiele',
