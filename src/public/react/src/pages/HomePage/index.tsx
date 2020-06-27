@@ -3,14 +3,14 @@ import { getBoards } from '../../util/apiclient';
 import { Board } from '../../interfaces/board';
 import { Spinner, Card, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import routes from 'util/routes';
+import routes, {getPageTitle} from 'util/routes';
 import skipboImage from '../../assets/icons/skipbo.png';
 
 function HomePage() {
   const [isLoading, setLoading] = useState(true);
   const [boards, setBoards] = useState([] as Board[]);
-
   useEffect(() => {
+    document.title = getPageTitle();
     getBoards().then((data) => {
       setBoards(data);
       setLoading(false);
