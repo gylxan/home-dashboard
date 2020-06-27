@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { getSkipboGames, getSkipboGameStatisticsGeneral } from '../../util/apiclient';
+import {
+  getSkipboGames,
+  getSkipboGamesPerWinnerStatistics,
+  getSkipboGameStatisticsGeneral,
+  getSkipboGameWinners,
+} from '../../util/apiclient';
 import { SkipboGame } from '../../interfaces/skipboGame';
 import { getPageTitle, linkTo } from '../../util/routes';
 import GeneralStatisticCard from '../../components/GeneralStatisticCard';
 
 import styles from './SkipboOverviewPage.module.css';
+import PieChartStatisticCard from '../../components/PieChartStatisticCard';
 
 function SkipboOverviewPage() {
   const [skipboGames, setSkipboGames] = useState([] as SkipboGame[]);
@@ -20,9 +26,12 @@ function SkipboOverviewPage() {
     <div className="SkipboOverviewPage">
       <div className={styles.Content}>
         <GeneralStatisticCard title={'Allgemein'} fetchData={getSkipboGameStatisticsGeneral} />
+        <PieChartStatisticCard title={'Spiele pro Gewinner'} fetchData={getSkipboGamesPerWinnerStatistics} />
         <ul>
           {skipboGames.map((game) => (
-            <li>{`${new Date(game.playTime).toLocaleString('de-DE')} - Gewinner: ${game.winner.name}`}</li>
+            <li key={game.playTime}>{`${new Date(game.playTime).toLocaleString('de-DE')} - Gewinner: ${
+              game.winner.name
+            }`}</li>
           ))}
         </ul>
       </div>
