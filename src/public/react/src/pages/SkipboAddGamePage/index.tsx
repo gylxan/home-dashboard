@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { addSkipboGame, getSkipboGameWinners } from '../../util/apiclient';
 import { Button, Form, Spinner } from 'react-bootstrap';
 import { linkTo } from '../../util/routes';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
+import styles from './SkipboAddGamePage.module.css';
 
 const NEW_WINNER = '-1';
 function SkipboOverviewPage() {
@@ -63,19 +64,26 @@ function SkipboOverviewPage() {
             />
           )}
         </Form.Group>
-        <Button
-          variant="primary"
-          type="submit"
-          disabled={isLoading || (selectedWinner === NEW_WINNER && insertedWinner.trim() === '')}
-        >
-          {isLoading ? (
-            <>
-              <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" /> Lade...
-            </>
-          ) : (
-            'Hinzufügen'
-          )}
-        </Button>
+        <div className={styles.ButtonControlBar}>
+          <Link to={linkTo.skipbo()}>
+            <Button variant="secondary" type="submit" disabled={isLoading}>
+              Zurück
+            </Button>
+          </Link>
+          <Button
+            variant="primary"
+            type="submit"
+            disabled={isLoading || (selectedWinner === NEW_WINNER && insertedWinner.trim() === '')}
+          >
+            {isLoading ? (
+              <>
+                <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" /> Lade...
+              </>
+            ) : (
+              'Hinzufügen'
+            )}
+          </Button>
+        </div>
       </Form>
     </div>
   );

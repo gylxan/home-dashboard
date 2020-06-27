@@ -10,10 +10,10 @@ import {
 import { SkipboGame } from '../../interfaces/skipboGame';
 import { getPageTitle, linkTo } from '../../util/routes';
 import GeneralStatisticCard from '../../components/GeneralStatisticCard';
-
-import styles from './SkipboOverviewPage.module.css';
 import PieChartStatisticCard from '../../components/PieChartStatisticCard';
 import ColumnStatisticCard from '../../components/ColumnStatisticCard';
+
+import styles from './SkipboOverviewPage.module.css';
 
 function SkipboOverviewPage() {
   const [isLoading, setLoading] = useState(true);
