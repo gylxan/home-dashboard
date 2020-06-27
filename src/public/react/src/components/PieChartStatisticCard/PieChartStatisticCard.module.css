@@ -1,0 +1,8 @@
+.Chart > div {
+  width: 100% !important;
+}
+
+.Chart > div > svg {
+  width: 100%;
+}
+
