@@ -32,6 +32,7 @@ router
             value: !!docs[docs.length - 1] ? docs[docs.length - 1].playTime : undefined,
           },
           playedGamesAmount: { label: 'Spiele insgesamt', value: docs.length },
+          winnersAmount: { label: 'Gewinner insgesamt', value: wins.size },
           totalWinner: {
             label: 'Gewinner',
             value: !!winner ? `${winner[0]} (${winner[1]})` : '',
