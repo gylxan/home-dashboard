@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Alert, Button, CardColumns, Spinner } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import {
-  getSkipboGames, getSkipboGamesHistory,
+  getSkipboGames,
+  getSkipboGamesHistory,
   getSkipboGamesPerWinnerStatistics,
   getSkipboGameStatisticsGeneral,
   getSkipboTopWinners,
@@ -48,7 +49,7 @@ function SkipboOverviewPage() {
               fetchData={getSkipboTopWinners}
             />
             <LineChartStatisticCard
-              title={'Spielverlauf'}
+              title="Spieleverlauf"
               fetchData={getSkipboGamesHistory}
               yAxisTitle="Anzahl Gewinne"
             />

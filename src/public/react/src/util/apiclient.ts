@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GeneralStatistic, Player, SkipboGame } from '../interfaces/skipboGame';
+import { GeneralStatistic, SkipboGame } from '../interfaces/skipboGame';
 
 const client = axios.create({
   baseURL: '/api',
