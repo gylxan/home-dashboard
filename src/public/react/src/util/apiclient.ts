@@ -23,7 +23,7 @@ client.interceptors.response.use(
 
 export const getBoards = (): Promise<any> => client.get('boards');
 export const getSkipboGames = (): Promise<SkipboGame[]> => client.get('skipbo');
-export const addSkipboGame = (winner: Player): Promise<void> => client.post('skipbo', winner);
+export const addSkipboGame = (game: SkipboGame): Promise<void> => client.post('skipbo', game);
 export const getSkipboGameStatisticsGeneral = (): Promise<GeneralStatistic> =>
   client.get('skipbo/statistics/general').then((data: any) => {
     if (!!data.lastPlayTime) {
