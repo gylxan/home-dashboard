@@ -18,7 +18,7 @@ const LineChartStatisticCard: React.FC<Props> = ({ title, yAxisTitle, fetchData 
   };
   const options: HighCharts.Options = {
     chart: {
-      zoomType: 'x'
+      zoomType: 'x',
     },
     title: {
       text: '',
