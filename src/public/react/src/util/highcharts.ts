@@ -26,3 +26,11 @@ const initializeLanguage = () => {
     },
   });
 };
+
+export const getDefaultChartOptions = (): HighCharts.Options => {
+  return {
+    time: {
+      timezoneOffset: new Date().getTimezoneOffset(),
+    },
+  };
+};

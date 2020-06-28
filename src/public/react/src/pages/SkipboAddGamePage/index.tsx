@@ -5,7 +5,7 @@ import { linkTo } from '../../util/routes';
 import { useHistory } from 'react-router-dom';
 
 import styles from './SkipboAddGamePage.module.css';
-import { getCurrentDateTimeForHtml } from '../../util/dateTime';
+import { getCurrentDateTimeForHtml, getUnixTimestamp } from '../../util/dateTime';
 
 const NEW_WINNER = '-1';
 function SkipboOverviewPage() {
@@ -28,7 +28,7 @@ function SkipboOverviewPage() {
     event.stopPropagation();
     setLoading(true);
     addSkipboGame({
-      playTime: +new Date(playTime),
+      playTime: getUnixTimestamp(playTime),
       winner: { name: selectedWinner === NEW_WINNER ? insertedWinner : selectedWinner },
     }).then(() => {
       setLoading(false);

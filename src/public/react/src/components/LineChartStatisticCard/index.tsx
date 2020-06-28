@@ -5,6 +5,7 @@ import HighchartsReact from 'highcharts-react-official';
 import ReloadableCard, { Props as ReloadableCardProps } from '../ReloadableCard';
 
 import styles from './LineChartStatisticCard.module.css';
+import { getDefaultChartOptions } from '../../util/highcharts';
 
 export interface Props extends Omit<ReloadableCardProps, 'children'> {
   title: string;
@@ -17,6 +18,7 @@ const LineChartStatisticCard: React.FC<Props> = ({ title, yAxisTitle, fetchData 
     return fetchData().then((data: { name: string; data: number[][] }[]) => setData(data));
   };
   const options: HighCharts.Options = {
+    ...getDefaultChartOptions(),
     chart: {
       zoomType: 'x',
     },

@@ -1,4 +1,10 @@
 export const getCurrentDateTimeForHtml = () => {
-  const isoString = new Date().toISOString();
-  return isoString.substring(0, isoString.length - 5);
+  const now = new Date();
+  now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+  console.log(now.toISOString());
+  return now.toISOString().substring(0, now.toISOString().length - 5);
+};
+
+export const getUnixTimestamp = (time: string): number => {
+  return +new Date(time);
 };
