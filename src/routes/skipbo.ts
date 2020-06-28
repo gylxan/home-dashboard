@@ -15,7 +15,7 @@ router
       });
   })
   .post((req, res, next) => {
-    db.insert({ playTime: +new Date(), winner: req.body }, function (error: any, docs: any) {
+    db.insert({ playTime: req.body.playTime, winner: req.body.winner }, function (error: any, docs: any) {
       res.send(docs);
     });
   });
