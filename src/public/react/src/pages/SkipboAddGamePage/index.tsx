@@ -48,7 +48,7 @@ function SkipboOverviewPage() {
 
   const isFormValid = (): boolean => {
     return (
-      (selectedWinner !== NEW_WINNER || (selectedWinner === NEW_WINNER && insertedWinner.trim() === '')) &&
+      (selectedWinner !== NEW_WINNER || (selectedWinner === NEW_WINNER && insertedWinner.trim() !== '')) &&
       playTime !== '' &&
       +new Date(playTime) > 0
     );
