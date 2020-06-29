@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { addSkipboGame, getSkipboGameWinners } from '../../util/apiclient';
-import { Button, Card, Form, Spinner } from 'react-bootstrap';
-import routes, { linkTo } from '../../util/routes';
-import { Link, useHistory } from 'react-router-dom';
+import { Button, Form, Spinner } from 'react-bootstrap';
+import { linkTo } from '../../util/routes';
+import { useHistory } from 'react-router-dom';
 
 import styles from './SkipboAddGamePage.module.css';
 import { getCurrentDateTimeForHtml, getUnixTimestamp } from '../../util/dateTime';
+
+// TODO: Use a better datepicker here
 
 const NEW_WINNER = '-1';
 function SkipboOverviewPage() {
@@ -43,6 +45,7 @@ function SkipboOverviewPage() {
 
   const handlePlayTimeChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const value = e.currentTarget.value;
+    console.log(value);
     setPlayTime(value);
   };
 
