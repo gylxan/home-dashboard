@@ -3,8 +3,9 @@ import { getBoards } from '../../util/apiclient';
 import { Board } from '../../interfaces/board';
 import { Spinner, Card, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import routes, {getPageTitle} from 'util/routes';
+import routes, { getPageTitle, linkTo } from 'util/routes';
 import skipboImage from '../../assets/icons/skipbo.png';
+import LinkButton from '../../components/LinkButton';
 
 function HomePage() {
   const [isLoading, setLoading] = useState(true);
@@ -29,9 +30,9 @@ function HomePage() {
           <Card.Body>
             <Card.Title>{board.label}</Card.Title>
             <Card.Text>{board.description}</Card.Text>
-            <Link to={routes[board.name]}>
-              <Button variant="primary">Zu {board.label}</Button>
-            </Link>
+            <LinkButton to={routes[board.name]} variant="primary">
+              Zu {board.label}
+            </LinkButton>
           </Card.Body>
         </Card>
       ))}

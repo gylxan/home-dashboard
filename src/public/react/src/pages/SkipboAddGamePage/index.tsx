@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { addSkipboGame, getSkipboGameWinners } from '../../util/apiclient';
 import { Button, Form, Spinner } from 'react-bootstrap';
 import { linkTo } from '../../util/routes';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 import styles from './SkipboAddGamePage.module.css';
 import { getCurrentDateTimeForHtml, getUnixTimestamp } from '../../util/dateTime';
+import LinkButton from '../../components/LinkButton';
 
 // TODO: Use a better datepicker here
 
@@ -45,7 +46,6 @@ function SkipboOverviewPage() {
 
   const handlePlayTimeChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const value = e.currentTarget.value;
-    console.log(value);
     setPlayTime(value);
   };
 
@@ -98,9 +98,9 @@ function SkipboOverviewPage() {
           />
         </Form.Group>
         <div className={styles.ButtonControlBar}>
-          <Button variant="secondary" type="button" disabled={isLoading} onClick={handleBackClick}>
+          <LinkButton to={linkTo.skipbo()} variant="secondary" type="button" disabled={isLoading}>
             Zurück
-          </Button>
+          </LinkButton>
           <Button variant="primary" type="submit" disabled={isLoading || !isFormValid()}>
             {isLoading ? (
               <>

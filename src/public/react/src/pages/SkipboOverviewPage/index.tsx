@@ -16,6 +16,7 @@ import ColumnStatisticCard from '../../components/ColumnStatisticCard';
 
 import styles from './SkipboOverviewPage.module.css';
 import LineChartStatisticCard from '../../components/LineChartStatisticCard';
+import LinkButton from '../../components/LinkButton';
 
 function SkipboOverviewPage() {
   const [isLoading, setLoading] = useState(true);
@@ -57,11 +58,9 @@ function SkipboOverviewPage() {
         )}
       </div>
       <div className={styles.Footer}>
-        <Link to={linkTo.skipboAddGame()}>
-          <Button variant="primary" type="button">
-            Spiel hinzufügen
-          </Button>
-        </Link>
+        <LinkButton to={linkTo.skipboAddGame()} variant="primary" type="button">
+          Spiel hinzufügen
+        </LinkButton>
       </div>
     </div>
   );
