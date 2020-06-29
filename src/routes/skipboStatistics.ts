@@ -8,23 +8,34 @@ router
   // Get one by name
   .get((req, res, next) => {
     db.find({})
-      .sort({ playTime: 1, 'winner.name': 1 })
+      .sort({ playTime: 1, 'winner.name': -1 })
       .exec(function (error: any, docs: any[]) {
-        const wins = new Map();
+        const playerToPoints = new Map();
         for (const game of docs) {
-          if (!wins.has(game.winner.name)) {
-            wins.set(game.winner.name, 0);
+          if (!playerToPoints.has(game.winner.name)) {
+            playerToPoints.set(game.winner.name, 0);
           }
-          wins.set(game.winner.name, (wins.get(game.winner.name) || 0) + 1);
+          playerToPoints.set(game.winner.name, (playerToPoints.get(game.winner.name) || 0) + 1);
         }
-        let winner;
-        const winnerRecord = [...wins].sort((a, b) => (a[1] > b[1] && -1) || (a[1] === b[1] ? 0 : 1)).shift();
+        // Switch winners with points (4 => [USER A, USER B]
+        const pointToWinners = new Map();
+        for (const player of playerToPoints.keys()) {
+          if (!pointToWinners.has(playerToPoints.get(player))) {
+            pointToWinners.set(playerToPoints.get(player), []);
+          }
+          pointToWinners.set(playerToPoints.get(player), [...pointToWinners.get(playerToPoints.get(player)), player]);
+        }
+
+        let winners = [], points = 0;
+        const winnerRecord = [...pointToWinners].sort((a, b) => (a[0] > b[0] && -1) || (a[0] === b[0] ? 0 : 1)).shift();
         if (!!winnerRecord) {
-          winner = winnerRecord;
+          points = winnerRecord[0];
+          winners = winnerRecord[1];
+          winners.sort();
         }
         res.send({
           lastWinner: {
-            label: 'Letzter Gewinner',
+            label: 'Letzte/r Gewinner/in',
             value: !!docs[docs.length - 1] ? docs[docs.length - 1].winner.name : undefined,
           },
           lastPlayTime: {
@@ -32,10 +43,10 @@ router
             value: !!docs[docs.length - 1] ? docs[docs.length - 1].playTime : undefined,
           },
           playedGamesAmount: { label: 'Spiele insgesamt', value: docs.length },
-          winnersAmount: { label: 'Gewinner insgesamt', value: wins.size },
+          winnersAmount: { label: 'Gewinner insgesamt', value: playerToPoints.size },
           totalWinner: {
-            label: 'Gewinner',
-            value: !!winner ? `${winner[0]} (${winner[1]})` : '',
+            label: 'Gewinner/in',
+            value: !!winnerRecord ? `${winners.join(", ")} (${points})` : '',
           },
         });
       });
