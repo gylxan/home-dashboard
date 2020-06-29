@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { addSkipboGame, getSkipboGameWinners } from '../../util/apiclient';
-import { Button, Form, Spinner } from 'react-bootstrap';
-import { linkTo } from '../../util/routes';
-import { useHistory } from 'react-router-dom';
+import { Button, Card, Form, Spinner } from 'react-bootstrap';
+import routes, { linkTo } from '../../util/routes';
+import { Link, useHistory } from 'react-router-dom';
 
 import styles from './SkipboAddGamePage.module.css';
 import { getCurrentDateTimeForHtml, getUnixTimestamp } from '../../util/dateTime';
@@ -44,6 +44,10 @@ function SkipboOverviewPage() {
   const handlePlayTimeChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const value = e.currentTarget.value;
     setPlayTime(value);
+  };
+
+  const handleBackClick = (): void => {
+    history.push(linkTo.skipbo());
   };
 
   const isFormValid = (): boolean => {
@@ -91,7 +95,7 @@ function SkipboOverviewPage() {
           />
         </Form.Group>
         <div className={styles.ButtonControlBar}>
-          <Button variant="secondary" type="button" disabled={isLoading} onClick={() => linkTo.skipbo()}>
+          <Button variant="secondary" type="button" disabled={isLoading} onClick={handleBackClick}>
             Zurück
           </Button>
           <Button variant="primary" type="submit" disabled={isLoading || !isFormValid()}>
