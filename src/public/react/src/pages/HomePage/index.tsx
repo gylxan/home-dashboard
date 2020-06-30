@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { getBoards } from '../../util/apiclient';
 import { Board } from '../../interfaces/board';
-import { Spinner, Card, Button } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import routes, { getPageTitle, linkTo } from 'util/routes';
+import { Card, Spinner } from 'react-bootstrap';
+import routes, { getPageTitle } from 'util/routes';
 import skipboImage from '../../assets/icons/skipbo.png';
 import LinkButton from '../../components/LinkButton';
 
