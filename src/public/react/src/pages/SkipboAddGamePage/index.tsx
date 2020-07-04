@@ -2,19 +2,18 @@ import React, { useEffect, useState } from 'react';
 import { addSkipboGame, getSkipboGameWinners } from '../../util/apiclient';
 import { Button, Form, Spinner } from 'react-bootstrap';
 import { linkTo } from '../../util/routes';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
+
+import LinkButton from '../../components/LinkButton';
+import DateTimePicker from '../../components/DateTimePicker';
 
 import styles from './SkipboAddGamePage.module.css';
-import { getCurrentDateTimeForHtml, getUnixTimestamp } from '../../util/dateTime';
-import LinkButton from '../../components/LinkButton';
-
-// TODO: Use a better datepicker here
 
 const NEW_WINNER = '-1';
 function SkipboOverviewPage() {
   const [selectedWinner, setSelectedWinner] = useState(NEW_WINNER);
   const [insertedWinner, setInsertedWinner] = useState('');
-  const [playTime, setPlayTime] = useState(getCurrentDateTimeForHtml());
+  const [playTime, setPlayTime] = useState(new Date());
   const [winners, setWinners] = useState([] as string[]);
   const [isLoading, setLoading] = useState(false);
   const history = useHistory();
@@ -31,7 +30,7 @@ function SkipboOverviewPage() {
     event.stopPropagation();
     setLoading(true);
     addSkipboGame({
-      playTime: getUnixTimestamp(playTime),
+      playTime: playTime.toISOString(),
       winner: { name: selectedWinner === NEW_WINNER ? insertedWinner : selectedWinner },
     }).then(() => {
       setLoading(false);
@@ -44,21 +43,12 @@ function SkipboOverviewPage() {
     setSelectedWinner(value);
   };
 
-  const handlePlayTimeChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    const value = e.currentTarget.value;
-    setPlayTime(value);
-  };
-
-  const handleBackClick = (): void => {
-    history.push(linkTo.skipbo());
+  const handlePlayTimeChange = (date: Date): void => {
+    setPlayTime(date);
   };
 
   const isFormValid = (): boolean => {
-    return (
-      (selectedWinner !== NEW_WINNER || (selectedWinner === NEW_WINNER && insertedWinner.trim() !== '')) &&
-      playTime !== '' &&
-      +new Date(playTime) > 0
-    );
+    return selectedWinner !== NEW_WINNER || (selectedWinner === NEW_WINNER && insertedWinner.trim() !== '');
   };
 
   return (
@@ -91,11 +81,9 @@ function SkipboOverviewPage() {
         </Form.Group>
         <Form.Group controlId="playTime">
           <Form.Label>Spielzeitpunkt</Form.Label>
-          <Form.Control
-            type="datetime-local"
-            value={playTime}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handlePlayTimeChange(e)}
-          />
+          <Form.Group>
+            <DateTimePicker onChange={handlePlayTimeChange} selected={playTime} />
+          </Form.Group>
         </Form.Group>
         <div className={styles.ButtonControlBar}>
           <LinkButton to={linkTo.skipbo()} variant="secondary" type="button" disabled={isLoading}>

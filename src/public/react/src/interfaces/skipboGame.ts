@@ -1,5 +1,5 @@
 export interface SkipboGame {
-  playTime: number;
+  playTime: string; // ISO string of the date
   winner: Player;
 }
 
