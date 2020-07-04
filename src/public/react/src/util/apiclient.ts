@@ -27,9 +27,13 @@ export const addSkipboGame = (game: SkipboGame): Promise<void> => client.post('s
 export const getSkipboGameStatisticsGeneral = (): Promise<GeneralStatistic> =>
   client.get('skipbo/statistics/general').then((data: any) => {
     if (!!data.lastPlayTime) {
+      console.log({
+        ...data,
+        lastPlayTime: { ...data.lastPlayTime, value: new Date(data.lastPlayTime.value) },
+      });
       return {
         ...data,
-        lastPlayTime: { ...data.lastPlayTime, value: new Date(data.lastPlayTime.value).toLocaleString('de-DE') },
+        lastPlayTime: { ...data.lastPlayTime, value: new Date(data.lastPlayTime.value) },
       };
     }
     return data;

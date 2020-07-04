@@ -13,17 +13,20 @@ const GeneralStatisticCard: React.FC<Props> = ({ title, fetchData }: Props) => {
     return fetchData().then((data: GeneralStatistic | any[]) => setData(data));
   };
 
+  const getFormattedValue = (value: string | number | Date): string | number =>
+   value instanceof Date ? value.toLocaleString('de-DE') : value;
+
   return (
     <ReloadableCard title={title} fetchData={loadData}>
       {!data ? null : Array.isArray(data) ? null : (
         <Table responsive>
           <tbody>
             {Object.keys(data).map((key) => {
-              const currData = (data as GeneralStatistic)[key];
+              const currentEntry = (data as GeneralStatistic)[key];
               return (
                 <tr key={key}>
-                  <td>{currData.label}</td>
-                  <td>{currData.value}</td>
+                  <td>{currentEntry.label}</td>
+                  <td>{getFormattedValue(currentEntry.value)}</td>
                 </tr>
               );
             })}

@@ -10,6 +10,6 @@ export interface Player {
 export interface GeneralStatistic {
   [attribute: string]: {
     label?: string;
-    value: string | number;
+    value: string | number | Date;
   }
 }

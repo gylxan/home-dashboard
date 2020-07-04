@@ -13,9 +13,11 @@ export interface Props extends Omit<ReloadableCardProps, 'children'> {
 }
 
 const LineChartStatisticCard: React.FC<Props> = ({ title, yAxisTitle, fetchData }: Props) => {
-  const [data, setData] = useState([] as { name: string; data: number[][] }[]);
+  const [data, setData] = useState([] as { name: string; data: any[][] }[]);
   const loadData = (): Promise<void> => {
-    return fetchData().then((data: { name: string; data: number[][] }[]) => setData(data));
+    return fetchData().then((data: { name: string; data: any }[]) => {
+      setData(data);
+    });
   };
   const options: HighCharts.Options = {
     ...getDefaultChartOptions(),
@@ -29,6 +31,7 @@ const LineChartStatisticCard: React.FC<Props> = ({ title, yAxisTitle, fetchData 
       title: {
         text: yAxisTitle,
       },
+      min: 1
     },
 
     xAxis: {
@@ -52,7 +55,11 @@ const LineChartStatisticCard: React.FC<Props> = ({ title, yAxisTitle, fetchData 
       },
     },
 
-    series: data.map((dataEntry) => ({ ...dataEntry, type: 'line' })),
+    series: data.map((winnerEntry) => ({
+      ...winnerEntry,
+      type: 'line',
+      data: winnerEntry.data.map((dataEntry: any[]) => [new Date(dataEntry[0]).getTime(), dataEntry[1]]),
+    })),
 
     responsive: {
       rules: [
