@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Alert, Button, CardColumns, Spinner } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import React, {useEffect, useState} from 'react';
+import {Alert, CardColumns, Spinner} from 'react-bootstrap';
 import {
   getSkipboGames,
   getSkipboGamesHistory,
@@ -8,8 +7,8 @@ import {
   getSkipboGameStatisticsGeneral,
   getSkipboTopWinners,
 } from '../../util/apiclient';
-import { SkipboGame } from '../../interfaces/skipboGame';
-import { getPageTitle, linkTo } from '../../util/routes';
+import {SkipboGame} from '../../interfaces/skipboGame';
+import {getPageTitle, linkTo} from '../../util/routes';
 import GeneralStatisticCard from '../../components/GeneralStatisticCard';
 import PieChartStatisticCard from '../../components/PieChartStatisticCard';
 import ColumnStatisticCard from '../../components/ColumnStatisticCard';
