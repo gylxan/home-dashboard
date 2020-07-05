@@ -21,16 +21,14 @@ client.interceptors.response.use(
   (error) => Promise.reject(error),
 );
 
+// TODO All players need the same color in every statistic
+
 export const getBoards = (): Promise<any> => client.get('boards');
 export const getSkipboGames = (): Promise<SkipboGame[]> => client.get('skipbo');
 export const addSkipboGame = (game: SkipboGame): Promise<void> => client.post('skipbo', game);
 export const getSkipboGameStatisticsGeneral = (): Promise<GeneralStatistic> =>
   client.get('skipbo/statistics/general').then((data: any) => {
     if (!!data.lastPlayTime) {
-      console.log({
-        ...data,
-        lastPlayTime: { ...data.lastPlayTime, value: new Date(data.lastPlayTime.value) },
-      });
       return {
         ...data,
         lastPlayTime: { ...data.lastPlayTime, value: new Date(data.lastPlayTime.value) },
