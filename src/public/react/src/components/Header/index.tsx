@@ -1,5 +1,5 @@
 import React from 'react';
-import { Navbar, Button } from 'react-bootstrap';
+import { Navbar } from 'react-bootstrap';
 import routes, { linkTo } from 'util/routes';
 import { Link, useLocation } from 'react-router-dom';
 import logo from '../../assets/icons/logo.png';
@@ -12,7 +12,6 @@ export interface Props {}
 const Header: React.FC<Props> = () => {
   const location = useLocation();
   const isSkipboPage = location.pathname === routes.skipbo;
-  console.log(location);
   return (
     <Navbar bg="light" expand="lg" className={styles.Header}>
       <Navbar.Brand>
