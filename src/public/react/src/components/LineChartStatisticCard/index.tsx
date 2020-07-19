@@ -6,6 +6,7 @@ import ReloadableCard, { Props as ReloadableCardProps } from '../ReloadableCard'
 
 import styles from './LineChartStatisticCard.module.css';
 import { getDefaultChartOptions } from '../../util/highcharts';
+import {getPlayerColor} from "../../util/colors";
 
 export interface Props extends Omit<ReloadableCardProps, 'children'> {
   title: string;
@@ -59,6 +60,7 @@ const LineChartStatisticCard: React.FC<Props> = ({ title, yAxisTitle, fetchData 
       ...winnerEntry,
       type: 'line',
       data: winnerEntry.data.map((dataEntry: any[]) => [new Date(dataEntry[0]).getTime(), dataEntry[1]]),
+      color: getPlayerColor(winnerEntry.name)
     })),
 
     responsive: {

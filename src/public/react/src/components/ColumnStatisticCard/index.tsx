@@ -5,7 +5,7 @@ import HighchartsReact from 'highcharts-react-official';
 import ReloadableCard, { Props as ReloadableCardProps } from '../ReloadableCard';
 
 import styles from './ColumnStatisticCard.module.css';
-import { DEFAULT_COLORS } from '../../util/colors';
+import { DEFAULT_COLORS, getPlayerColor } from '../../util/colors';
 
 export interface Props extends Omit<ReloadableCardProps, 'children'> {
   title: string;
@@ -43,13 +43,12 @@ const ColumnStatisticCard: React.FC<Props> = ({ title, yAxisTitle, fetchData }: 
       shared: true,
       useHTML: true,
     },
-    colors: DEFAULT_COLORS,
     series: [
       {
         name: 'Spiele',
         type: 'column',
         colorByPoint: true,
-        data,
+        data: data.map((data) => ({ ...data, color: getPlayerColor(data.name) })),
       },
     ],
   };

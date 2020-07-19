@@ -9,17 +9,13 @@ import {
   getSkipboTopWinners,
 } from '../../util/apiclient';
 import { SkipboGame } from '../../interfaces/skipboGame';
-import { getPageTitle, linkTo } from '../../util/routes';
+import { getPageTitle } from '../../util/routes';
 import GeneralStatisticCard from '../../components/GeneralStatisticCard';
 import PieChartStatisticCard from '../../components/PieChartStatisticCard';
 import ColumnStatisticCard from '../../components/ColumnStatisticCard';
 
 import styles from './SkipboOverviewPage.module.css';
 import LineChartStatisticCard from '../../components/LineChartStatisticCard';
-import LinkButton from '../../components/LinkButton';
-
-
-//TODO the button to add a game must be moved to the header
 
 function SkipboOverviewPage() {
   const [isLoading, setLoading] = useState(true);

@@ -5,6 +5,7 @@ import HighchartsReact from 'highcharts-react-official';
 import ReloadableCard, { Props as ReloadableCardProps } from '../ReloadableCard';
 
 import styles from './PieChartStatisticCard.module.css';
+import { DEFAULT_COLORS, getPlayerColor } from '../../util/colors';
 
 export interface Props extends Omit<ReloadableCardProps, 'children'> {
   title: string;
@@ -35,11 +36,12 @@ const PieChartStatisticCard: React.FC<Props> = ({ title, fetchData }: Props) => 
         },
       },
     },
+    colors: DEFAULT_COLORS,
     series: [
       {
         name: 'Spiele',
         type: 'pie',
-        data: data,
+        data: data.map((data) => ({ ...data, color: getPlayerColor(data.name) })),
       },
     ],
   };
