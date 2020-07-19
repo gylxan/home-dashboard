@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { getBoards } from '../../util/apiclient';
 import { Board } from '../../interfaces/board';
-import { Card, CardDeck, Spinner } from 'react-bootstrap';
+import { Card, CardDeck, Spinner, Container, Row, Col } from 'react-bootstrap';
 import routes, { getPageTitle } from 'util/routes';
 import LinkButton from '../../components/LinkButton';
+import Tile from './Tile';
+import { DEFAULT_COLORS } from '../../util/colors';
 
 function HomePage() {
   const [isLoading, setLoading] = useState(true);
@@ -22,19 +24,20 @@ function HomePage() {
 
   return (
     <div className="HomePage">
-      <CardDeck>
-        {boards.map((board) => (
-          <Card style={{ width: '14rem' }} key={board.name}>
-            <Card.Body>
-              <Card.Title>{board.label}</Card.Title>
-              <Card.Text>{board.description}</Card.Text>
-              <LinkButton to={routes[board.name]} variant="primary">
-                Zu {board.label}
-              </LinkButton>
-            </Card.Body>
-          </Card>
-        ))}
-      </CardDeck>
+      <Container fluid>
+        <Row>
+          {boards.map((board, index) => (
+            <Col key={board.name}>
+              <Tile
+                name={board.name}
+                label={board.label}
+                description={board.description}
+                backgroundColor={DEFAULT_COLORS[index]}
+              />
+            </Col>
+          ))}
+        </Row>
+      </Container>
     </div>
   );
 }
