@@ -1,14 +1,15 @@
-import React, {useEffect, useState} from 'react';
-import {Alert, CardColumns, Spinner} from 'react-bootstrap';
+import React, { useEffect, useState } from 'react';
+import { Alert, CardColumns, Spinner } from 'react-bootstrap';
 import {
   getSkipboGames,
   getSkipboGamesHistory,
   getSkipboGamesPerWinnerStatistics,
   getSkipboGameStatisticsGeneral,
+  getSkipboLastPlayDayGames,
   getSkipboTopWinners,
 } from '../../util/apiclient';
-import {SkipboGame} from '../../interfaces/skipboGame';
-import {getPageTitle, linkTo} from '../../util/routes';
+import { SkipboGame } from '../../interfaces/skipboGame';
+import { getPageTitle, linkTo } from '../../util/routes';
 import GeneralStatisticCard from '../../components/GeneralStatisticCard';
 import PieChartStatisticCard from '../../components/PieChartStatisticCard';
 import ColumnStatisticCard from '../../components/ColumnStatisticCard';
@@ -41,12 +42,20 @@ function SkipboOverviewPage() {
         ) : (
           <CardColumns>
             <GeneralStatisticCard title={'Allgemein'} fetchData={getSkipboGameStatisticsGeneral} />
-            <PieChartStatisticCard title={'Spiele pro Gewinner'} fetchData={getSkipboGamesPerWinnerStatistics} />
             <ColumnStatisticCard
-              title="Top 5 Gewinner"
+              title="Top 5 Spieler"
               yAxisTitle="Gewonnene Spiele"
               seriesName="Spiele"
               fetchData={getSkipboTopWinners}
+            />
+            <LineChartStatisticCard
+              title="Spiele des letztes Spieltags"
+              fetchData={getSkipboLastPlayDayGames}
+              yAxisTitle="Anzahl Gewinne"
+            />
+            <PieChartStatisticCard
+              title={'Gewonnene Spiele pro Spieler/in'}
+              fetchData={getSkipboGamesPerWinnerStatistics}
             />
             <LineChartStatisticCard
               title="Spieleverlauf"

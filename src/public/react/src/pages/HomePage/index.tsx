@@ -26,7 +26,7 @@ function HomePage() {
   return (
     <div className="HomePage">
       <Container fluid>
-        <Row className="justify-content-md-center">
+        <Row>
           {boards.map((board, index) => (
             <Col key={board.name} sm className={styles.Column}>
               <Tile

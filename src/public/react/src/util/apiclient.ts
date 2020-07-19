@@ -49,4 +49,7 @@ export const getSkipboTopWinners = (): Promise<{ name: string; y: number }[]> =>
 export const getSkipboGamesHistory = (): Promise<{ name: string; data: number[][] }[]> =>
   client.get('skipbo/statistics/games-history');
 
+export const getSkipboLastPlayDayGames = (): Promise<{ name: string; data: number[][] }[]> =>
+  client.get('skipbo/statistics/last-play-day');
+
 export const getSkipboGameWinners = (): Promise<string[]> => client.get('skipbo/winners');
