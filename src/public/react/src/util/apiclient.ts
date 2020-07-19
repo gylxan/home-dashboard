@@ -21,8 +21,6 @@ client.interceptors.response.use(
   (error) => Promise.reject(error),
 );
 
-// TODO All players need the same color in every statistic
-
 export const getBoards = (): Promise<any> => client.get('boards');
 export const getSkipboGames = (): Promise<SkipboGame[]> => client.get('skipbo');
 export const addSkipboGame = (game: SkipboGame): Promise<void> => client.post('skipbo', game);
