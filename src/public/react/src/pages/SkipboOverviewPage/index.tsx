@@ -18,6 +18,9 @@ import styles from './SkipboOverviewPage.module.css';
 import LineChartStatisticCard from '../../components/LineChartStatisticCard';
 import LinkButton from '../../components/LinkButton';
 
+
+//TODO the button to add a game must be moved to the header
+
 function SkipboOverviewPage() {
   const [isLoading, setLoading] = useState(true);
   const [skipboGames, setSkipboGames] = useState([] as SkipboGame[]);
