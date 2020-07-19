@@ -2,6 +2,7 @@
   height: 14rem;
   width: 14rem;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   transition: all 0.5s ease;
@@ -13,4 +14,8 @@
   transform: scale(1.1);
   box-shadow: 0.25em 0.25em 0.25em 0 rgba(140, 140, 140, 0.8);
   cursor: pointer;
+}
+
+.Icon {
+  width: 4rem;
 }
