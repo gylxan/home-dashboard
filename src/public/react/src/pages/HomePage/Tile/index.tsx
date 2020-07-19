@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React from 'react';
 import styles from './Tile.module.css';
 import { Link } from 'react-router-dom';
 import routes from 'util/routes';

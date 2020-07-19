@@ -5,7 +5,7 @@ import HighchartsReact from 'highcharts-react-official';
 import ReloadableCard, { Props as ReloadableCardProps } from '../ReloadableCard';
 
 import styles from './ColumnStatisticCard.module.css';
-import { DEFAULT_COLORS, getPlayerColor } from '../../util/colors';
+import { getPlayerColor } from '../../util/colors';
 
 export interface Props extends Omit<ReloadableCardProps, 'children'> {
   title: string;
