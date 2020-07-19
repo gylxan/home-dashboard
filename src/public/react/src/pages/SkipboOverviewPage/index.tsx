@@ -68,11 +68,6 @@ function SkipboOverviewPage() {
           </CardColumns>
         )}
       </div>
-      <div className={styles.Footer}>
-        <LinkButton to={linkTo.skipboAddGame()} variant="primary" type="button">
-          Spiel hinzufügen
-        </LinkButton>
-      </div>
     </div>
   );
 }

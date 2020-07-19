@@ -5,7 +5,7 @@ import { Route, Switch } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import SkipboOverviewPage from './pages/SkipboOverviewPage';
 import SkipboAddGamePage from './pages/SkipboAddGamePage';
-import EntscheidomatPage from "./pages/EntscheidomatPage";
+import EntscheidomatPage from './pages/EntscheidomatPage';
 import Header from './components/Header';
 
 import styles from './App.module.css';
