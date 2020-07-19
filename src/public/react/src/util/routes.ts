@@ -7,6 +7,7 @@ const routes: Routes = {
   home: '/',
   skipbo: '/skipbo',
   skipboAddGame: '/skipbo/create',
+  entscheidomat: '/entscheidomat',
 };
 
 interface LinkTo {
@@ -19,6 +20,7 @@ export const linkTo: LinkTo = {
   home: (): string => '/',
   skipbo: (): string => routes.skipbo,
   skipboAddGame: (): string => routes.skipboAddGame,
+  entscheidomat: (): string => routes.entscheidomat,
 };
 
 export const MAIN_TITLE = 'Home Dashboard';

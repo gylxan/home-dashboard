@@ -5,6 +5,7 @@ import { Route, Switch } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import SkipboOverviewPage from './pages/SkipboOverviewPage';
 import SkipboAddGamePage from './pages/SkipboAddGamePage';
+import EntscheidomatPage from "./pages/EntscheidomatPage";
 import Header from './components/Header';
 
 import styles from './App.module.css';
@@ -22,6 +23,9 @@ function App() {
           </Route>
           <Route path={routes.skipbo}>
             <SkipboOverviewPage />
+          </Route>
+          <Route path={routes.entscheidomat}>
+            <EntscheidomatPage />
           </Route>
           <Route path={routes.home}>
             <HomePage />
