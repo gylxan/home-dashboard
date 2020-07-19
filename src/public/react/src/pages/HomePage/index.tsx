@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import { Col, Container, Row, Spinner } from 'react-bootstrap';
 import { getBoards } from '../../util/apiclient';
 import { Board } from '../../interfaces/board';
-import { Card, CardDeck, Spinner, Container, Row, Col } from 'react-bootstrap';
-import routes, { getPageTitle } from 'util/routes';
-import LinkButton from '../../components/LinkButton';
+import { getPageTitle } from 'util/routes';
 import Tile from './Tile';
 import { DEFAULT_COLORS } from '../../util/colors';
+
+import styles from './HomePage.module.css';
 
 function HomePage() {
   const [isLoading, setLoading] = useState(true);
@@ -25,9 +26,9 @@ function HomePage() {
   return (
     <div className="HomePage">
       <Container fluid>
-        <Row>
+        <Row className="justify-content-md-center">
           {boards.map((board, index) => (
-            <Col key={board.name}>
+            <Col key={board.name} sm className={styles.Column}>
               <Tile
                 name={board.name}
                 label={board.label}

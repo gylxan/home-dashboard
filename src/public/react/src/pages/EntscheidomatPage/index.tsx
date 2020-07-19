@@ -1,6 +1,8 @@
 import React from 'react';
 
-import styles from './EntscheidomatPage.module.css';
+//import styles from './EntscheidomatPage.module.css';
+
+
 
 export interface Props {}
 
