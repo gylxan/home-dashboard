@@ -1,0 +1,19 @@
+.Entscheidomat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.Textarea {
+  width: 80vw;
+  max-width: 400px;
+}
+
+.OptionText {
+  margin-top: 3rem;
+}
+
+
+.Button {
+  margin-top: 3rem;
+}
