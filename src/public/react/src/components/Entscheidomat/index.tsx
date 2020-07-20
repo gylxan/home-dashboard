@@ -25,6 +25,10 @@ class Entscheidomat extends React.PureComponent<Props, State> {
   interval: number | undefined;
   audio = new Audio(angryBeaversSound);
 
+  componentWillUnmount() {
+    this.stop();
+  }
+
   handleListChange = (e: ChangeEvent<HTMLTextAreaElement>): void => {
     const newList = e.currentTarget.value.split('\n');
     setEntscheidomatList(newList);
@@ -37,7 +41,7 @@ class Entscheidomat extends React.PureComponent<Props, State> {
     const { isStarted } = this.state;
 
     if (isStarted) {
-      this.stop();
+      this.stopLazy();
     } else {
       this.start();
     }
@@ -55,7 +59,7 @@ class Entscheidomat extends React.PureComponent<Props, State> {
     }, 60);
   };
 
-  stop = () => {
+  stopLazy = () => {
     this.setState({
       isStopping: true,
     });
@@ -64,9 +68,13 @@ class Entscheidomat extends React.PureComponent<Props, State> {
         isStopping: false,
         isStarted: false,
       });
-      this.clearInterval();
-      this.audio.pause();
+      this.stop();
     }, 2000);
+  };
+
+  stop = () => {
+    this.clearInterval();
+    this.audio.pause();
   };
 
   clearInterval = () => {
