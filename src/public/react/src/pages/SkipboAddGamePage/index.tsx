@@ -16,13 +16,17 @@ function SkipboOverviewPage() {
   const [playTime, setPlayTime] = useState(new Date());
   const [winners, setWinners] = useState([] as string[]);
   const [isLoading, setLoading] = useState(false);
+  const [isLoadingWinners, setLoadingWinners] = useState(false);
   const history = useHistory();
 
   useEffect(() => {
-    getSkipboGameWinners().then((winners: string[]) => {
-      setWinners(winners);
-      winners.length >= 1 && setSelectedWinner(winners[0]);
-    });
+    setLoadingWinners(true);
+    getSkipboGameWinners()
+      .then((winners: string[]) => {
+        setWinners(winners);
+        winners.length >= 1 && setSelectedWinner(winners[0]);
+      })
+      .finally(() => setLoadingWinners(false));
   }, []);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -56,19 +60,20 @@ function SkipboOverviewPage() {
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="winner">
           <Form.Label>Gewinner</Form.Label>
-          {winners.length >= 1 && selectedWinner !== NEW_WINNER && (
-            <Form.Control autoFocus required value={selectedWinner} as="select" onChange={handleSelectedWinnerChange}>
-              {winners.map((winner: string) => (
-                <option key={winner} value={winner}>
-                  {winner}
+          {isLoadingWinners ||
+            (winners.length >= 1 && selectedWinner !== NEW_WINNER && (
+              <Form.Control autoFocus required value={selectedWinner} as="select" onChange={handleSelectedWinnerChange}>
+                {winners.map((winner: string) => (
+                  <option key={winner} value={winner}>
+                    {winner}
+                  </option>
+                ))}
+                <option key={'new-winner'} value={NEW_WINNER}>
+                  Gewinner eingeben...
                 </option>
-              ))}
-              <option key={'new-winner'} value={NEW_WINNER}>
-                Gewinner eingeben...
-              </option>
-            </Form.Control>
-          )}
-          {(winners.length === 0 || selectedWinner === NEW_WINNER) && (
+              </Form.Control>
+            ))}
+          {(winners.length === 0 || selectedWinner === NEW_WINNER) && !isLoadingWinners && (
             <Form.Control
               autoFocus
               required
