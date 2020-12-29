@@ -2,6 +2,7 @@ import * as express from 'express';
 import apiRoutes from './routes';
 import * as path from 'path';
 import * as bodyParser from 'body-parser';
+import { Error } from './interfaces/error';
 
 class Server {
   private app: express.Application;
@@ -31,12 +32,7 @@ class Server {
   }
 
   private initializeErrorHandling(): void {
-    this.app.use(function errorMiddleware(
-      error: any,
-      request: express.Request,
-      response: express.Response,
-      next: express.NextFunction,
-    ) {
+    this.app.use(function errorMiddleware(error: Error, request: express.Request, response: express.Response) {
       console.log(response);
       const status = error.status || 500;
       const message = error.message || 'Something went wrong';

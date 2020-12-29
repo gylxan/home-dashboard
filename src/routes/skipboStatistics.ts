@@ -1,16 +1,18 @@
 import { Router } from 'express';
 const router = Router();
 import { db, ROUTE as SKIPBO_ROUTE } from './skipbo';
+import { SkipboGame } from '../interfaces/skipbo';
+import { Error } from '../interfaces/error';
 
 // TODO Rename winners to players for better wording
 export const ROUTE = SKIPBO_ROUTE + '/statistics';
 router
   .route('/general')
   // Get one by name
-  .get((req, res, next) => {
+  .get((req, res) => {
     db.find({})
       .sort({ playTime: 1, 'winner.name': -1 })
-      .exec(function (error: any, docs: any[]) {
+      .exec(function (error: unknown, docs: SkipboGame[]) {
         const playerToPoints = new Map();
         for (const game of docs) {
           if (!playerToPoints.has(game.winner.name)) {
@@ -54,10 +56,10 @@ router
       });
   });
 
-router.route('/games-per-winner').get((req, res, next) => {
-  db.find({}, function (error: any, docs: any[]) {
+router.route('/games-per-winner').get((req, res) => {
+  db.find({}, function (error: unknown, docs: SkipboGame[]) {
     res.send(
-      docs.reduce((prev: any[], curr) => {
+      docs.reduce((prev: { name: string; y: number }[], curr) => {
         const entryIndex = prev.findIndex((value) => value.name === curr.winner.name);
         if (entryIndex === -1) {
           return [...prev, { name: curr.winner.name, y: 1 }];
@@ -69,27 +71,30 @@ router.route('/games-per-winner').get((req, res, next) => {
   });
 });
 
-router.route('/games-history').get((req, res, next) => {
+router.route('/games-history').get((req, res) => {
   db.find({})
     .sort({ 'winner-name': 1, playTime: 1 })
-    .exec(function (error: any, docs: any[]) {
+    .exec(function (error: unknown, docs: SkipboGame[]) {
       res.send(
-        docs.reduce((prev: { name: string; data: number[][] }[], curr) => {
+        docs.reduce((prev: { name: string; data: (number | string)[][] }[], curr) => {
           const entryIndex = prev.findIndex((value) => value.name === curr.winner.name);
           if (entryIndex === -1) {
             return [...prev, { name: curr.winner.name, data: [[curr.playTime, 1]] }];
           }
-          prev[entryIndex].data.push([curr.playTime, prev[entryIndex].data[prev[entryIndex].data.length - 1][1] + 1]);
+          prev[entryIndex].data.push([
+            curr.playTime,
+            (prev[entryIndex].data[prev[entryIndex].data.length - 1][1] as number) + 1,
+          ]);
           return prev;
         }, []),
       );
     });
 });
 
-router.route('/last-play-day').get((req, res, next) => {
+router.route('/last-play-day').get((req, res) => {
   db.find({})
     .sort({ playTime: -1 })
-    .exec(function (error: any, docs: any[]) {
+    .exec(function (error: unknown, docs: SkipboGame[]) {
       if (docs.length === 0) {
         return [];
       }
@@ -101,16 +106,16 @@ router.route('/last-play-day').get((req, res, next) => {
         },
       })
         .sort({ 'winner-name': 1, playTime: 1 })
-        .exec(function (error: any, docs: any[]) {
+        .exec(function (error: Error | null, docs: SkipboGame[]) {
           res.send(
-            docs.reduce((prev: { name: string; data: number[][] }[], curr) => {
+            docs.reduce((prev: { name: string; data: (number | string)[][] }[], curr) => {
               const entryIndex = prev.findIndex((value) => value.name === curr.winner.name);
               if (entryIndex === -1) {
                 return [...prev, { name: curr.winner.name, data: [[curr.playTime, 1]] }];
               }
               prev[entryIndex].data.push([
                 curr.playTime,
-                prev[entryIndex].data[prev[entryIndex].data.length - 1][1] + 1,
+                (prev[entryIndex].data[prev[entryIndex].data.length - 1][1] as number) + 1,
               ]);
               return prev;
             }, []),

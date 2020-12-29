@@ -1,6 +1,7 @@
 import { Router } from 'express';
 const router = Router();
 import * as DataStore from 'nedb';
+import { SkipboGame } from '../interfaces/skipbo';
 export const db = new DataStore({ filename: './db/games.db', autoload: true });
 
 export const ROUTE = '/skipbo';
@@ -14,8 +15,8 @@ router
         res.send(docs);
       });
   })
-  .post((req, res, next) => {
-    db.insert({ playTime: req.body.playTime, winner: req.body.winner }, function (error: any, docs: any) {
+  .post((req, res) => {
+    db.insert({ playTime: req.body.playTime, winner: req.body.winner }, function (error: unknown, docs: SkipboGame) {
       res.send(docs);
     });
   });
@@ -23,13 +24,13 @@ router
 router
   .route('/winners')
   // Get one by name
-  .get((req, res, next) => {
+  .get((req, res) => {
     db.find({})
       .sort({ 'winner.name': 1 })
-      .exec(function (error: any, docs: any[]) {
+      .exec(function (error: unknown, docs: SkipboGame[]) {
         res.send(
           docs.reduce(
-            (prev, curr) =>
+            (prev: string[], curr) =>
               !prev.find((winner: string) => winner === curr.winner.name) && curr.winner.name.trim() !== ''
                 ? [...prev, curr.winner.name]
                 : prev,
@@ -42,8 +43,8 @@ router
 router
   .route('/:timestamp')
   // Get one by name
-  .get((req, res, next) => {
-    db.find({ playTime: req.params.timestamp }, function (error: any, docs: any[]) {
+  .get((req, res) => {
+    db.find({ playTime: req.params.timestamp }, function (error: unknown, docs: SkipboGame[]) {
       res.send(docs);
     });
   });
