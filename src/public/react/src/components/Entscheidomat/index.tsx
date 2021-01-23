@@ -144,6 +144,7 @@ class Entscheidomat extends React.PureComponent<Props, State> {
           type="checkbox"
           name="music"
           disabled={isStarted}
+          id="entscheidomat-music"
         />
         <h4 className={styles.OptionText}>{currentOption === undefined ? 'Starte zum Entscheiden!' : currentOption}</h4>
         <Button
