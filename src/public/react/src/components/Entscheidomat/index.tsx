@@ -2,7 +2,12 @@ import React, { ChangeEvent } from 'react';
 
 import styles from './Entscheidomat.module.css';
 import { Form, Button } from 'react-bootstrap';
-import { getEntscheidomatList, setEntscheidomatList } from '../../util/localStorage';
+import {
+  getEntscheidomatList,
+  hasEntscheidomatMusic,
+  setEntscheidomatList,
+  setEntscheidomatMusic,
+} from '../../util/localStorage';
 // @ts-ignore
 import angryBeaversSound from '../../assets/audios/angry-beavers.mp3';
 
@@ -13,11 +18,13 @@ export interface State {
   currentOption: string | undefined;
   isStarted: boolean;
   isStopping: boolean;
+  isMusicEnabled: boolean;
 }
 
 class Entscheidomat extends React.PureComponent<Props, State> {
   state = {
     options: getEntscheidomatList(),
+    isMusicEnabled: hasEntscheidomatMusic(),
     currentOption: undefined,
     isStarted: false,
     isStopping: false,
@@ -47,9 +54,23 @@ class Entscheidomat extends React.PureComponent<Props, State> {
     }
   };
 
+  startMusic = () => {
+    const { isMusicEnabled } = this.state;
+    if (isMusicEnabled) {
+      this.audio.currentTime = 0;
+      this.audio.play();
+    }
+  };
+
+  stopMusic = () => {
+    const { isMusicEnabled } = this.state;
+    if (isMusicEnabled) {
+      this.audio.pause();
+    }
+  };
+
   start = () => {
-    this.audio.currentTime = 0;
-    this.audio.play();
+    this.startMusic();
     this.setState({
       isStarted: true,
     });
@@ -74,7 +95,7 @@ class Entscheidomat extends React.PureComponent<Props, State> {
 
   stop = () => {
     this.clearInterval();
-    this.audio.pause();
+    this.stopMusic();
   };
 
   clearInterval = () => {
@@ -92,8 +113,19 @@ class Entscheidomat extends React.PureComponent<Props, State> {
     });
   };
 
+  setIsMusicEnabled = (isMusicEnabled: boolean): void => {
+    this.setState(
+      {
+        isMusicEnabled: isMusicEnabled,
+      },
+      () => {
+        setEntscheidomatMusic(isMusicEnabled);
+      },
+    );
+  };
+
   render(): JSX.Element {
-    const { currentOption, isStopping, isStarted } = this.state;
+    const { currentOption, options, isStopping, isStarted, isMusicEnabled } = this.state;
     return (
       <Form className={styles.Entscheidomat}>
         <Form.Control
@@ -101,8 +133,16 @@ class Entscheidomat extends React.PureComponent<Props, State> {
           as="textarea"
           rows={5}
           name="list"
-          value={this.state.options.join('\n')}
+          value={options.join('\n')}
           onChange={this.handleListChange}
+          disabled={isStarted}
+        />
+        <Form.Check
+          checked={isMusicEnabled}
+          onChange={(event) => this.setIsMusicEnabled(event.currentTarget.checked)}
+          label="Musik abspielen"
+          type="checkbox"
+          name="music"
           disabled={isStarted}
         />
         <h4 className={styles.OptionText}>{currentOption === undefined ? 'Starte zum Entscheiden!' : currentOption}</h4>
