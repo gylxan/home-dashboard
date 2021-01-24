@@ -1,5 +1,8 @@
 import axios from 'axios';
 import { GeneralStatistic, SkipboGame } from '../interfaces/skipboGame';
+import { getAppVersion, setAppVersion } from './localStorage';
+
+const HEADER_VERSION = 'x-client-version';
 
 const client = axios.create({
   baseURL: '/api',
@@ -15,11 +18,30 @@ client.interceptors.request.use(
   },
 );
 
+client.interceptors.response.use((response) => {
+  return response;
+});
 // Always unpack the payload (data) from the response
 client.interceptors.response.use(
-  (response) => response.data,
+  (response) => {
+    checkClientVersion(response.headers[HEADER_VERSION]);
+    return response.data;
+  },
   (error) => Promise.reject(error),
 );
+
+/**
+ * Checks if the client version in the response of the server is the same as locally saved.
+ *
+ * When the client version differs from the given one, reload the window to get the new build react app
+ * @param {string} responseVersion The version from the API response
+ */
+const checkClientVersion = (responseVersion: string): void => {
+  if (responseVersion !== getAppVersion()) {
+    setAppVersion(responseVersion);
+    window.location.reload();
+  }
+};
 
 export const getBoards = (): Promise<any> => client.get('boards');
 export const getSkipboGames = (): Promise<SkipboGame[]> => client.get('skipbo');

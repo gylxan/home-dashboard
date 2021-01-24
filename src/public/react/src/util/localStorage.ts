@@ -1,9 +1,9 @@
+const APP_VERSION = 'app_version';
 const ENTSCHEIDOMAT_LIST_KEY = 'entscheidomat-list';
 const ENTSCHEIDOMAT_MUSIC_KEY = 'entscheidomat-music';
 
 export const getEntscheidomatList = (): string[] => {
   const list = localStorage.getItem(ENTSCHEIDOMAT_LIST_KEY);
-  console.log(list);
   if (!list) {
     return [];
   }
@@ -18,3 +18,7 @@ export const hasEntscheidomatMusic = () =>
 
 export const setEntscheidomatMusic = (hasMusic: boolean) =>
   localStorage.setItem(ENTSCHEIDOMAT_MUSIC_KEY, `${hasMusic}`);
+
+export const getAppVersion = () => localStorage.getItem(APP_VERSION) ?? '';
+
+export const setAppVersion = (version: string) => localStorage.setItem(APP_VERSION, version);
