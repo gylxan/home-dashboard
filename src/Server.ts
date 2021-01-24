@@ -3,13 +3,20 @@ import apiRoutes from './routes';
 import * as path from 'path';
 import * as bodyParser from 'body-parser';
 import { Error } from './interfaces/error';
+import * as fs from 'fs';
+import { isProductionEnvironment } from './helpers/environment';
+
+const DEFAULT_VERSION = 'develop';
 
 class Server {
   private app: express.Application;
+  private readonly version: string;
 
   constructor() {
     this.app = express();
+    this.version = Server.getClientVersion();
     this.initializeMiddlewares();
+    this.initializeDefaultResponseHeaders();
     this.initializeControllers();
     this.initializeErrorHandling();
   }
@@ -19,11 +26,32 @@ class Server {
     this.app.use(bodyParser.urlencoded({ extended: true }));
   }
 
+  private initializeDefaultResponseHeaders(): void {
+    this.app.use((req, res, next) => {
+      res.setHeader('X-client-Version', this.version);
+      next();
+    });
+  }
+
+  private static getClientVersion(): string {
+    if (!isProductionEnvironment()) {
+      return DEFAULT_VERSION;
+    }
+
+    const dir = path.join(__dirname, 'public/client/static/js/');
+    fs.readdirSync(dir).forEach((file) => {
+      if (file.startsWith('main')) {
+        return file.replace('main.', '').replace(/\..*$/, '');
+      }
+    });
+    return DEFAULT_VERSION;
+  }
+
   private initializeControllers(): void {
     // Define the routes
     this.app.use('/api', apiRoutes);
     console.debug(`Add ${apiRoutes.stack.length} API routes to server`);
-    if (process.env.NODE_ENV === 'production') {
+    if (isProductionEnvironment()) {
       console.log('Start server in production mode');
       this.serveFrontend();
     } else {
