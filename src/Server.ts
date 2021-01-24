@@ -39,12 +39,14 @@ class Server {
     }
 
     const dir = path.join(__dirname, 'public/client/static/js/');
+    let version = DEFAULT_VERSION;
     fs.readdirSync(dir).forEach((file) => {
-      if (file.startsWith('main')) {
-        return file.replace('main.', '').replace(/\..*$/, '');
+      if (file.startsWith('main') && file.endsWith('.js')) {
+        version = file.replace('main.', '').replace(/\..*$/, '');
       }
     });
-    return DEFAULT_VERSION;
+    console.log(`Client version is: "${version}"`);
+    return version;
   }
 
   private initializeControllers(): void {
