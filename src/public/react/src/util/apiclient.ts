@@ -18,10 +18,7 @@ client.interceptors.request.use(
   },
 );
 
-client.interceptors.response.use((response) => {
-  return response;
-});
-// Always unpack the payload (data) from the response
+// Always unpack the payload (data) from the response and check the client version
 client.interceptors.response.use(
   (response) => {
     checkClientVersion(response.headers[HEADER_VERSION]);
