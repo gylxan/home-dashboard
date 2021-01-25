@@ -5,8 +5,11 @@ import * as bodyParser from 'body-parser';
 import { Error } from './interfaces/error';
 import * as fs from 'fs';
 import { isProductionEnvironment } from './helpers/environment';
+import { Code, createError } from './helpers/error';
 
 const DEFAULT_VERSION = 'develop';
+
+const HEADER_CLIENT_VERSION = 'x-client-version';
 
 class Server {
   private app: express.Application;
@@ -16,7 +19,6 @@ class Server {
     this.app = express();
     this.version = Server.getClientVersion();
     this.initializeMiddlewares();
-    this.initializeDefaultResponseHeaders();
     this.initializeControllers();
     this.initializeErrorHandling();
   }
@@ -24,11 +26,19 @@ class Server {
   private initializeMiddlewares(): void {
     this.app.use(bodyParser.json());
     this.app.use(bodyParser.urlencoded({ extended: true }));
-  }
-
-  private initializeDefaultResponseHeaders(): void {
+    // Add middleware to check for correct sent client version. When version is not correct, stop request and send error.
     this.app.use((req, res, next) => {
-      res.setHeader('X-client-Version', this.version);
+      const clientVersion = req.header(HEADER_CLIENT_VERSION);
+      res.setHeader(HEADER_CLIENT_VERSION, this.version);
+      if (!clientVersion || clientVersion !== this.version) {
+        res.status(400);
+        res.send(
+          createError(
+            Code.InvalidClientVersion,
+            `Invalid client version "${clientVersion}". Current server version: "${this.version}"`,
+          ),
+        );
+      }
       next();
     });
   }

@@ -1,8 +1,10 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { GeneralStatistic, SkipboGame } from '../interfaces/skipboGame';
 import { getAppVersion, setAppVersion } from './localStorage';
+import { Code } from './error';
 
 const HEADER_VERSION = 'x-client-version';
+const appVersion = getAppVersion();
 
 const client = axios.create({
   baseURL: '/api',
@@ -12,30 +14,34 @@ const client = axios.create({
 });
 
 client.interceptors.request.use(
-  (request) => request,
-  (error) => {
-    return Promise.reject(error);
+  (request) => {
+    request.headers[HEADER_VERSION] = appVersion;
+    return request;
   },
+  (error) => Promise.reject(error),
 );
 
 // Always unpack the payload (data) from the response and check the client version
 client.interceptors.response.use(
   (response) => {
-    checkClientVersion(response.headers[HEADER_VERSION]);
     return response.data;
   },
-  (error) => Promise.reject(error),
+  (error) => {
+    checkClientVersionError(error.response);
+    return Promise.reject(error);
+  },
 );
 
 /**
- * Checks if the client version in the response of the server is the same as locally saved.
+ * Checks if the error is a invalid client version error and reloads the page to load new client
  *
- * When the client version differs from the given one, reload the window to get the new build react app
- * @param {string} responseVersion The version from the API response
+ * When the error is invalid client version error, we save the new version from the response header and reload the page
+ * to get the new files for the client.
+ * @param {AxiosResponse} response Response from axios
  */
-const checkClientVersion = (responseVersion: string): void => {
-  if (responseVersion !== getAppVersion()) {
-    setAppVersion(responseVersion);
+const checkClientVersionError = (response: AxiosResponse): void => {
+  if (response.status === 403 && response?.data?.error?.code === Code.InvalidClientVersion) {
+    setAppVersion(response.headers[HEADER_VERSION]);
     window.location.reload();
   }
 };
