@@ -7,6 +7,7 @@ import SkipboOverviewPage from './pages/SkipboOverviewPage';
 import SkipboAddGamePage from './pages/SkipboAddGamePage';
 import EntscheidomatPage from './pages/EntscheidomatPage';
 import Header from './components/Header';
+import SkipboTableOverviewPage from "./pages/SkipboTableOverviewPage";
 
 import styles from './App.module.css';
 
