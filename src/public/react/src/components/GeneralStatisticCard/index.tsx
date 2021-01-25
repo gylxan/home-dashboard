@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import ReloadableCard, { Props as ReloadableStatisticCardProps } from '../ReloadableCard';
 import { Table } from 'react-bootstrap';
 import { GeneralStatistic } from '../../interfaces/skipboGame';
+import { getFormattedDate } from '../../util/date';
 
 //import styles from './GeneralStatisticCard.module.css';
 
@@ -14,7 +15,7 @@ const GeneralStatisticCard: React.FC<Props> = ({ title, fetchData }: Props) => {
   };
 
   const getFormattedValue = (value: string | number | Date): string | number =>
-   value instanceof Date ? value.toLocaleString('de-DE') : value;
+    value instanceof Date ? getFormattedDate(value) : value;
 
   return (
     <ReloadableCard title={title} fetchData={loadData}>

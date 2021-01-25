@@ -21,6 +21,9 @@ function App() {
           <Route path={routes.skipboAddGame}>
             <SkipboAddGamePage />
           </Route>
+          <Route path={routes.skipboTable}>
+            <SkipboTableOverviewPage />
+          </Route>
           <Route path={routes.skipbo}>
             <SkipboOverviewPage />
           </Route>

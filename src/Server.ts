@@ -31,13 +31,17 @@ class Server {
       const clientVersion = req.header(HEADER_CLIENT_VERSION);
       res.setHeader(HEADER_CLIENT_VERSION, this.version);
       if (!clientVersion || clientVersion !== this.version) {
-        res.status(400);
+        console.warn(
+          `Invalid client version "${clientVersion}" received from "${req.ip}". Current server version: "${this.version}"`,
+        );
+        res.status(403);
         res.send(
           createError(
             Code.InvalidClientVersion,
             `Invalid client version "${clientVersion}". Current server version: "${this.version}"`,
           ),
         );
+        return;
       }
       next();
     });
@@ -73,7 +77,6 @@ class Server {
 
   private initializeErrorHandling(): void {
     this.app.use(function errorMiddleware(error: Error, request: express.Request, response: express.Response) {
-      console.log(response);
       const status = error.status || 500;
       const message = error.message || 'Something went wrong';
       response.status(status).send({

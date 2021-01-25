@@ -7,6 +7,7 @@ const routes: Routes = {
   home: '/',
   skipbo: '/skipbo',
   skipboAddGame: '/skipbo/create',
+  skipboTable: '/skipbo/table',
   entscheidomat: '/entscheidomat',
 };
 
@@ -20,6 +21,7 @@ export const linkTo: LinkTo = {
   home: (): string => '/',
   skipbo: (): string => routes.skipbo,
   skipboAddGame: (): string => routes.skipboAddGame,
+  skipboTable: (): string => routes.skipboTable,
   entscheidomat: (): string => routes.entscheidomat,
 };
 
