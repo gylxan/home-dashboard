@@ -8,8 +8,8 @@ export interface Props extends FontAwesomeIconProps {
   clickable?: boolean;
 }
 
-const Icon: React.FC<Props> = ({ clickable = false, className, ...props }) => (
-  <FontAwesomeIcon className={classNames({ [styles.Clickable]: clickable }, className)} {...props} />
-);
+const Icon: React.FC<Props> = React.forwardRef(({ clickable = false, className, ...props }, ref) => (
+  <FontAwesomeIcon className={classNames({ [styles.Clickable]: clickable }, className)} {...props} forwardedRef={ref} />
+));
 
 export default Icon;
