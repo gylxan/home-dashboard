@@ -9,6 +9,7 @@ const routes: Routes = {
   skipboAddGame: '/skipbo/create',
   skipboTable: '/skipbo/table',
   entscheidomat: '/entscheidomat',
+  light: '/light',
 };
 
 interface LinkTo {

@@ -1,6 +1,7 @@
 import React from 'react';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
+import { far } from '@fortawesome/free-regular-svg-icons';
 import './App.module.css';
 import routes from './util/routes';
 import { Route, Switch } from 'react-router-dom';
@@ -11,12 +12,10 @@ import EntscheidomatPage from './pages/EntscheidomatPage';
 import Header from './components/Header';
 import SkipboTableOverviewPage from './pages/SkipboTableOverviewPage';
 
-
 import styles from './App.module.css';
 
-library.add(fas);
+library.add(fas, far);
 // TODO
-// 2. table view for skip bo games
 // 3. Save location of game
 // 4. Redux to save things and reload in background
 // 4. New Tile to control lights at home via hue

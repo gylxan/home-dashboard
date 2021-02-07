@@ -1,4 +1,4 @@
-export const DEFAULT_COLORS = ['#E3B505', '#95190C', '#107E7D', '#044B7F', '#6A7B76', '#610345'];
+export const DEFAULT_COLORS = ['#107E7D', '#95190C', '#E3B505', '#044B7F', '#6A7B76', '#610345'];
 
 const PLAYER_COLORS: { [player: string]: string } = {};
 
