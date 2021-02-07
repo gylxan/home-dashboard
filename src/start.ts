@@ -1,5 +1,8 @@
 import Server from './Server';
 import * as minimist from 'minimist';
+import { config } from 'dotenv';
+
+config();
 
 const argv = minimist(process.argv.slice(2));
 // // Check whether host is set via cli arguments or environment

@@ -78,3 +78,8 @@ export const getSkipboLastPlayDayGames = (): Promise<{ name: string; data: numbe
 export const getSkipboGameWinners = (): Promise<string[]> => client.get('skipbo/winners');
 
 export const deleteSkipboGame = (id: string): Promise<void> => client.delete(`skipbo/${id}`);
+
+export const getLightGroups = (): Promise<any[]> => client.get(`light/groups`);
+
+export const updateLightGroup = (id: string, on: boolean): Promise<unknown[]> =>
+  client.put(`light/groups/${id}`, { on });

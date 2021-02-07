@@ -19,6 +19,8 @@
     "prettify": "prettier --write 'src/public/react/src/**/*.{js,css,json,ts,tsx}' 'src/**/!(public)/*.{js,css,json,ts,tsx}'"
   },
   "dependencies": {
+    "dotenv": "^8.2.0",
+    "node-hue-api": "^4.0.10",
     "body-parser": "^1.19.0",
     "express": "^4.17.1",
     "minimist": "^1.2.5",

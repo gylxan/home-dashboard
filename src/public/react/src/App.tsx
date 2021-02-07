@@ -11,6 +11,7 @@ import SkipboAddGamePage from './pages/SkipboAddGamePage';
 import EntscheidomatPage from './pages/EntscheidomatPage';
 import Header from './components/Header';
 import SkipboTableOverviewPage from './pages/SkipboTableOverviewPage';
+import LightOverviewPage from 'pages/LightOverviewPage';
 
 import styles from './App.module.css';
 
@@ -43,6 +44,9 @@ function App() {
           </Route>
           <Route path={routes.entscheidomat}>
             <EntscheidomatPage />
+          </Route>
+          <Route path={routes.light}>
+            <LightOverviewPage />
           </Route>
           <Route path={routes.home}>
             <HomePage />

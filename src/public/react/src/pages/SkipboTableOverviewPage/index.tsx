@@ -3,10 +3,10 @@ import { Alert, Dropdown, Spinner, Table } from 'react-bootstrap';
 import { deleteSkipboGame, getSkipboGames } from '../../util/apiclient';
 import { SkipboGame } from '../../interfaces/skipboGame';
 import { getPageTitle } from '../../util/routes';
-
-import styles from './SkipboTableOverviewPage.module.css';
 import { getFormattedDate } from '../../util/date';
 import Icon from '../../components/Icon';
+
+import styles from './SkipboTableOverviewPage.module.css';
 
 function SkipboTableOverviewPage() {
   const [isLoading, setLoading] = useState(true);

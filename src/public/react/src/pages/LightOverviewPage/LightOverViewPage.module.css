@@ -1,0 +1,50 @@
+.LightOverviewPage {
+  width: 80vw;
+  max-width: 768px;
+}
+
+.LoadingSpinner {
+  width: 100%;
+  text-align: center;
+}
+
+.LightGroup {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  border: 1px solid lightgrey;
+  border-radius: 6px;
+  padding: 1rem 1rem 1rem 1rem;
+  background-color: white;
+  transition: background-color 250ms linear;
+}
+
+.LightGroup:not(.Enabled) {
+  color: white;
+  border: 1px solid #0d0d0d;
+  background-color: #0d0d0d;
+  transition: background-color 250ms linear;
+}
+
+.LightGroup > *:first-child {
+  display: grid;
+  grid-template-columns: 1.25em auto 0.2fr;
+  grid-gap: 1rem;
+  align-items: center;
+}
+
+.LightGroup + .LightGroup {
+  margin-top: 0.5rem;
+}
+
+.LightOverviewPage * + h6 {
+  margin-top: 1rem;
+}
+
+.Switch {
+  text-align: right;
+}
+
+.BrightnessRange {
+  margin-top: 1rem;
+}

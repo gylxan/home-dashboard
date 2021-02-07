@@ -1,5 +1,6 @@
 export enum Code {
   InvalidClientVersion = 'invalidClientVersion',
+  HueBridgeNotConnected = 'hueBridgeNotConnected',
 }
 
 export interface Error {
