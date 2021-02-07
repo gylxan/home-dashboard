@@ -76,3 +76,5 @@ export const getSkipboLastPlayDayGames = (): Promise<{ name: string; data: numbe
   client.get('skipbo/statistics/last-play-day');
 
 export const getSkipboGameWinners = (): Promise<string[]> => client.get('skipbo/winners');
+
+export const deleteSkipboGame = (id: string): Promise<void> => client.delete(`skipbo/${id}`);

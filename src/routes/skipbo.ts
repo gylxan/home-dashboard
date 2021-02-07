@@ -39,13 +39,15 @@ router
         );
       });
   });
+
 // Root with name identifier
 router
-  .route('/:timestamp')
-  // Get one by name
-  .get((req, res) => {
-    db.find({ playTime: req.params.timestamp }, function (error: unknown, docs: SkipboGame[]) {
-      res.send(docs);
+  .route('/:id')
+  // Delte one by id
+  .delete((req, res) => {
+    db.remove({ _id: req.params.id }, (error: unknown, removedItems) => {
+      console.log(`Removed ${removedItems} skipbo game(s) for id ${req.params.id}`);
+      res.send();
     });
   });
 export default router;
