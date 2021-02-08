@@ -1,5 +1,5 @@
 import * as express from 'express';
-import apiRoutes from './routes';
+import controllers from './controllers';
 import * as path from 'path';
 import * as bodyParser from 'body-parser';
 import { Error } from './interfaces/error';
@@ -22,8 +22,8 @@ class Server {
 
   private initializeControllers(): void {
     // Define the routes
-    this.app.use('/api', apiRoutes);
-    console.debug(`Add ${apiRoutes.stack.length} API routes to server`);
+    this.app.use('/api', controllers);
+    console.debug(`Add ${controllers.stack.length} API controllers to server`);
     if (isProductionEnvironment()) {
       console.log('Start server in production mode');
       this.serveFrontend();

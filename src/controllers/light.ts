@@ -4,8 +4,6 @@ import Api = require('node-hue-api/lib/api/Api');
 import { Code, createError } from '../helpers/error';
 import { Response } from 'express-serve-static-core';
 import { Router } from 'express';
-import LightState = require('node-hue-api/lib/model/lightstate/LightState');
-import LightGroup = require('node-hue-api/lib/model/groups/LightGroup');
 import { GroupLightState } from 'node-hue-api/lib/model/lightstate';
 
 const router = Router();
