@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Col, Container, Row, Spinner } from 'react-bootstrap';
-import { getBoards } from '../../util/apiclient';
 import { Board } from '../../interfaces/board';
 import { getPageTitle } from 'util/routes';
 import Tile from './Tile';
@@ -9,7 +8,12 @@ import cardGameIcon from '../../assets/icons/card-game.png';
 import dicesIcon from '../../assets/icons/dices.png';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
+import { RootState } from '../../reducers';
+import { connect } from 'react-redux';
+import { fetchBoards } from '../../actions/boardActions';
+
 import styles from './HomePage.module.css';
+import { getBoards, getBoardsLoading } from '../../selectors/boardSelectors';
 
 const BOARD_IMAGE_PAtHS: { [gameName: string]: string } = {
   skipbo: cardGameIcon,
@@ -20,18 +24,15 @@ const BOARD_ICONS: { [gameName: string]: IconProp } = {
   light: ['far', 'lightbulb'],
 };
 
-function HomePage() {
-  const [isLoading, setLoading] = useState(true);
-  const [boards, setBoards] = useState([] as Board[]);
+export type Props = StateProps & DispatchProps;
 
+export function HomePage({ boards, loading, fetchBoards }: Props) {
   useEffect(() => {
     document.title = getPageTitle();
-    getBoards()
-      .then((data) => setBoards(data))
-      .finally(() => setLoading(false));
-  }, []);
+    fetchBoards();
+  }, [fetchBoards]);
 
-  if (isLoading && boards.length === 0) {
+  if (loading && boards.length === 0) {
     return <Spinner animation="border" variant="primary" />;
   }
 
@@ -57,4 +58,22 @@ function HomePage() {
   );
 }
 
-export default HomePage;
+interface StateProps {
+  boards: Board[];
+  loading: boolean;
+}
+
+interface DispatchProps {
+  fetchBoards: () => void;
+}
+
+const mapStateToProps = (state: RootState): StateProps => ({
+  boards: getBoards(state),
+  loading: getBoardsLoading(state),
+});
+
+const mapDispatchToProps: DispatchProps = {
+  fetchBoards,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomePage);

@@ -17,6 +17,7 @@ import styles from './App.module.css';
 
 library.add(fas, far);
 // TODO
+// Rename routes to controllers
 // 3. Save location of game
 // 4. Redux to save things and reload in background
 // 4. New Tile to control lights at home via hue
