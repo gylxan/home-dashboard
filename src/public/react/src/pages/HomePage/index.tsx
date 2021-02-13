@@ -6,6 +6,7 @@ import Tile from './Tile';
 import { DEFAULT_COLORS } from '../../util/colors';
 import cardGameIcon from '../../assets/icons/card-game.png';
 import dicesIcon from '../../assets/icons/dices.png';
+import lightBulbIcon from '../../assets/icons/light-bulb.png';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 import { RootState } from '../../reducers';
@@ -18,10 +19,11 @@ import { getBoards, getBoardsLoading } from '../../selectors/boardSelectors';
 const BOARD_IMAGE_PAtHS: { [gameName: string]: string } = {
   skipbo: cardGameIcon,
   entscheidomat: dicesIcon,
+  light: lightBulbIcon,
 };
 
 const BOARD_ICONS: { [gameName: string]: IconProp } = {
-  light: ['far', 'lightbulb'],
+  //light: ['far', 'lightbulb'],
 };
 
 export type Props = StateProps & DispatchProps;
