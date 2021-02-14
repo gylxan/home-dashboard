@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Alert, CardColumns, Spinner } from 'react-bootstrap';
 import {
-  getSkipboGames,
   getSkipboGamesHistory,
   getSkipboGamesPerWinnerStatistics,
   getSkipboGameStatisticsGeneral,
@@ -16,18 +15,18 @@ import ColumnStatisticCard from '../../components/ColumnStatisticCard';
 
 import styles from './SkipboOverviewPage.module.css';
 import LineChartStatisticCard from '../../components/LineChartStatisticCard';
+import { RootState } from '../../reducers';
+import { connect } from 'react-redux';
+import { getSkipboGames, isSkipboGamesLoading } from '../../selectors/skipboGamesSelectors';
+import { fetchSkipboGames } from '../../actions/skipboGameActions';
 
-function SkipboOverviewPage() {
-  const [isLoading, setLoading] = useState(true);
-  const [skipboGames, setSkipboGames] = useState([] as SkipboGame[]);
+export type Props = StateProps & DispatchProps;
 
+export function SkipboOverviewPage({ games, isLoading, fetchSkipboGames }: Props) {
   useEffect(() => {
     document.title = getPageTitle('Skip-Bo');
-    setLoading(true);
-    getSkipboGames()
-      .then((data) => setSkipboGames(data))
-      .finally(() => setLoading(false));
-  }, []);
+    fetchSkipboGames();
+  }, [fetchSkipboGames]);
 
   return (
     <div className="SkipboOverviewPage">
@@ -36,7 +35,7 @@ function SkipboOverviewPage() {
           <div className={styles.LoadingSpinner}>
             <Spinner variant="secondary" as="span" animation="border" role="status" aria-hidden="true" />
           </div>
-        ) : skipboGames.length === 0 ? (
+        ) : games.length === 0 ? (
           <Alert variant="primary">Füge ein Spiel hinzu, um Statistiken zu bekommen</Alert>
         ) : (
           <CardColumns>
@@ -68,4 +67,22 @@ function SkipboOverviewPage() {
   );
 }
 
-export default SkipboOverviewPage;
+interface StateProps {
+  games: SkipboGame[];
+  isLoading: boolean;
+}
+
+interface DispatchProps {
+  fetchSkipboGames: () => void;
+}
+
+const mapStateToProps = (state: RootState): StateProps => ({
+  games: getSkipboGames(state),
+  isLoading: isSkipboGamesLoading(state),
+});
+
+const mapDispatchToProps: DispatchProps = {
+  fetchSkipboGames,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SkipboOverviewPage);

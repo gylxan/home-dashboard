@@ -28,13 +28,13 @@ const BOARD_ICONS: { [gameName: string]: IconProp } = {
 
 export type Props = StateProps & DispatchProps;
 
-export function HomePage({ boards, loading, fetchBoards }: Props) {
+export function HomePage({ boards, isLoading, fetchBoards }: Props) {
   useEffect(() => {
     document.title = getPageTitle();
     fetchBoards();
   }, [fetchBoards]);
 
-  if (loading && boards.length === 0) {
+  if (isLoading && boards.length === 0) {
     return <Spinner animation="border" variant="primary" />;
   }
 
@@ -62,7 +62,7 @@ export function HomePage({ boards, loading, fetchBoards }: Props) {
 
 interface StateProps {
   boards: Board[];
-  loading: boolean;
+  isLoading: boolean;
 }
 
 interface DispatchProps {
@@ -71,7 +71,7 @@ interface DispatchProps {
 
 const mapStateToProps = (state: RootState): StateProps => ({
   boards: getBoards(state),
-  loading: getBoardsLoading(state),
+  isLoading: getBoardsLoading(state),
 });
 
 const mapDispatchToProps: DispatchProps = {
