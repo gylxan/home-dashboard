@@ -1,7 +1,5 @@
 import { AnyAction } from 'redux';
-
-import { Board } from '../interfaces/board';
-import { BOARDS, SKIPBO_GAMES } from '../actions/actionTypes';
+import { SKIPBO_GAMES } from '../actions/actionTypes';
 import { SkipboGame } from '../interfaces/skipboGame';
 
 export interface SkipboGamesState {
