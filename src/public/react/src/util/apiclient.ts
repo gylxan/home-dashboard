@@ -1,5 +1,4 @@
 import axios, { AxiosResponse } from 'axios';
-import { GeneralStatistic, SkipboGame } from '../interfaces/skipboGame';
 import { getAppVersion, setAppVersion } from './localStorage';
 import { Code } from './error';
 
@@ -46,40 +45,4 @@ const checkClientVersionError = (response: AxiosResponse): void => {
   }
 };
 
-export const getBoards = (): Promise<any> => client.get('boards');
-export const getSkipboGames = (): Promise<SkipboGame[]> => client.get('skipbo');
-export const addSkipboGame = (game: SkipboGame): Promise<void> => client.post('skipbo', game);
-export const getSkipboGameStatisticsGeneral = (): Promise<GeneralStatistic> =>
-  client.get('skipbo/statistics/general').then((data: any) => {
-    if (!!data.lastPlayTime) {
-      return {
-        ...data,
-        lastPlayTime: { ...data.lastPlayTime, value: new Date(data.lastPlayTime.value) },
-      };
-    }
-    return data;
-  });
-export const getSkipboGamesPerWinnerStatistics = (): Promise<{ name: string; y: number }[]> =>
-  client.get('skipbo/statistics/games-per-winner');
-
-export const getSkipboTopWinners = (): Promise<{ name: string; y: number }[]> =>
-  client.get('skipbo/statistics/games-per-winner').then((winners) => {
-    const topWinners = (winners as unknown) as { name: string; y: number }[];
-    topWinners.sort((a, b) => b.y - a.y);
-    return topWinners.splice(0, 5);
-  });
-
-export const getSkipboGamesHistory = (): Promise<{ name: string; data: number[][] }[]> =>
-  client.get('skipbo/statistics/games-history');
-
-export const getSkipboLastPlayDayGames = (): Promise<{ name: string; data: number[][] }[]> =>
-  client.get('skipbo/statistics/last-play-day');
-
-export const getSkipboGameWinners = (): Promise<string[]> => client.get('skipbo/winners');
-
-export const deleteSkipboGame = (id: string): Promise<void> => client.delete(`skipbo/${id}`);
-
-export const getLightGroups = (): Promise<any[]> => client.get(`light/groups`);
-
-export const updateLightGroup = (id: string, on: boolean): Promise<unknown[]> =>
-  client.put(`light/groups/${id}`, { on });
+export default client;
