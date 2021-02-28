@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { addSkipboGame, getSkipboGameWinners } from '../../util/apiclient';
 import { Button, Form, Spinner } from 'react-bootstrap';
 import { linkTo } from '../../util/routes';
 import { useHistory } from 'react-router-dom';
@@ -7,37 +6,38 @@ import { useHistory } from 'react-router-dom';
 import LinkButton from '../../components/LinkButton';
 import DateTimePicker from '../../components/DateTimePicker';
 
+import { getSkipboGameWinners, isSkipboGamesLoading } from '../../selectors/skipboGamesSelectors';
+import { useDispatch, useSelector } from 'react-redux';
+import { actionAddSkipboGame, actionFetchSkipboGameWinners } from '../../actions/skipboGameActions';
 import styles from './SkipboAddGamePage.module.css';
 
 const NEW_WINNER = '-1';
+
 function SkipboOverviewPage() {
   const [selectedWinner, setSelectedWinner] = useState(NEW_WINNER);
   const [insertedWinner, setInsertedWinner] = useState('');
   const [playTime, setPlayTime] = useState(new Date());
-  const [winners, setWinners] = useState([] as string[]);
-  const [isLoading, setLoading] = useState(false);
-  const [isLoadingWinners, setLoadingWinners] = useState(false);
   const history = useHistory();
+  const isLoading = useSelector(isSkipboGamesLoading);
+  const winners = useSelector(getSkipboGameWinners);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    setLoadingWinners(true);
-    getSkipboGameWinners()
-      .then((winners: string[]) => {
-        setWinners(winners);
-        winners.length >= 1 && setSelectedWinner(winners[0]);
-      })
-      .finally(() => setLoadingWinners(false));
-  }, []);
+    dispatch(actionFetchSkipboGameWinners()).then((action) => {
+      !!action.payload?.length && setSelectedWinner(action.payload[0]);
+    });
+  }, [dispatch]);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     event.stopPropagation();
-    setLoading(true);
-    addSkipboGame({
-      playTime: playTime.toISOString(),
-      winner: { name: selectedWinner === NEW_WINNER ? insertedWinner : selectedWinner },
-    }).then(() => {
-      setLoading(false);
+    dispatch(
+      actionAddSkipboGame({
+        playTime: playTime.toISOString(),
+        winner: { name: selectedWinner === NEW_WINNER ? insertedWinner : selectedWinner },
+      }),
+    ).then(() => {
       history.push(linkTo.skipbo());
     });
   };
@@ -60,7 +60,7 @@ function SkipboOverviewPage() {
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="winner">
           <Form.Label>Gewinner</Form.Label>
-          {isLoadingWinners ||
+          {isLoading ||
             (winners.length >= 1 && selectedWinner !== NEW_WINNER && (
               <Form.Control autoFocus required value={selectedWinner} as="select" onChange={handleSelectedWinnerChange}>
                 {winners.map((winner: string) => (
@@ -73,7 +73,7 @@ function SkipboOverviewPage() {
                 </option>
               </Form.Control>
             ))}
-          {(winners.length === 0 || selectedWinner === NEW_WINNER) && !isLoadingWinners && (
+          {(winners.length === 0 || selectedWinner === NEW_WINNER) && !isLoading && (
             <Form.Control
               autoFocus
               required

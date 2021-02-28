@@ -1,7 +1,8 @@
 import { AnyAction } from 'redux';
 
 import { Board } from '../interfaces/board';
-import { BOARDS } from '../actions/actionTypes';
+import ActionTypes from '../actions/actionTypes';
+import { ActionType, getType } from '../middlewares/api';
 
 export interface BoardsState {
   isLoading: boolean;
@@ -15,20 +16,20 @@ export const initialState: BoardsState = Object.freeze({
 
 const boardsReducer = (state: BoardsState = initialState, action: AnyAction): BoardsState => {
   switch (action.type) {
-    case BOARDS.FETCH_REQUEST:
+    case getType(ActionTypes.BOARDS_FETCH, ActionType.REQUEST):
       return {
         ...state,
         isLoading: true,
       };
 
-    case BOARDS.FETCH_SUCCESS:
+    case getType(ActionTypes.BOARDS_FETCH, ActionType.SUCCESS):
       return {
         ...state,
-        boards: action.payload.data,
+        boards: action.payload,
         isLoading: false,
       };
 
-    case BOARDS.FETCH_FAILURE:
+    case getType(ActionTypes.BOARDS_FETCH, ActionType.FAILURE):
       return {
         ...state,
         isLoading: false,

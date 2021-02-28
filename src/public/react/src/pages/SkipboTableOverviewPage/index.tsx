@@ -8,7 +8,7 @@ import Icon from '../../components/Icon';
 import styles from './SkipboTableOverviewPage.module.css';
 import { RootState } from '../../reducers';
 import { getSkipboGames, isSkipboGamesLoading } from '../../selectors/skipboGamesSelectors';
-import { deleteSkipboGame, fetchSkipboGames } from '../../actions/skipboGameActions';
+import { actionDeleteSkipboGame, actionFetchSkipboGames } from '../../actions/skipboGameActions';
 import { connect } from 'react-redux';
 
 export type Props = StateProps & DispatchProps;
@@ -39,7 +39,7 @@ function SkipboTableOverviewPage({ isLoading, games, fetchSkipboGames, deleteSki
           </thead>
           <tbody>
             {games.map((game, index) => (
-              <tr key={game.playTime}>
+              <tr key={game._id ?? game.playTime}>
                 <td>
                   {isLoading ? (
                     <Icon icon="circle-notch" spin />
@@ -80,8 +80,8 @@ const mapStateToProps = (state: RootState): StateProps => ({
 });
 
 const mapDispatchToProps: DispatchProps = {
-  fetchSkipboGames,
-  deleteSkipboGame,
+  fetchSkipboGames: actionFetchSkipboGames,
+  deleteSkipboGame: actionDeleteSkipboGame,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SkipboTableOverviewPage);

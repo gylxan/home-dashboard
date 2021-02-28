@@ -1,21 +1,19 @@
-import React, { useState } from 'react';
+import React from 'react';
 import * as HighCharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 
 import ReloadableCard, { Props as ReloadableCardProps } from '../ReloadableCard';
 
-import styles from './PieChartStatisticCard.module.css';
 import { DEFAULT_COLORS, getPlayerColor } from '../../util/colors';
+import { ValueStatistic } from '../../interfaces/skipboGame';
+import styles from './PieChartStatisticCard.module.css';
 
 export interface Props extends Omit<ReloadableCardProps, 'children'> {
   title: string;
+  data: ValueStatistic[];
 }
 
-const PieChartStatisticCard: React.FC<Props> = ({ title, fetchData }: Props) => {
-  const [data, setData] = useState([] as { name: string; y: number }[]);
-  const loadData = (): Promise<void> => {
-    return fetchData().then((data: { name: string; y: number }[]) => setData(data));
-  };
+const PieChartStatisticCard: React.FC<Props> = ({ title, fetchData, data }: Props) => {
   const options: HighCharts.Options = {
     chart: {
       plotShadow: false,
@@ -46,7 +44,7 @@ const PieChartStatisticCard: React.FC<Props> = ({ title, fetchData }: Props) => 
     ],
   };
   return (
-    <ReloadableCard title={title} fetchData={loadData}>
+    <ReloadableCard title={title} fetchData={fetchData}>
       {data.length >= 1 && (
         <HighchartsReact highcharts={HighCharts} options={options} containerProps={{ className: styles.Chart }} />
       )}

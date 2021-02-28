@@ -12,5 +12,13 @@ export interface GeneralStatistic {
   [attribute: string]: {
     label?: string;
     value: string | number | Date;
-  }
+  };
+}
+
+export interface ValueStatistic extends Player  {
+  y: number;
+}
+
+export interface DataStatistic extends Player  {
+  data: number[][]
 }

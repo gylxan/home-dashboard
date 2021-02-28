@@ -1,25 +1,22 @@
-import React, { useState } from 'react';
+import React from 'react';
 import * as HighCharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 
 import ReloadableCard, { Props as ReloadableCardProps } from '../ReloadableCard';
 
-import styles from './LineChartStatisticCard.module.css';
 import { getDefaultChartOptions } from '../../util/highcharts';
-import {getPlayerColor} from "../../util/colors";
+import { getPlayerColor } from '../../util/colors';
+import { DataStatistic } from '../../interfaces/skipboGame';
+
+import styles from './LineChartStatisticCard.module.css';
 
 export interface Props extends Omit<ReloadableCardProps, 'children'> {
   title: string;
   yAxisTitle: string;
+  data: DataStatistic[];
 }
 
-const LineChartStatisticCard: React.FC<Props> = ({ title, yAxisTitle, fetchData }: Props) => {
-  const [data, setData] = useState([] as { name: string; data: any[][] }[]);
-  const loadData = (): Promise<void> => {
-    return fetchData().then((data: { name: string; data: any }[]) => {
-      setData(data);
-    });
-  };
+const LineChartStatisticCard: React.FC<Props> = ({ title, yAxisTitle, fetchData, data }: Props) => {
   const options: HighCharts.Options = {
     ...getDefaultChartOptions(),
     chart: {
@@ -32,7 +29,7 @@ const LineChartStatisticCard: React.FC<Props> = ({ title, yAxisTitle, fetchData 
       title: {
         text: yAxisTitle,
       },
-      min: 1
+      min: 1,
     },
 
     xAxis: {
@@ -60,7 +57,7 @@ const LineChartStatisticCard: React.FC<Props> = ({ title, yAxisTitle, fetchData 
       ...winnerEntry,
       type: 'line',
       data: winnerEntry.data.map((dataEntry: any[]) => [new Date(dataEntry[0]).getTime(), dataEntry[1]]),
-      color: getPlayerColor(winnerEntry.name)
+      color: getPlayerColor(winnerEntry.name),
     })),
 
     responsive: {
@@ -81,7 +78,7 @@ const LineChartStatisticCard: React.FC<Props> = ({ title, yAxisTitle, fetchData 
     },
   };
   return (
-    <ReloadableCard title={title} fetchData={loadData}>
+    <ReloadableCard title={title} fetchData={fetchData}>
       {data.length >= 1 && (
         <HighchartsReact highcharts={HighCharts} options={options} containerProps={{ className: styles.Chart }} />
       )}

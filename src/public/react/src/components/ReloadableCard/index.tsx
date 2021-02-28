@@ -8,7 +8,7 @@ interface State {
 }
 export interface Props {
   title: string;
-  fetchData: () => Promise<any[] | any>;
+  fetchData: () => Promise<any>;
   children: React.ReactNode;
 }
 const INTERVAL = 10000;

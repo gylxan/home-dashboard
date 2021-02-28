@@ -1,46 +1,63 @@
-import { AnyAction } from 'redux';
-import { ThunkAction, ThunkDispatch } from 'redux-thunk';
-
-import { SKIPBO_GAMES } from './actionTypes';
-import { getSkipboGames, deleteSkipboGame as removeSkipboGame } from '../util/apiclient';
-import { RootState } from '../reducers';
+import ActionTypes from './actionTypes';
+import { createThunkAction } from './helpers';
+import { ApiMethod } from '../middlewares/api';
 import { SkipboGame } from '../interfaces/skipboGame';
 
-export const fetchSkipboGamesRequest = (): AnyAction => ({ type: SKIPBO_GAMES.FETCH_REQUEST });
+export const actionFetchSkipboGames = () =>
+  createThunkAction({
+    type: ActionTypes.SKIPBO_GAMES_FETCH,
+    method: ApiMethod.GET,
+    url: 'skipbo',
+  });
 
-export const fetchSkipboGamesSuccess = (games: SkipboGame[]): AnyAction => ({
-  type: SKIPBO_GAMES.FETCH_SUCCESS,
-  payload: { data: games },
-});
+export function actionAddSkipboGame(game: SkipboGame) {
+  return createThunkAction({
+    type: ActionTypes.SKIPBO_GAMES_ADD,
+    method: ApiMethod.POST,
+    url: `skipbo`,
+    payload: game,
+  });
+}
 
-export const fetchSkipboGamesFailure = (): AnyAction => ({ type: SKIPBO_GAMES.FETCH_FAILURE });
+export const actionDeleteSkipboGame = (gameId: string) =>
+  createThunkAction({
+    type: ActionTypes.SKIPBO_GAMES_DELETE,
+    method: ApiMethod.DELETE,
+    url: `skipbo/${gameId}`,
+    payload: { gameId },
+  });
 
-export const fetchSkipboGames = (): ThunkAction<Promise<void>, RootState, unknown, AnyAction> => {
-  return async (dispatch: ThunkDispatch<RootState, unknown, AnyAction>): Promise<void> => {
-    dispatch(fetchSkipboGamesRequest());
-    try {
-      dispatch(fetchSkipboGamesSuccess(await getSkipboGames()));
-    } catch (e) {
-      dispatch(fetchSkipboGamesFailure());
-    }
-  };
-};
+export const actionFetchSkipboGameWinners = () =>
+  createThunkAction({
+    type: ActionTypes.SKIPBO_GAMES_WINNERS_FETCH,
+    method: ApiMethod.GET,
+    url: 'skipbo/winners',
+  });
 
-export const deleteSkipboGameRequest = (): AnyAction => ({ type: SKIPBO_GAMES.DELETE_REQUEST });
+export const actionFetchSkipboGameStatisticsGeneral = () =>
+  createThunkAction({
+    type: ActionTypes.SKIPBO_STATISTICS_GENERAL_FETCH,
+    method: ApiMethod.GET,
+    url: 'skipbo/statistics/general',
+  });
 
-export const deleteSkipboGameSuccess = (): AnyAction => ({ type: SKIPBO_GAMES.DELETE_SUCCESS });
+export const actionFetchSkipboGamesPerWinnerStatistics = () =>
+  createThunkAction({
+    type: ActionTypes.SKIPBO_STATISTICS_GAMES_PER_WINNER_FETCH,
+    method: ApiMethod.GET,
+    url: 'skipbo/statistics/games-per-winner',
+  });
 
-export const deleteSkipboGameFailure = (): AnyAction => ({ type: SKIPBO_GAMES.DELETE_FAILURE });
+export const actionFetchSkipboGamesHistory = () =>
+  createThunkAction({
+    type: ActionTypes.SKIPBO_STATISTICS_GAMES_HISTORY_FETCH,
+    method: ApiMethod.GET,
+    url: 'skipbo/statistics/games-history',
+  });
 
-export const deleteSkipboGame = (id: string): ThunkAction<Promise<void>, RootState, unknown, AnyAction> => {
-  return async (dispatch: ThunkDispatch<RootState, unknown, AnyAction>): Promise<void> => {
-    dispatch(deleteSkipboGameRequest());
-    try {
-      await removeSkipboGame(id);
-      await dispatch(fetchSkipboGames());
-      dispatch(deleteSkipboGameSuccess());
-    } catch (e) {
-      dispatch(deleteSkipboGameFailure());
-    }
-  };
-};
+export const actionFetchSkipboLastPlayDayGames = () =>
+  createThunkAction({
+    type: ActionTypes.SKIPBO_STATISTICS_LAST_PLAY_DAY_GAMES_FETCH,
+    method: ApiMethod.GET,
+    url: 'skipbo/statistics/last-play-day',
+  });

@@ -11,7 +11,7 @@ import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 import { RootState } from '../../reducers';
 import { connect } from 'react-redux';
-import { fetchBoards } from '../../actions/boardActions';
+import { actionFetchBoards } from '../../actions/boardActions';
 
 import styles from './HomePage.module.css';
 import { getBoards, getBoardsLoading } from '../../selectors/boardSelectors';
@@ -75,7 +75,7 @@ const mapStateToProps = (state: RootState): StateProps => ({
 });
 
 const mapDispatchToProps: DispatchProps = {
-  fetchBoards,
+  fetchBoards: actionFetchBoards,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomePage);

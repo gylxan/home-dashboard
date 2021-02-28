@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import ReloadableCard, { Props as ReloadableStatisticCardProps } from '../ReloadableCard';
 import { Table } from 'react-bootstrap';
 import { GeneralStatistic } from '../../interfaces/skipboGame';
@@ -6,19 +6,16 @@ import { getFormattedDate } from '../../util/date';
 
 //import styles from './GeneralStatisticCard.module.css';
 
-export type Props = Omit<ReloadableStatisticCardProps, 'children'>;
+export interface Props extends Omit<ReloadableStatisticCardProps, 'children'> {
+  data: GeneralStatistic | undefined;
+}
 
-const GeneralStatisticCard: React.FC<Props> = ({ title, fetchData }: Props) => {
-  const [data, setData] = useState({});
-  const loadData = (): Promise<void> => {
-    return fetchData().then((data: GeneralStatistic | any[]) => setData(data));
-  };
-
+const GeneralStatisticCard: React.FC<Props> = ({ title, fetchData, data }: Props) => {
   const getFormattedValue = (value: string | number | Date): string | number =>
     value instanceof Date ? getFormattedDate(value) : value;
 
   return (
-    <ReloadableCard title={title} fetchData={loadData}>
+    <ReloadableCard title={title} fetchData={fetchData}>
       {!data ? null : Array.isArray(data) ? null : (
         <Table responsive>
           <tbody>

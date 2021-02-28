@@ -1,23 +1,22 @@
-import React, { useState } from 'react';
+import React from 'react';
 import * as HighCharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 
 import ReloadableCard, { Props as ReloadableCardProps } from '../ReloadableCard';
 
-import styles from './ColumnStatisticCard.module.css';
 import { getPlayerColor } from '../../util/colors';
+import { ValueStatistic } from '../../interfaces/skipboGame';
+
+import styles from './ColumnStatisticCard.module.css';
 
 export interface Props extends Omit<ReloadableCardProps, 'children'> {
+  data: ValueStatistic[];
   title: string;
   yAxisTitle: string;
   seriesName: string;
 }
 
-const ColumnStatisticCard: React.FC<Props> = ({ title, yAxisTitle, fetchData }: Props) => {
-  const [data, setData] = useState([] as { name: string; y: number }[]);
-
-  const loadData = async (): Promise<void> => setData(await fetchData());
-
+const ColumnStatisticCard: React.FC<Props> = ({ title, yAxisTitle, fetchData, data }: Props) => {
   const options: HighCharts.Options = {
     chart: {
       type: 'column',
@@ -53,7 +52,7 @@ const ColumnStatisticCard: React.FC<Props> = ({ title, yAxisTitle, fetchData }: 
     ],
   };
   return (
-    <ReloadableCard title={title} fetchData={loadData}>
+    <ReloadableCard title={title} fetchData={fetchData}>
       {data.length >= 1 && (
         <HighchartsReact highcharts={HighCharts} options={options} containerProps={{ className: styles.Chart }} />
       )}
