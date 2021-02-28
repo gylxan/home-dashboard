@@ -4,6 +4,7 @@ import * as path from 'path';
 import * as bodyParser from 'body-parser';
 import { Error } from './interfaces/error';
 import { isProductionEnvironment } from './helpers/environment';
+import { NextFunction } from 'express';
 
 class Server {
   private app: express.Application;
@@ -33,7 +34,13 @@ class Server {
   }
 
   private initializeErrorHandling(): void {
-    this.app.use(function errorMiddleware(error: Error, request: express.Request, response: express.Response) {
+    this.app.use(function errorMiddleware(
+      error: Error,
+      request: express.Request,
+      response: express.Response,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      next: NextFunction,
+    ) {
       const status = error.status || 500;
       const message = error.message || 'Something went wrong';
       response.status(status).send({
