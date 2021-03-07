@@ -1,6 +1,14 @@
+import { Response } from 'express-serve-static-core';
+
 export enum Code {
   InvalidClientVersion = 'invalidClientVersion',
   HueBridgeNotConnected = 'hueBridgeNotConnected',
+  MissingUsername = 'missingUsername',
+  MissingPassword = 'missingPassword',
+  UsernameAlreadyExists = 'usernameAlreadyExists',
+  InvalidCredentials = 'invalidCredentials',
+  Unauthorized = 'unauthorized',
+  MissingToken = 'missingToken',
 }
 
 export interface Error {
@@ -14,3 +22,6 @@ export const createError = (code: Code, message: string): { error: Error } => ({
     message,
   },
 });
+
+export const createApiError = (res: Response, responseCode: number, errorCode: Code, message: string): Response =>
+  res.status(responseCode).send(createError(errorCode, message ?? ''));

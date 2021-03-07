@@ -19,15 +19,19 @@
     "prettify": "prettier --write 'src/public/react/src/**/*.{js,css,json,ts,tsx}' 'src/**/!(public)/*.{js,css,json,ts,tsx}'"
   },
   "dependencies": {
-    "dotenv": "^8.2.0",
-    "node-hue-api": "^4.0.10",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
     "minimist": "^1.2.5",
-    "nedb": "^1.8.0"
+    "nedb": "^1.8.0",
+    "node-hue-api": "^4.0.10"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.2",
     "@types/express": "^4.17.9",
+    "@types/jsonwebtoken": "^8.5.0",
     "@types/minimist": "^1.2.1",
     "@types/nedb": "^1.8.11",
     "@types/node": "^14.14.16",

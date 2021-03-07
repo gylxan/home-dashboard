@@ -10,6 +10,8 @@ const routes: Routes = {
   skipboTable: '/skipbo/table',
   entscheidomat: '/entscheidomat',
   light: '/light',
+  login: '/login',
+  admin: '/admin',
 };
 
 interface LinkTo {
@@ -25,6 +27,8 @@ export const linkTo: LinkTo = {
   skipboTable: (): string => routes.skipboTable,
   entscheidomat: (): string => routes.entscheidomat,
   light: (): string => routes.light,
+  login: (): string => routes.login,
+  admin: (): string => routes.admin,
 };
 
 export const MAIN_TITLE = 'Home Dashboard';

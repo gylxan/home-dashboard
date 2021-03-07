@@ -2,6 +2,7 @@ import { Router } from 'express';
 const router = Router();
 import * as DataStore from 'nedb';
 import { SkipboGame } from '../interfaces/skipbo';
+import { verifyToken } from '../middlewares/auth';
 export const db = new DataStore({ filename: './db/games.db', autoload: true });
 
 export const ROUTE = '/skipbo';
@@ -15,7 +16,7 @@ router
         res.send(docs);
       });
   })
-  .post((req, res) => {
+  .post(verifyToken, (req, res) => {
     db.insert({ playTime: req.body.playTime, winner: req.body.winner }, function (error: unknown, docs: SkipboGame) {
       res.send(docs);
     });
@@ -43,8 +44,8 @@ router
 // Root with name identifier
 router
   .route('/:id')
-  // Delte one by id
-  .delete((req, res) => {
+  // Delete one by id
+  .delete(verifyToken, (req, res) => {
     db.remove({ _id: req.params.id }, (error: unknown, removedItems) => {
       console.log(`Removed ${removedItems} skipbo game(s) for id ${req.params.id}`);
       res.send();

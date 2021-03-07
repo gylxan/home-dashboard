@@ -1,4 +1,5 @@
 import { ApiMethod } from '../middlewares/api';
+import { Dispatch } from 'redux';
 
 export interface ReduxLocalAction<D = any, A = any> {
   type: string;
@@ -20,6 +21,6 @@ export interface ReduxThunkAction<D = any, A = any> {
   };
 }
 
-//export type ReduxDispatchAction = (dispatch: Dispatch) => void;
+export type ReduxDispatchAction = (dispatch: Dispatch) => void;
 
 export type ReduxAction<D = any, A = any> = ReduxLocalAction<D> | ReduxThunkAction<D, A>;

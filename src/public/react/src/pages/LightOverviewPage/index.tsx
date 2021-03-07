@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getLightGroupsByType, isLightsLoading } from '../../selectors/lightsSelectors';
 import { actionFetchLightGroups, actionUpdateLightGroup } from '../../actions/lightActions';
 import styles from './LightOverViewPage.module.css';
+import {withAuth} from "../../hocs/withAuth";
 
 const GroupClassIconMapping: Record<string, IconProp> = {
   Kitchen: 'coffee',
@@ -89,4 +90,4 @@ function LightOverviewPage() {
   );
 }
 
-export default LightOverviewPage;
+export default withAuth(LightOverviewPage);

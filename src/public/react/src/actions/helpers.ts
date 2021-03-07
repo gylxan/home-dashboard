@@ -1,4 +1,4 @@
-import {ReduxAction, ReduxLocalAction, ReduxThunkAction} from "../interfaces/store";
+import {ReduxAction, ReduxDispatchAction, ReduxLocalAction, ReduxThunkAction} from "../interfaces/store";
 
 
 export interface IApiResponse {
@@ -17,6 +17,6 @@ export const createLocalAction = <P = any>(action: ReduxLocalAction<P>) => {
   return action;
 };
 
-// export const createDispatchAction = (action: IDispatchAction) => {
-//   return action;
-// };
+export const createDispatchAction = (action: ReduxDispatchAction) => {
+  return action;
+};

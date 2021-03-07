@@ -1,6 +1,7 @@
 import { ReduxAction, ReduxThunkAction } from '../interfaces/store';
-import { Middleware } from 'redux';
+import { Middleware, MiddlewareAPI } from 'redux';
 import apiclient from '../util/apiclient';
+import { getAuthUser } from '../selectors/authSelectors';
 
 export enum ApiMethod {
   GET = 'get',
@@ -31,18 +32,27 @@ export const getType = (action: string | null, actionType: ActionType): string =
   return `${action}_${actionType}`;
 };
 
-export const api: Middleware = (_) => (next) => async (action: ReduxAction) => {
+const getDefaultHeaders = (store: MiddlewareAPI) => {
+  const user = getAuthUser(store.getState());
+  if (!!user && !!user.accessToken) {
+    return { Authorization: `Bearer ${user.accessToken}` };
+  }
+  return {};
+};
+
+export const api: Middleware = (store) => (next) => async (action: ReduxAction) => {
   if (!isThunkAction(action)) {
     return next(action);
   }
 
   const { type, url = '', method = ApiMethod.GET, payload = {} } = action as ReduxThunkAction;
   next({ type: getType(type, ActionType.REQUEST) });
+
   try {
-    const response = await apiclient.request({ url, method, data: payload });
+    const response = await apiclient.request({ url, method, headers: { ...getDefaultHeaders(store) }, data: payload });
 
     return next({ type: getType(type, ActionType.SUCCESS), payload: response });
   } catch (error) {
-    return next({ type: getType(type, ActionType.FAILURE) });
+    return next({ type: getType(type, ActionType.FAILURE), payload: error.response?.data ?? {} });
   }
 };

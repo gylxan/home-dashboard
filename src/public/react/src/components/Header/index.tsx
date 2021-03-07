@@ -6,6 +6,10 @@ import logo from '../../assets/icons/logo.png';
 
 import styles from './Header.module.css';
 import LinkButton from '../LinkButton';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAuthUser } from '../../selectors/authSelectors';
+import Icon from '../Icon';
+import { actionLogout } from '../../actions/loginActions';
 
 export interface Props {}
 
@@ -14,6 +18,8 @@ const Header: React.FC<Props> = () => {
   const location = useLocation();
   const isSkipboPage = location.pathname === routes.skipbo;
   const isSkipboTablePage = location.pathname === routes.skipboTable;
+  const user = useSelector(getAuthUser);
+  const dispatch = useDispatch();
 
   const collapse = (): void => setExpanded(false);
   const toggle = (): void => setExpanded(!isExpanded);
@@ -32,6 +38,12 @@ const Header: React.FC<Props> = () => {
           <img className={styles.Logo} src={logo} alt="logo" />
         </Link>
       </Navbar.Brand>
+
+      {!!user && (
+        <Nav className="mr-auto">
+          <Icon icon={'user'} className={styles.UserIcon} clickable onClick={() => dispatch(actionLogout())} />
+        </Nav>
+      )}
 
       {(isSkipboPage || isSkipboTablePage) && (
         <>

@@ -10,6 +10,7 @@ import { getSkipboGameWinners, isSkipboGamesLoading } from '../../selectors/skip
 import { useDispatch, useSelector } from 'react-redux';
 import { actionAddSkipboGame, actionFetchSkipboGameWinners } from '../../actions/skipboGameActions';
 import styles from './SkipboAddGamePage.module.css';
+import { withAuth } from '../../hocs/withAuth';
 
 const NEW_WINNER = '-1';
 
@@ -37,8 +38,10 @@ function SkipboOverviewPage() {
         playTime: playTime.toISOString(),
         winner: { name: selectedWinner === NEW_WINNER ? insertedWinner : selectedWinner },
       }),
-    ).then(() => {
-      history.push(linkTo.skipbo());
+    ).then((action) => {
+      if (!action.payload.error) {
+        history.push(linkTo.skipbo());
+      }
     });
   };
 
@@ -109,4 +112,4 @@ function SkipboOverviewPage() {
   );
 }
 
-export default SkipboOverviewPage;
+export default withAuth(SkipboOverviewPage);

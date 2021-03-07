@@ -12,14 +12,14 @@ import EntscheidomatPage from './pages/EntscheidomatPage';
 import Header from './components/Header';
 import SkipboTableOverviewPage from './pages/SkipboTableOverviewPage';
 import LightOverviewPage from 'pages/LightOverviewPage';
+import LoginPage from "./pages/LoginPage";
+import AdminOverviewPage from "./pages/AdminOverviewPage";
 
 import styles from './App.module.css';
 
 library.add(fas, far);
 // TODO
-// Rename routes to controllers
 // 3. Save location of game
-// 4. Redux to save things and reload in background
 // 4. New Tile to control lights at home via hue
 // 5. New Tile to play spotify
 // 6. New Tile with calender entries of shared calender
@@ -48,6 +48,12 @@ function App() {
           </Route>
           <Route path={routes.light}>
             <LightOverviewPage />
+          </Route>
+          <Route path={routes.login}>
+            <LoginPage />
+          </Route>
+          <Route path={routes.admin}>
+            <AdminOverviewPage />
           </Route>
           <Route path={routes.home}>
             <HomePage />

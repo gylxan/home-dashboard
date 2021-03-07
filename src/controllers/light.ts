@@ -5,6 +5,8 @@ import { Code, createError } from '../helpers/error';
 import { Response } from 'express-serve-static-core';
 import { Router } from 'express';
 import { GroupLightState } from 'node-hue-api/lib/model/lightstate';
+import { verifyToken } from '../middlewares/auth';
+import {getEnvVar} from "../helpers/environment";
 
 const router = Router();
 export const ROUTE = '/light';
@@ -14,9 +16,9 @@ let error: undefined | string;
 
 discoverBridge().then((ipAddress) => {
   if (ipAddress) {
-    connect(ipAddress, process.env.HUE_USER ?? undefined)
+    connect(ipAddress, getEnvVar('HUE_USER') ?? undefined)
       .then((api) => {
-        console.log(`Connection to Hue Bridge ${ipAddress} established with ${process.env.HUE_USER}`);
+        console.log(`Connection to Hue Bridge ${ipAddress} established with ${getEnvVar('HUE_USER')}`);
         hueApi = api;
       })
       .catch((e) => {
@@ -37,13 +39,13 @@ const checkBridgeConnection = (res: Response): boolean => {
 
 const getLightGroups = (): Promise<unknown[]> => hueApi?.groups.getAll() ?? Promise.resolve([]);
 
-router.route('/groups').get(async (req, res) => {
+router.route('/groups').get(verifyToken, async (req, res) => {
   if (checkBridgeConnection(res)) {
     res.send(await getLightGroups());
   }
 });
 
-router.route('/groups/:id').put(async (req, res) => {
+router.route('/groups/:id').put(verifyToken, async (req, res) => {
   if (checkBridgeConnection(res)) {
     const requestedId = req.params.id;
     const { on = true } = req.body;
