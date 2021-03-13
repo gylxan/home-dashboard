@@ -1,28 +1,48 @@
 import React, { useState } from 'react';
-import { Nav, Navbar } from 'react-bootstrap';
+import { Dropdown, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import routes, { linkTo } from 'util/routes';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 import logo from '../../assets/icons/logo.png';
 
-import styles from './Header.module.css';
 import LinkButton from '../LinkButton';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAuthUser } from '../../selectors/authSelectors';
 import Icon from '../Icon';
 import { actionLogout } from '../../actions/loginActions';
+import classNames from 'classnames';
 
-export interface Props {}
+import styles from './Header.module.css';
 
-const Header: React.FC<Props> = () => {
+const Header: React.FC = () => {
   const [isExpanded, setExpanded] = useState(false);
   const location = useLocation();
   const isSkipboPage = location.pathname === routes.skipbo;
   const isSkipboTablePage = location.pathname === routes.skipboTable;
+  const isSubPageActionAvailable = isSkipboPage || isSkipboTablePage;
   const user = useSelector(getAuthUser);
   const dispatch = useDispatch();
+  const history = useHistory();
 
-  const collapse = (): void => setExpanded(false);
+  const collapse = (callback?: () => void): void => {
+    setExpanded(false);
+    callback?.();
+  };
   const toggle = (): void => setExpanded(!isExpanded);
+
+  const renderUserMenu = () => {
+    if (!user) {
+      return;
+    }
+    return (
+      <Nav className={classNames({ 'ml-auto': !isSubPageActionAvailable })}>
+        <NavDropdown title={<Icon icon={'user'} className={styles.UserIcon} />} id="user-nav-dropdown" alignRight>
+          <NavDropdown.Item onClick={() => collapse(() => history.push(linkTo.user()))}>Profil</NavDropdown.Item>
+          <NavDropdown.Divider />
+          <NavDropdown.Item onClick={() => collapse(() => dispatch(actionLogout()))}>Logout</NavDropdown.Item>
+        </NavDropdown>
+      </Nav>
+    );
+  };
 
   return (
     <Navbar
@@ -30,7 +50,7 @@ const Header: React.FC<Props> = () => {
       expand="lg"
       className={styles.Header}
       expanded={isExpanded}
-      onSelect={collapse}
+      onSelect={() => collapse()}
       onToggle={toggle}
     >
       <Navbar.Brand>
@@ -39,36 +59,37 @@ const Header: React.FC<Props> = () => {
         </Link>
       </Navbar.Brand>
 
-      {!!user && (
-        <Nav className="mr-auto">
-          <Icon icon={'user'} className={styles.UserIcon} clickable onClick={() => dispatch(actionLogout())} />
-        </Nav>
-      )}
-
-      {(isSkipboPage || isSkipboTablePage) && (
-        <>
-          <Navbar.Toggle aria-controls="skipbo-navbar-nav" />
-          <Navbar.Collapse id="skipbo-navbar-nav">
+      <Navbar.Toggle aria-controls="navbar-nav" />
+      <Navbar.Collapse id="navbar-nav" className={'ml-auto'}>
+        {isSubPageActionAvailable && (
+          <>
             <Nav>
               {isSkipboTablePage && (
-                <Link className="nav-link" to={linkTo.skipbo()} onClick={collapse}>
+                <Link className="nav-link" to={linkTo.skipbo()} onClick={() => collapse()}>
                   Grafikübersicht
                 </Link>
               )}
               {isSkipboPage && (
-                <Link className="nav-link" to={linkTo.skipboTable()} onClick={collapse}>
+                <Link className="nav-link" to={linkTo.skipboTable()} onClick={() => collapse()}>
                   Tabellenübersicht
                 </Link>
               )}
             </Nav>
             <Nav className="ml-auto">
-              <LinkButton to={linkTo.skipboAddGame()} variant="outline-primary" type="button" onClick={collapse}>
+              <LinkButton
+                to={linkTo.skipboAddGame()}
+                variant="outline-primary"
+                type="button"
+                onClick={() => collapse()}
+              >
                 Spiel hinzufügen
               </LinkButton>
             </Nav>
-          </Navbar.Collapse>
-        </>
-      )}
+          </>
+        )}
+        {isSubPageActionAvailable && !!user && <Dropdown.Divider />}
+        {renderUserMenu()}
+      </Navbar.Collapse>
     </Navbar>
   );
 };
