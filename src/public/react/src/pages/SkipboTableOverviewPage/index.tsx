@@ -9,11 +9,14 @@ import styles from './SkipboTableOverviewPage.module.css';
 import { RootState } from '../../reducers';
 import { getSkipboGames, isSkipboGamesLoading } from '../../selectors/skipboGamesSelectors';
 import { actionDeleteSkipboGame, actionFetchSkipboGames } from '../../actions/skipboGameActions';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
+import { getAuthUser } from '../../selectors/authSelectors';
 
 export type Props = StateProps & DispatchProps;
 
 function SkipboTableOverviewPage({ isLoading, games, fetchSkipboGames, deleteSkipboGame }: Props) {
+  const user = useSelector(getAuthUser);
+
   useEffect(() => {
     document.title = getPageTitle('Skip-Bo');
     fetchSkipboGames();
@@ -44,12 +47,14 @@ function SkipboTableOverviewPage({ isLoading, games, fetchSkipboGames, deleteSki
                   {isLoading ? (
                     <Icon icon="circle-notch" spin />
                   ) : (
-                    <Dropdown>
-                      <Dropdown.Toggle as={Icon} icon="ellipsis-v" clickable />
-                      <Dropdown.Menu>
-                        <Dropdown.Item onClick={() => deleteSkipboGame(game._id as string)}>Löschen</Dropdown.Item>
-                      </Dropdown.Menu>
-                    </Dropdown>
+                    !!user && (
+                      <Dropdown>
+                        <Dropdown.Toggle as={Icon} icon="ellipsis-v" clickable />
+                        <Dropdown.Menu>
+                          <Dropdown.Item onClick={() => deleteSkipboGame(game._id as string)}>Löschen</Dropdown.Item>
+                        </Dropdown.Menu>
+                      </Dropdown>
+                    )
                   )}
                 </td>
                 <td>{games.length - index}</td>
