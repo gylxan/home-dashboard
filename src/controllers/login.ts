@@ -6,9 +6,9 @@ import { checkDuplicateUser, checkPasswordSent, checkUserSent } from '../middlew
 import { hashSync, compareSync } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 import { preset } from '../presets/userPresets';
-import {getEnvVar} from "../helpers/environment";
+import { getEnvVar } from '../helpers/environment';
 
-export const db = new DataStore({ filename: './db/users.db', autoload: true });
+export const db = new DataStore({ filename: getEnvVar('DB_DIR') + '/users.db', autoload: true });
 
 // Insert default users if empty
 preset(db);

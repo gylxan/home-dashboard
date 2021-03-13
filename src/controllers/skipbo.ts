@@ -1,9 +1,11 @@
 import { Router } from 'express';
-const router = Router();
 import * as DataStore from 'nedb';
 import { SkipboGame } from '../interfaces/skipbo';
 import { verifyToken } from '../middlewares/auth';
-export const db = new DataStore({ filename: './db/games.db', autoload: true });
+import { getEnvVar } from '../helpers/environment';
+
+const router = Router();
+export const db = new DataStore({ filename: getEnvVar('DB_DIR') + '/games.db', autoload: true });
 
 export const ROUTE = '/skipbo';
 // Root without parameter
