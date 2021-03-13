@@ -53,6 +53,7 @@ const LoginPage: React.FC<Props> = ({ redirect = true }) => {
             onChange={(e) => setUsername(e.currentTarget.value)}
             disabled={isAuthenticating}
             autoFocus
+            autoComplete="username"
           />
           {!!error && <Form.Control.Feedback type="invalid">{error.message}</Form.Control.Feedback>}
         </Form.Group>
@@ -65,6 +66,7 @@ const LoginPage: React.FC<Props> = ({ redirect = true }) => {
             value={password}
             onChange={(e) => setPassword(e.currentTarget.value)}
             disabled={isAuthenticating}
+            autoComplete="password"
           />
         </Form.Group>
         <Button type="submit" variant="primary" block disabled={isAuthenticating}>
