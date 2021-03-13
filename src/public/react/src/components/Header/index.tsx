@@ -30,16 +30,21 @@ const Header: React.FC = () => {
   const toggle = (): void => setExpanded(!isExpanded);
 
   const renderUserMenu = () => {
-    if (!user) {
-      return;
-    }
     return (
       <Nav className={classNames({ 'ml-auto': !isSubPageActionAvailable })}>
-        <NavDropdown title={<Icon icon={'user'} className={styles.UserIcon} />} id="user-nav-dropdown" alignRight>
-          <NavDropdown.Item onClick={() => collapse(() => history.push(linkTo.user()))}>Profil</NavDropdown.Item>
-          <NavDropdown.Divider />
-          <NavDropdown.Item onClick={() => collapse(() => dispatch(actionLogout()))}>Logout</NavDropdown.Item>
-        </NavDropdown>
+        {!user ? (
+          <Link className="nav-link" to={linkTo.login()} onClick={() => collapse()}>
+            Login
+          </Link>
+        ) : (
+          <>
+            <NavDropdown title={<Icon icon={'user'} className={styles.UserIcon} />} id="user-nav-dropdown" alignRight>
+              <NavDropdown.Item onClick={() => collapse(() => history.push(linkTo.user()))}>Profil</NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item onClick={() => collapse(() => dispatch(actionLogout()))}>Logout</NavDropdown.Item>
+            </NavDropdown>
+          </>
+        )}
       </Nav>
     );
   };
