@@ -1,9 +1,13 @@
-import Server from './Server';
 import * as minimist from 'minimist';
 import { config } from 'dotenv';
-import {getEnvVar, getNonFilledRequiredEnvVars} from "./helpers/environment";
+import * as path from 'path';
+const argv = minimist(process.argv.slice(2));
+// Load .env file before importing server and other things
+config({ path: argv.config_path || path.resolve(process.cwd(), '.env') });
 
-config();
+import Server from './Server';
+import { getEnvVar, getNonFilledRequiredEnvVars } from './helpers/environment';
+
 const nonFilledRequiredEnvVars = getNonFilledRequiredEnvVars();
 if (getNonFilledRequiredEnvVars().length >= 1) {
   console.error(
@@ -12,7 +16,6 @@ if (getNonFilledRequiredEnvVars().length >= 1) {
   process.exit(1);
 }
 
-const argv = minimist(process.argv.slice(2));
 // // Check whether host is set via cli arguments or environment
 const host = argv.host || getEnvVar('HOST') || '0.0.0.0';
 // Check whether port is set via cli arguments or environment
