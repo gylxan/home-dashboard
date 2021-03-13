@@ -19,6 +19,7 @@ export const initialState: AuthState = Object.freeze({
 const authReducer = (state: AuthState = initialState, action: AnyAction): AuthState => {
   switch (action.type) {
     case getType(ActionTypes.LOGIN, ActionType.REQUEST):
+    case getType(ActionTypes.USER_UPDATE, ActionType.REQUEST):
       return {
         ...state,
         error: initialState.error,
@@ -33,7 +34,18 @@ const authReducer = (state: AuthState = initialState, action: AnyAction): AuthSt
         isLoading: false,
       };
 
+    case getType(ActionTypes.USER_UPDATE, ActionType.SUCCESS):
+    return {
+      ...state,
+      user: {
+        ...state.user,
+        ...action.payload,
+      },
+      isLoading: false
+    }
+
     case getType(ActionTypes.LOGIN, ActionType.FAILURE):
+    case getType(ActionTypes.USER_UPDATE, ActionType.FAILURE):
       return {
         ...state,
         error: action.payload.error,

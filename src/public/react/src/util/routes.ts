@@ -11,7 +11,7 @@ const routes: Routes = {
   entscheidomat: '/entscheidomat',
   light: '/light',
   login: '/login',
-  admin: '/admin',
+  user: '/user',
 };
 
 interface LinkTo {
@@ -28,7 +28,7 @@ export const linkTo: LinkTo = {
   entscheidomat: (): string => routes.entscheidomat,
   light: (): string => routes.light,
   login: (): string => routes.login,
-  admin: (): string => routes.admin,
+  user: (): string => routes.user,
 };
 
 export const MAIN_TITLE = 'Home Dashboard';
