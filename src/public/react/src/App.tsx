@@ -13,7 +13,7 @@ import Header from './components/Header';
 import SkipboTableOverviewPage from './pages/SkipboTableOverviewPage';
 import LightOverviewPage from 'pages/LightOverviewPage';
 import LoginPage from "./pages/LoginPage";
-import AdminOverviewPage from "./pages/AdminOverviewPage";
+import UserProfilePage from "./pages/UserProfilePage";
 
 import styles from './App.module.css';
 
@@ -24,7 +24,6 @@ library.add(fas, far);
 // 5. New Tile to play spotify
 // 6. New Tile with calender entries of shared calender
 // 7. ToDo List
-// 8. Login
 
 function App() {
   return (
@@ -52,8 +51,8 @@ function App() {
           <Route path={routes.login}>
             <LoginPage />
           </Route>
-          <Route path={routes.admin}>
-            <AdminOverviewPage />
+          <Route path={routes.user}>
+            <UserProfilePage />
           </Route>
           <Route path={routes.home}>
             <HomePage />
