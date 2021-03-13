@@ -9,6 +9,7 @@ export enum Code {
   InvalidCredentials = 'invalidCredentials',
   Unauthorized = 'unauthorized',
   MissingToken = 'missingToken',
+  Forbidden = 'forbidden',
 }
 
 export interface Error {
