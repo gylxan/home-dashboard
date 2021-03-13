@@ -4,6 +4,7 @@ import skipboRoutes, { ROUTE as SKIPBO_ROUTE } from './skipbo';
 import skipboStatisticRoutes, { ROUTE as SKIPBO_STATISTIC_ROUTE } from './skipboStatistics';
 import lightRoutes, { ROUTE as LIGHT_ROUTE } from './light';
 import loginRoutes, { ROUTE as LOGIN_ROUTE } from './login';
+import userRoutes, { ROUTE as USER_ROUTE } from './users';
 import { Code, createError } from '../helpers/error';
 import { isProductionEnvironment } from '../helpers/environment';
 import * as path from 'path';
@@ -55,5 +56,6 @@ router.use(SKIPBO_ROUTE, skipboRoutes);
 router.use(SKIPBO_STATISTIC_ROUTE, skipboStatisticRoutes);
 router.use(LIGHT_ROUTE, lightRoutes);
 router.use(LOGIN_ROUTE, loginRoutes);
+router.use(USER_ROUTE, userRoutes);
 
 export default router;
