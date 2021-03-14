@@ -83,7 +83,8 @@ const Header: React.FC = () => {
             <Nav className="ml-auto">
               <LinkButton
                 to={linkTo.skipboAddGame()}
-                variant="outline-primary"
+                color="primary"
+                variant="outlined"
                 type="button"
                 onClick={() => collapse()}
               >

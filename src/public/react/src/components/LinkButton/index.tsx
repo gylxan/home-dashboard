@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Button, ButtonProps } from 'react-bootstrap';
+import Button, { Props as ButtonProps } from '../Button';
 
 export interface Props extends ButtonProps {
   to: string;
