@@ -1,20 +1,23 @@
-import React, { FormEvent, useEffect, useRef, useState } from 'react';
-import { Button, Form } from 'react-bootstrap';
+import React, { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react';
 
-import styles from './LoginPage.module.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { actionLogin, actionLogout } from '../../actions/loginActions';
 import { getAuthError, isAuthLoading } from '../../selectors/authSelectors';
 import { useHistory } from 'react-router-dom';
 import { setUser } from '../../util/localStorage';
+import Page from '../../components/Page';
+import Typography from '../../components/Typography';
+import TextField from '../../components/TextField';
+import Button from '../../components/Button';
+
+import styles from './LoginPage.module.css';
 
 export interface Props {
   redirect?: boolean;
 }
 
 const LoginPage: React.FC<Props> = ({ redirect = true }) => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [credentials, setCredentials] = useState({ username: '', password: '' });
   const dispatch = useDispatch();
   const isAuthenticating = useSelector(isAuthLoading);
   const error = useSelector(getAuthError);
@@ -27,7 +30,7 @@ const LoginPage: React.FC<Props> = ({ redirect = true }) => {
 
   const handleSubmit = (event: FormEvent): void => {
     event.preventDefault();
-    dispatch(actionLogin(username, password)).then((action) => {
+    dispatch(actionLogin(credentials.username, credentials.password)).then((action) => {
       if (!!action.payload.error) {
         usernameInputRef.current?.focus();
       } else {
@@ -37,43 +40,48 @@ const LoginPage: React.FC<Props> = ({ redirect = true }) => {
     });
   };
 
+  const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
+    setCredentials({ ...credentials, [event.currentTarget.name]: event.currentTarget.value });
+  };
+
   return (
-    <div>
-      <Form className={styles.LoginForm} onSubmit={handleSubmit}>
-        <h2>Login</h2>
-        <Form.Group controlId="formUserName">
-          <Form.Label>Username</Form.Label>
-          <Form.Control
-            type="text"
-            ref={usernameInputRef}
-            placeholder="Username"
-            required
-            value={username}
-            isInvalid={!!error}
-            onChange={(e) => setUsername(e.currentTarget.value)}
-            disabled={isAuthenticating}
-            autoFocus
-            autoComplete="username"
-          />
-          {!!error && <Form.Control.Feedback type="invalid">{error.message}</Form.Control.Feedback>}
-        </Form.Group>
-        <Form.Group controlId="formPassword">
-          <Form.Label>Password</Form.Label>
-          <Form.Control
-            type="password"
-            placeholder="Password"
-            required
-            value={password}
-            onChange={(e) => setPassword(e.currentTarget.value)}
-            disabled={isAuthenticating}
-            autoComplete="password"
-          />
-        </Form.Group>
-        <Button type="submit" variant="primary" block disabled={isAuthenticating}>
+    <Page pageTitle="Anmeldung">
+      <form className={styles.LoginForm} onSubmit={handleSubmit}>
+        <Typography variant="h4">Login</Typography>
+        <TextField
+          name="username"
+          variant="outlined"
+          label="Benutzername"
+          required
+          value={credentials.username}
+          autoFocus
+          disabled={isAuthenticating}
+          onChange={handleChange}
+          autoComplete="username"
+          error={!!error}
+          fullWidth
+          margin="normal"
+        />
+        <TextField
+          name="password"
+          variant="outlined"
+          label="Password"
+          required
+          type="password"
+          value={credentials.password}
+          fullWidth
+          disabled={isAuthenticating}
+          onChange={handleChange}
+          autoComplete="password"
+          error={!!error}
+          helperText={!!error && error.message}
+          margin="normal"
+        />
+        <Button type="submit" variant="contained" color="primary" fullWidth disabled={isAuthenticating}>
           {isAuthenticating ? 'Lade...' : 'Anmelden'}
         </Button>
-      </Form>
-    </div>
+      </form>
+    </Page>
   );
 };
 
