@@ -1,21 +1,35 @@
 import React, { useEffect } from 'react';
-import { Alert, Dropdown, Spinner, Table } from 'react-bootstrap';
 import { SkipboGame } from '../../interfaces/skipboGame';
 import { getPageTitle } from '../../util/routes';
 import { getFormattedDate } from '../../util/date';
 import Icon from '../../components/Icon';
 
-import styles from './SkipboTableOverviewPage.module.css';
 import { RootState } from '../../reducers';
 import { getSkipboGames, isSkipboGamesLoading } from '../../selectors/skipboGamesSelectors';
 import { actionDeleteSkipboGame, actionFetchSkipboGames } from '../../actions/skipboGameActions';
 import { connect, useSelector } from 'react-redux';
 import { getAuthUser } from '../../selectors/authSelectors';
+import Spinner from '../../components/Spinner/Spinner';
+import Alert from '../../components/Alert';
+import Table from '../../components/Table';
+import IconButton from 'components/IconButton';
+import Menu from '../../components/Menu';
+import styles from './SkipboTableOverviewPage.module.css';
 
 export type Props = StateProps & DispatchProps;
 
 function SkipboTableOverviewPage({ isLoading, games, fetchSkipboGames, deleteSkipboGame }: Props) {
   const user = useSelector(getAuthUser);
+  const [menuAnchorEl, setMenuAnchorEl] = React.useState<HTMLButtonElement | null>(null);
+  const open = Boolean(menuAnchorEl);
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setMenuAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setMenuAnchorEl(null);
+  };
 
   useEffect(() => {
     document.title = getPageTitle('Skip-Bo');
@@ -26,43 +40,45 @@ function SkipboTableOverviewPage({ isLoading, games, fetchSkipboGames, deleteSki
     <div className="SkipboTableOverviewPage">
       {isLoading && games.length === 0 ? (
         <div className={styles.LoadingSpinner}>
-          <Spinner variant="secondary" as="span" animation="border" role="status" aria-hidden="true" />
+          <Spinner />
         </div>
       ) : games.length === 0 ? (
-        <Alert variant="primary">Füge ein Spiel hinzu, um Statistiken zu bekommen</Alert>
+        <Alert color="info">Füge ein Spiel hinzu, um Statistiken zu bekommen</Alert>
       ) : (
-        <Table hover responsive>
-          <thead>
-            <tr>
-              <th />
-              <th>#</th>
-              <th>Zeitpunkt</th>
-              <th>Gewinnername</th>
-            </tr>
-          </thead>
-          <tbody>
+        <Table>
+          <Table.Head>
+            <Table.Row>
+              <Table.Cell />
+              <Table.Cell>#</Table.Cell>
+              <Table.Cell>Zeitpunkt</Table.Cell>
+              <Table.Cell>Gewinnername</Table.Cell>
+            </Table.Row>
+          </Table.Head>
+          <Table.Body>
             {games.map((game, index) => (
-              <tr key={game._id ?? game.playTime}>
-                <td>
+              <Table.Row key={game._id ?? game.playTime}>
+                <Table.Cell>
                   {isLoading ? (
                     <Icon icon="circle-notch" spin />
                   ) : (
                     !!user && (
-                      <Dropdown>
-                        <Dropdown.Toggle as={Icon} icon="ellipsis-v" clickable />
-                        <Dropdown.Menu>
-                          <Dropdown.Item onClick={() => deleteSkipboGame(game._id as string)}>Löschen</Dropdown.Item>
-                        </Dropdown.Menu>
-                      </Dropdown>
+                      <div>
+                        <IconButton aria-haspopup="true" onClick={handleClick} size="small">
+                          <Icon icon="ellipsis-v" size="xs" />
+                        </IconButton>
+                        <Menu anchorEl={menuAnchorEl} keepMounted open={open} onClose={handleClose}>
+                          <Menu.Item onClick={() => deleteSkipboGame(game._id as string)}>Löschen</Menu.Item>
+                        </Menu>
+                      </div>
                     )
                   )}
-                </td>
-                <td>{games.length - index}</td>
-                <td>{getFormattedDate(new Date(game.playTime))}</td>
-                <td>{game.winner.name}</td>
-              </tr>
+                </Table.Cell>
+                <Table.Cell>{games.length - index}</Table.Cell>
+                <Table.Cell>{getFormattedDate(new Date(game.playTime))}</Table.Cell>
+                <Table.Cell>{game.winner.name}</Table.Cell>
+              </Table.Row>
             ))}
-          </tbody>
+          </Table.Body>
         </Table>
       )}
     </div>
