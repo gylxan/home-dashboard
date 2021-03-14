@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { Form, Spinner } from 'react-bootstrap';
 import { getPageTitle } from '../../util/routes';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import Icon from '../../components/Icon';
@@ -11,6 +10,8 @@ import { actionFetchLightGroups, actionUpdateLightGroup } from '../../actions/li
 import styles from './LightOverViewPage.module.css';
 import {withAuth} from "../../hocs/withAuth";
 import Page from "../../components/Page";
+import Switch from "../../components/Switch";
+import Spinner from "../../components/Spinner";
 
 const GroupClassIconMapping: Record<string, IconProp> = {
   Kitchen: 'coffee',
@@ -49,7 +50,7 @@ function LightOverviewPage() {
     <Page pageTitle="Licht" className={styles.LightOverviewPage}>
       {isLoading && Object.keys(lightGroupsByType).length === 0 ? (
         <div className={styles.LoadingSpinner}>
-          <Spinner variant="secondary" as="span" animation="border" role="status" aria-hidden="true" />
+          <Spinner color="primary"/>
         </div>
       ) : (
         Object.values(lightGroupsByType).map((typeGroup) => (
@@ -64,22 +65,22 @@ function LightOverviewPage() {
                     <div>
                       <Icon icon={GroupClassIconMapping[data.class] ?? ['far', 'lightbulb']} />
                       {group._data.name}
-                      <Form.Switch
-                        id={`light-group-${data.id}-switch`}
+                      <Switch
+                        color="primary"
                         className={styles.Switch}
                         checked={isOn}
                         onChange={() => dispatch(actionUpdateLightGroup(data.id, !isOn))}
                       />
                     </div>
-                    {false && (
-                      <Form.Control
-                        type="range"
-                        className={styles.BrightnessRange}
-                        value={data.action?.bri ?? 0}
-                        max={MAX_BRIGHTNESS}
-                        onChange={setBrightness}
-                      />
-                    )}
+                    {/*{false && (*/}
+                    {/*  <Form.Control*/}
+                    {/*    type="range"*/}
+                    {/*    className={styles.BrightnessRange}*/}
+                    {/*    value={data.action?.bri ?? 0}*/}
+                    {/*    max={MAX_BRIGHTNESS}*/}
+                    {/*    onChange={setBrightness}*/}
+                    {/*  />*/}
+                    {/*)}*/}
                   </div>
                 );
               })}
