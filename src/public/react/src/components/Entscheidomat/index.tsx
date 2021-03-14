@@ -11,7 +11,7 @@ import angryBeaversSound from '../../assets/audios/angry-beavers.mp3';
 import Button from '../Button';
 import Checkbox from '../Checkbox';
 import Typography from '../Typography';
-import TextField from '../TextField/TextField';
+import TextField from '../TextField';
 
 import styles from './Entscheidomat.module.css';
 
