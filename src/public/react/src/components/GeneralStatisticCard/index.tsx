@@ -1,10 +1,8 @@
 import React from 'react';
 import ReloadableCard, { Props as ReloadableStatisticCardProps } from '../ReloadableCard';
-import { Table } from 'react-bootstrap';
 import { GeneralStatistic } from '../../interfaces/skipboGame';
 import { getFormattedDate } from '../../util/date';
-
-//import styles from './GeneralStatisticCard.module.css';
+import Table from '../Table';
 
 export interface Props extends Omit<ReloadableStatisticCardProps, 'children'> {
   data: GeneralStatistic | undefined;
@@ -17,18 +15,18 @@ const GeneralStatisticCard: React.FC<Props> = ({ title, fetchData, data }: Props
   return (
     <ReloadableCard title={title} fetchData={fetchData}>
       {!data ? null : Array.isArray(data) ? null : (
-        <Table responsive>
-          <tbody>
+        <Table>
+          <Table.Body>
             {Object.keys(data).map((key) => {
               const currentEntry = (data as GeneralStatistic)[key];
               return (
-                <tr key={key}>
-                  <td>{currentEntry.label}</td>
-                  <td>{getFormattedValue(currentEntry.value)}</td>
-                </tr>
+                <Table.Row key={key}>
+                  <Table.Cell>{currentEntry.label}</Table.Cell>
+                  <Table.Cell>{getFormattedValue(currentEntry.value)}</Table.Cell>
+                </Table.Row>
               );
             })}
-          </tbody>
+          </Table.Body>
         </Table>
       )}
     </ReloadableCard>

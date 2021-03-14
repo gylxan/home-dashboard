@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { Alert, CardColumns, Spinner } from 'react-bootstrap';
 import { getPageTitle } from '../../util/routes';
 import GeneralStatisticCard from '../../components/GeneralStatisticCard';
 import PieChartStatisticCard from '../../components/PieChartStatisticCard';
@@ -24,6 +23,9 @@ import {
   actionFetchSkipboLastPlayDayGames,
 } from '../../actions/skipboGameActions';
 
+import Spinner from '../../components/Spinner/Spinner';
+import Alert from '../../components/Alert';
+import Grid from 'components/Grid';
 import styles from './SkipboOverviewPage.module.css';
 
 export function SkipboOverviewPage() {
@@ -42,49 +44,65 @@ export function SkipboOverviewPage() {
   const skipboGamesPerWinner = useSelector(getSkipboGamesPerWinnerStatistics);
   const skipboGamesHistory = useSelector(getSkipboGamesHistory);
 
+  const renderGridItem = (node: React.ReactNode): React.ReactNode => (
+    <Grid item xs={12} sm={6} md={4}>
+      {node}
+    </Grid>
+  );
+
   return (
     <div className="SkipboOverviewPage">
       <div className={styles.Content}>
         {games.length === 0 ? (
           isLoading ? (
             <div className={styles.LoadingSpinner}>
-              <Spinner variant="secondary" as="span" animation="border" role="status" aria-hidden="true" />
+              <Spinner />
             </div>
           ) : (
-            <Alert variant="primary">Füge ein Spiel hinzu, um Statistiken zu bekommen</Alert>
+            <Alert severity="info">Füge ein Spiel hinzu, um Statistiken zu bekommen</Alert>
           )
         ) : (
-          <CardColumns>
-            <GeneralStatisticCard
-              title={'Allgemein'}
-              fetchData={() => dispatch(actionFetchSkipboGameStatisticsGeneral())}
-              data={generalStatistic}
-            />
-            <ColumnStatisticCard
-              title="Top 5 Spieler"
-              yAxisTitle="Gewonnene Spiele"
-              seriesName="Spiele"
-              fetchData={() => dispatch(actionFetchSkipboGamesPerWinnerStatistics())}
-              data={skipboTopWinners}
-            />
-            <LineChartStatisticCard
-              title="Spiele des letztes Spieltags"
-              fetchData={() => dispatch(actionFetchSkipboLastPlayDayGames())}
-              yAxisTitle="Anzahl Gewinne"
-              data={skipboLastPlayDayGames}
-            />
-            <PieChartStatisticCard
-              title={'Gewonnene Spiele pro Spieler/in'}
-              fetchData={() => dispatch(actionFetchSkipboGamesPerWinnerStatistics())}
-              data={skipboGamesPerWinner}
-            />
-            <LineChartStatisticCard
-              title="Spieleverlauf"
-              fetchData={() => dispatch(actionFetchSkipboGamesHistory())}
-              data={skipboGamesHistory}
-              yAxisTitle="Anzahl Gewinne"
-            />
-          </CardColumns>
+          <Grid container direction="row" spacing={3}>
+            {renderGridItem(
+              <GeneralStatisticCard
+                title={'Allgemein'}
+                fetchData={() => dispatch(actionFetchSkipboGameStatisticsGeneral())}
+                data={generalStatistic}
+              />,
+            )}
+            {renderGridItem(
+              <ColumnStatisticCard
+                title="Top 5 Spieler"
+                yAxisTitle="Gewonnene Spiele"
+                seriesName="Spiele"
+                fetchData={() => dispatch(actionFetchSkipboGamesPerWinnerStatistics())}
+                data={skipboTopWinners}
+              />,
+            )}
+            {renderGridItem(
+              <LineChartStatisticCard
+                title="Spiele des letztes Spieltags"
+                fetchData={() => dispatch(actionFetchSkipboLastPlayDayGames())}
+                yAxisTitle="Anzahl Gewinne"
+                data={skipboLastPlayDayGames}
+              />,
+            )}
+            {renderGridItem(
+              <PieChartStatisticCard
+                title={'Gewonnene Spiele pro Spieler/in'}
+                fetchData={() => dispatch(actionFetchSkipboGamesPerWinnerStatistics())}
+                data={skipboGamesPerWinner}
+              />,
+            )}
+            {renderGridItem(
+              <LineChartStatisticCard
+                title="Spieleverlauf"
+                fetchData={() => dispatch(actionFetchSkipboGamesHistory())}
+                data={skipboGamesHistory}
+                yAxisTitle="Anzahl Gewinne"
+              />,
+            )}
+          </Grid>
         )}
       </div>
     </div>

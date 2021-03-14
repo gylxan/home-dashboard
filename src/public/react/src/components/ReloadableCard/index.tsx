@@ -1,7 +1,8 @@
 import React from 'react';
-import { Card, CardContent, CardHeader } from '@material-ui/core';
-import styles from './ReloadableCard.module.css';
 import Spinner from '../Spinner/Spinner';
+import Card from '../Card';
+import Typography from '../Typography';
+import styles from './ReloadableCard.module.css';
 
 interface State {
   data: any[] | any;
@@ -54,13 +55,13 @@ class ReloadableCard extends React.PureComponent<Props, State> {
     const { isLoading } = this.state;
     return (
       <Card className="ReloadableStatisticCard" variant="outlined">
-        <CardContent>
+        <Card.Content>
           <div className={styles.Header}>
-            <h6>{title}</h6>
-            {isLoading && <Spinner size='1rem' />}
+            <Typography variant="subtitle1">{title}</Typography>
+            {isLoading && <Spinner size="1rem" />}
           </div>
           {children}
-        </CardContent>
+        </Card.Content>
       </Card>
     );
   }
