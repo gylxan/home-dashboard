@@ -8,6 +8,7 @@ import { actionUpdateUser } from '../../actions/userActions';
 import Icon from '../../components/Icon';
 
 import styles from './UserProfilePage.module.css';
+import Page from '../../components/Page';
 
 const UserProfilePage: React.FC = () => {
   const [newPassword, setNewPassword] = useState('');
@@ -41,7 +42,7 @@ const UserProfilePage: React.FC = () => {
   };
 
   return (
-    <div>
+    <Page pageTitle="Profil">
       <h2>Hi {user?.username}!</h2>
 
       <h4 className={styles.SubTitle}>Passwort ändern</h4>
@@ -93,7 +94,7 @@ const UserProfilePage: React.FC = () => {
           )}
         </Button>
       </Form>
-    </div>
+    </Page>
   );
 };
 

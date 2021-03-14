@@ -15,6 +15,7 @@ import Table from '../../components/Table';
 import IconButton from 'components/IconButton';
 import Menu from '../../components/Menu';
 import styles from './SkipboTableOverviewPage.module.css';
+import Page from "../../components/Page";
 
 export type Props = StateProps & DispatchProps;
 
@@ -37,7 +38,7 @@ function SkipboTableOverviewPage({ isLoading, games, fetchSkipboGames, deleteSki
   }, [fetchSkipboGames]);
 
   return (
-    <div className="SkipboTableOverviewPage">
+    <Page pageTitle="Skip-Bo" className="SkipboTableOverviewPage">
       {isLoading && games.length === 0 ? (
         <div className={styles.LoadingSpinner}>
           <Spinner />
@@ -81,7 +82,7 @@ function SkipboTableOverviewPage({ isLoading, games, fetchSkipboGames, deleteSki
           </Table.Body>
         </Table>
       )}
-    </div>
+    </Page>
   );
 }
 

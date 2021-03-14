@@ -10,6 +10,7 @@ import { getLightGroupsByType, isLightsLoading } from '../../selectors/lightsSel
 import { actionFetchLightGroups, actionUpdateLightGroup } from '../../actions/lightActions';
 import styles from './LightOverViewPage.module.css';
 import {withAuth} from "../../hocs/withAuth";
+import Page from "../../components/Page";
 
 const GroupClassIconMapping: Record<string, IconProp> = {
   Kitchen: 'coffee',
@@ -45,7 +46,7 @@ function LightOverviewPage() {
   };
 
   return (
-    <div className={styles.LightOverviewPage}>
+    <Page pageTitle="Licht" className={styles.LightOverviewPage}>
       {isLoading && Object.keys(lightGroupsByType).length === 0 ? (
         <div className={styles.LoadingSpinner}>
           <Spinner variant="secondary" as="span" animation="border" role="status" aria-hidden="true" />
@@ -86,7 +87,7 @@ function LightOverviewPage() {
           </>
         ))
       )}
-    </div>
+    </Page>
   );
 }
 

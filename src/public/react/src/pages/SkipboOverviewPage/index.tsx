@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { getPageTitle } from '../../util/routes';
 import GeneralStatisticCard from '../../components/GeneralStatisticCard';
 import PieChartStatisticCard from '../../components/PieChartStatisticCard';
 import ColumnStatisticCard from '../../components/ColumnStatisticCard';
@@ -27,6 +26,7 @@ import Spinner from '../../components/Spinner/Spinner';
 import Alert from '../../components/Alert';
 import Grid from 'components/Grid';
 import styles from './SkipboOverviewPage.module.css';
+import Page from '../../components/Page';
 
 export function SkipboOverviewPage() {
   const dispatch = useDispatch();
@@ -34,7 +34,6 @@ export function SkipboOverviewPage() {
   const isLoading = useSelector(isSkipboGamesLoading);
 
   useEffect(() => {
-    document.title = getPageTitle('Skip-Bo');
     dispatch(actionFetchSkipboGames());
   }, [dispatch]);
 
@@ -51,7 +50,7 @@ export function SkipboOverviewPage() {
   );
 
   return (
-    <div className="SkipboOverviewPage">
+    <Page pageTitle="Skip-Bo" className="SkipboOverviewPage">
       <div className={styles.Content}>
         {games.length === 0 ? (
           isLoading ? (
@@ -105,7 +104,7 @@ export function SkipboOverviewPage() {
           </Grid>
         )}
       </div>
-    </div>
+    </Page>
   );
 }
 

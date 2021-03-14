@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { actionAddSkipboGame, actionFetchSkipboGameWinners } from '../../actions/skipboGameActions';
 import styles from './SkipboAddGamePage.module.css';
 import { withAuth } from '../../hocs/withAuth';
+import Page from "../../components/Page";
 
 const NEW_WINNER = '-1';
 
@@ -59,7 +60,7 @@ function SkipboOverviewPage() {
   };
 
   return (
-    <div className="SkipboAddGamePage">
+    <Page pageTitle="Skip-Bo" className="SkipboAddGamePage">
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="winner">
           <Form.Label>Gewinner</Form.Label>
@@ -108,7 +109,7 @@ function SkipboOverviewPage() {
           </Button>
         </div>
       </Form>
-    </div>
+    </Page>
   );
 }
 

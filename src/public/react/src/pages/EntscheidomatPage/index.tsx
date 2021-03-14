@@ -1,21 +1,16 @@
-import React, { useEffect } from 'react';
-import { getPageTitle } from '../../util/routes';
+import React from 'react';
 import Entscheidomat from '../../components/Entscheidomat';
+import Page from '../../components/Page';
 
 //import styles from './EntscheidomatPage.module.css';
 
 export interface Props {}
 
 // TODO Implement me!
-const EntscheidomatPage: React.FC<Props> = () => {
-  useEffect(() => {
-    document.title = getPageTitle('Entscheidomat');
-  }, []);
-  return (
-    <div className="EntscheidomatPage">
-      <Entscheidomat />
-    </div>
-  );
-};
+const EntscheidomatPage: React.FC<Props> = () => (
+  <Page pageTitle={'Entscheidomat'} className="EntscheidomatPage">
+    <Entscheidomat />
+  </Page>
+);
 
 export default EntscheidomatPage;
