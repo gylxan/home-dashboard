@@ -1,7 +1,5 @@
 import React, { ChangeEvent } from 'react';
 
-import styles from './Entscheidomat.module.css';
-import { Form, Button } from 'react-bootstrap';
 import {
   getEntscheidomatList,
   hasEntscheidomatMusic,
@@ -10,6 +8,12 @@ import {
 } from '../../util/localStorage';
 // @ts-ignore
 import angryBeaversSound from '../../assets/audios/angry-beavers.mp3';
+import Button from '../Button';
+import Checkbox from '../Checkbox';
+import Typography from '../Typography';
+import TextField from '../TextField/TextField';
+
+import styles from './Entscheidomat.module.css';
 
 export interface Props {}
 
@@ -127,36 +131,40 @@ class Entscheidomat extends React.PureComponent<Props, State> {
   render(): JSX.Element {
     const { currentOption, options, isStopping, isStarted, isMusicEnabled } = this.state;
     return (
-      <Form className={styles.Entscheidomat}>
-        <Form.Control
-          className={styles.Textarea}
-          as="textarea"
+      <form className={styles.Entscheidomat} noValidate>
+        <TextField
+          multiline
           rows={5}
           name="list"
           value={options.join('\n')}
           onChange={this.handleListChange}
           disabled={isStarted}
+          variant="outlined"
+          fullWidth
+          label="Liste von Optionen"
         />
-        <Form.Check
-          checked={isMusicEnabled}
-          onChange={(event) => this.setIsMusicEnabled(event.currentTarget.checked)}
-          label="Musik abspielen"
-          type="checkbox"
-          name="music"
-          disabled={isStarted}
+        <Checkbox
           id="entscheidomat-music"
+          color="primary"
+          onChange={(event) => this.setIsMusicEnabled(event.currentTarget.checked)}
+          checked={isMusicEnabled}
+          disabled={isStarted}
+          name="music"
+          label="Musik abspielen"
         />
-        <h4 className={styles.OptionText}>{currentOption === undefined ? 'Starte zum Entscheiden!' : currentOption}</h4>
+
+        <Typography variant="h5">{currentOption === undefined ? 'Starte zum Entscheiden!' : currentOption}</Typography>
+
         <Button
           type="button"
-          variant="primary"
+          variant="contained"
+          color="primary"
           disabled={this.state.options.length < 2 || isStopping}
           onClick={this.handleButtonClick}
-          className={styles.Button}
         >
           {isStarted ? (isStopping ? 'Stoppe...' : 'Stoppen') : 'Starten'}
         </Button>
-      </Form>
+      </form>
     );
   }
 }

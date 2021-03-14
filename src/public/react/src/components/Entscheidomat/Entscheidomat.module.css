@@ -2,19 +2,14 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-.Textarea {
   width: 80vw;
   max-width: 400px;
-  margin-bottom: 1rem;
 }
 
-.OptionText {
-  margin-top: 3rem;
+.Entscheidomat > * + * {
+  margin-top: 1.1rem;
 }
 
-
-.Button {
-  margin-top: 3rem;
+.Entscheidomat > h5 {
+  text-align: center;
 }
