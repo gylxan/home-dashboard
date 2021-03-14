@@ -29,7 +29,6 @@
     "axios": "0.21.1",
     "bootstrap": "^4.5.3",
     "classnames": "^2.2.6",
-    "fontsource-roboto": "^4.0.0",
     "highcharts": "^8.2.2",
     "highcharts-react-official": "^3.0.0",
     "react": "^17.0.1",
