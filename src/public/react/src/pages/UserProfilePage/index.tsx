@@ -3,12 +3,15 @@ import { withAuth } from '../../hocs/withAuth';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { getAuthUser, isAuthLoading } from '../../selectors/authSelectors';
-import { Button, Form, Spinner } from 'react-bootstrap';
 import { actionUpdateUser } from '../../actions/userActions';
 import Icon from '../../components/Icon';
 
-import styles from './UserProfilePage.module.css';
 import Page from '../../components/Page';
+import TextField from '../../components/TextField';
+import Button from '../../components/Button';
+import Spinner from '../../components/Spinner/Spinner';
+import Typography from "../../components/Typography";
+import styles from './UserProfilePage.module.css';
 
 const UserProfilePage: React.FC = () => {
   const [newPassword, setNewPassword] = useState('');
@@ -45,55 +48,49 @@ const UserProfilePage: React.FC = () => {
     <Page pageTitle="Profil">
       <h2>Hi {user?.username}!</h2>
 
-      <h4 className={styles.SubTitle}>Passwort ändern</h4>
-      <Form onSubmit={handleSubmit} className={styles.Form}>
-        <Form.Group controlId="new_password">
-          <Form.Label>Neues Passwort</Form.Label>
-          <Form.Control
-            required
-            disabled={isLoading}
-            value={newPassword}
-            type="password"
-            placeholder="Neues Passwort"
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              setShowSuccess(false);
-              setNewPassword(e.currentTarget.value);
-            }}
-            autoComplete="new-password"
-            isInvalid={!!error}
-          />
-        </Form.Group>
-        <Form.Group controlId="new_password_confirmation">
-          <Form.Label>Neues Passwort bestätigen</Form.Label>
-          <Form.Control
-            required
-            disabled={isLoading}
-            value={newPasswordConfirmation}
-            type="password"
-            placeholder="Neues Passwort bestätigen"
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              setShowSuccess(false);
-              setNewPasswordConfirmation(e.currentTarget.value);
-            }}
-            autoComplete="new-password"
-            isInvalid={!!error}
-          />
-          {!!error && <Form.Control.Feedback type="invalid">{error}</Form.Control.Feedback>}
-        </Form.Group>
-        <Button variant="primary" type="submit" disabled={isLoading || !isFormValid()}>
-          {isLoading ? (
-            <>
-              <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" /> Speichern...
-            </>
-          ) : showSuccess ? (
-            <>
-              <Icon icon="check" /> Gespeichert
-            </>
-          ) : (
-            'Speichern'
-          )}
+      <form onSubmit={handleSubmit} className={styles.Form}>
+        <Typography variant="h5">Passwort ändern</Typography>
+        <TextField
+          label="Neues Password"
+          variant="outlined"
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            setShowSuccess(false);
+            setNewPassword(e.currentTarget.value);
+          }}
+          type="password"
+          required
+          disabled={isLoading}
+          autoComplete="new-password"
+          error={!!error}
+          fullWidth
+          margin="normal"
+        />
+        <TextField
+          label="Neues Password bestätigen"
+          variant="outlined"
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            setShowSuccess(false);
+            setNewPasswordConfirmation(e.currentTarget.value);
+          }}
+          type="password"
+          required
+          disabled={isLoading}
+          autoComplete="new-password"
+          error={!!error}
+          fullWidth
+          helperText={!!error && error}
+          margin="normal"
+        />
+        <Button
+          startIcon={isLoading ? <Spinner size="1rem" color="inherit" /> : showSuccess ? <Icon icon="check" /> : null}
+          color="primary"
+          type="submit"
+          variant="contained"
+          disabled={isLoading || !isFormValid()}
+        >
+          {isLoading ? 'Speichern...' : showSuccess ? <>Gespeichert</> : 'Speichern'}
         </Button>
-      </Form>
+      </form>
     </Page>
   );
 };
