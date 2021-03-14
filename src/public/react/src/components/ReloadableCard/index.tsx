@@ -1,5 +1,5 @@
 import React from 'react';
-import Spinner from '../Spinner/Spinner';
+import Spinner from '../Spinner';
 import Card from '../Card';
 import Typography from '../Typography';
 import styles from './ReloadableCard.module.css';

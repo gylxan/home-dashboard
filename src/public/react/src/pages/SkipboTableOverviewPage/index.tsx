@@ -9,7 +9,7 @@ import { getSkipboGames, isSkipboGamesLoading } from '../../selectors/skipboGame
 import { actionDeleteSkipboGame, actionFetchSkipboGames } from '../../actions/skipboGameActions';
 import { connect, useSelector } from 'react-redux';
 import { getAuthUser } from '../../selectors/authSelectors';
-import Spinner from '../../components/Spinner/Spinner';
+import Spinner from '../../components/Spinner';
 import Alert from '../../components/Alert';
 import Table from '../../components/Table';
 import IconButton from 'components/IconButton';

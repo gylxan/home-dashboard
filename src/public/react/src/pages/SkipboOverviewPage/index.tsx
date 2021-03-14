@@ -22,7 +22,7 @@ import {
   actionFetchSkipboLastPlayDayGames,
 } from '../../actions/skipboGameActions';
 
-import Spinner from '../../components/Spinner/Spinner';
+import Spinner from '../../components/Spinner';
 import Alert from '../../components/Alert';
 import Grid from 'components/Grid';
 import styles from './SkipboOverviewPage.module.css';

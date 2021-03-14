@@ -12,10 +12,10 @@ import { withAuth } from '../../hocs/withAuth';
 import Page from '../../components/Page';
 import TextField from '../../components/TextField';
 import Button from '../../components/Button';
-import Spinner from '../../components/Spinner/Spinner';
+import Spinner from '../../components/Spinner';
 import { Autocomplete } from '@material-ui/lab';
-import styles from './SkipboAddGamePage.module.css';
 import Typography from "../../components/Typography";
+import styles from './SkipboAddGamePage.module.css';
 
 function SkipboOverviewPage() {
   const [selectedWinner, setSelectedWinner] = useState('');

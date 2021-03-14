@@ -9,7 +9,7 @@ import Icon from '../../components/Icon';
 import Page from '../../components/Page';
 import TextField from '../../components/TextField';
 import Button from '../../components/Button';
-import Spinner from '../../components/Spinner/Spinner';
+import Spinner from '../../components/Spinner';
 import Typography from "../../components/Typography";
 import styles from './UserProfilePage.module.css';
 
