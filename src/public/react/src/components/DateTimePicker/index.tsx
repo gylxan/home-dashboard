@@ -1,16 +1,12 @@
 import React from 'react';
-import DatePicker, { registerLocale, ReactDatePickerProps } from 'react-datepicker';
-import de from 'date-fns/locale/de';
+import { DateTimePicker as MuiDateTimePicker, DateTimePickerProps } from '@material-ui/pickers';
 
 import styles from './DateTimePicker.module.css';
-import 'react-datepicker/dist/react-datepicker.css';
 
-registerLocale('de', de);
-
-export interface Props extends Omit<ReactDatePickerProps, 'locale' | 'dateFormat' | 'timeFormat' | 'showTimeInput'> {}
+export type Props = DateTimePickerProps;
 
 const DateTimePicker: React.FC<Props> = ({ ...props }: Props) => (
-  <DatePicker className={styles.DateTimePicker} locale="de" showTimeInput timeFormat="p" dateFormat="Pp" {...props} />
+  <MuiDateTimePicker className={styles.DateTimePicker} {...props} />
 );
 
 export default DateTimePicker;
