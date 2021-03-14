@@ -8,16 +8,21 @@ import { BrowserRouter } from 'react-router-dom';
 import { initializeHighCharts } from './util/highcharts';
 import { Provider } from 'react-redux';
 import configureStore from './util/store';
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
+import deLocale from 'date-fns/locale/de';
 
 initializeHighCharts();
 
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={configureStore()}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </Provider>
+    <MuiPickersUtilsProvider utils={DateFnsUtils} locale={deLocale}>
+      <Provider store={configureStore()}>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </Provider>
+    </MuiPickersUtilsProvider>
   </React.StrictMode>,
   document.getElementById('root'),
 );
