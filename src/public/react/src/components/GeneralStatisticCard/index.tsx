@@ -9,8 +9,12 @@ export interface Props extends Omit<ReloadableStatisticCardProps, 'children'> {
 }
 
 const GeneralStatisticCard: React.FC<Props> = ({ title, fetchData, data }: Props) => {
-  const getFormattedValue = (value: string | number | Date): string | number =>
-    value instanceof Date ? getFormattedDate(value) : value;
+  const getFormattedValue = (value: string | number | Date, label?: string): string | number => {
+    if ((!!label && label.indexOf('zeit') !== -1) || value instanceof Date) {
+      return getFormattedDate(value as string | Date);
+    }
+    return value;
+  };
 
   return (
     <ReloadableCard title={title} fetchData={fetchData}>
@@ -22,7 +26,7 @@ const GeneralStatisticCard: React.FC<Props> = ({ title, fetchData, data }: Props
               return (
                 <Table.Row key={key}>
                   <Table.Cell>{currentEntry.label}</Table.Cell>
-                  <Table.Cell>{getFormattedValue(currentEntry.value)}</Table.Cell>
+                  <Table.Cell>{getFormattedValue(currentEntry.value, currentEntry.label)}</Table.Cell>
                 </Table.Row>
               );
             })}
