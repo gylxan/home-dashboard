@@ -54,7 +54,7 @@ function LightOverviewPage() {
         </div>
       ) : (
         Object.values(lightGroupsByType).map((typeGroup) => (
-          <>
+          <React.Fragment key={typeGroup.type}>
             <h6>{getTypeName(typeGroup.type)}</h6>
             <div className="LightGroups">
               {typeGroup.groups.map((group) => {
@@ -85,7 +85,7 @@ function LightOverviewPage() {
                 );
               })}
             </div>
-          </>
+          </React.Fragment>
         ))
       )}
     </Page>
