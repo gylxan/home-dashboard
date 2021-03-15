@@ -7,7 +7,6 @@ import { DEFAULT_COLORS } from '../../util/colors';
 import cardGameIcon from '../../assets/icons/card-game.png';
 import dicesIcon from '../../assets/icons/dices.png';
 import lightBulbIcon from '../../assets/icons/light-bulb.png';
-import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 import { RootState } from '../../reducers';
 import { connect } from 'react-redux';

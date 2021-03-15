@@ -15,15 +15,13 @@ import deLocale from 'date-fns/locale/de';
 initializeHighCharts();
 
 ReactDOM.render(
-  <React.StrictMode>
-    <MuiPickersUtilsProvider utils={DateFnsUtils} locale={deLocale}>
-      <Provider store={configureStore()}>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </Provider>
-    </MuiPickersUtilsProvider>
-  </React.StrictMode>,
+  <MuiPickersUtilsProvider utils={DateFnsUtils} locale={deLocale}>
+    <Provider store={configureStore()}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </Provider>
+  </MuiPickersUtilsProvider>,
   document.getElementById('root'),
 );
 
