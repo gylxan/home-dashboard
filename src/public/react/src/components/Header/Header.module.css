@@ -1,12 +1,13 @@
 .Header {
-  display: flex;
 }
 
 .Logo {
-  width: 2rem;
+  height: 1.5rem;
+  width: auto;
 }
 
-.UserIcon {
-  font-size: 1.625rem;
+.UserMenu {
+  margin-left: auto;
 }
+
 
