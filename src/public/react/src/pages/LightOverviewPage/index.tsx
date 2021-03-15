@@ -7,10 +7,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getLightGroupsByType, isLightsLoading } from '../../selectors/lightsSelectors';
 import { actionFetchLightGroups, actionUpdateLightGroup } from '../../actions/lightActions';
 import styles from './LightOverViewPage.module.css';
-import {withAuth} from "../../hocs/withAuth";
-import Page from "../../components/Page";
-import Switch from "../../components/Switch";
-import Spinner from "../../components/Spinner";
+import { withAuth } from '../../hocs/withAuth';
+import Page from '../../components/Page';
+import Switch from '../../components/Switch';
+import Spinner from '../../components/Spinner';
+import { Slide } from '@material-ui/core';
+import Slider from '../../components/Slider';
 
 const GroupClassIconMapping: Record<string, string> = {
   Kitchen: 'kitchen',
@@ -41,15 +43,15 @@ function LightOverviewPage() {
     }
   };
 
-  const setBrightness = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    console.log(e.currentTarget.value);
+  const setBrightness = (value: number): void => {
+    console.log(value);
   };
 
   return (
     <Page pageTitle="Licht" className={styles.LightOverviewPage}>
       {isLoading && Object.keys(lightGroupsByType).length === 0 ? (
         <div className={styles.LoadingSpinner}>
-          <Spinner color="primary"/>
+          <Spinner color="primary" />
         </div>
       ) : (
         Object.values(lightGroupsByType).map((typeGroup) => (
@@ -71,15 +73,14 @@ function LightOverviewPage() {
                         onChange={() => dispatch(actionUpdateLightGroup(data.id, !isOn))}
                       />
                     </div>
-                    {/*{false && (*/}
-                    {/*  <Form.Control*/}
-                    {/*    type="range"*/}
-                    {/*    className={styles.BrightnessRange}*/}
-                    {/*    value={data.action?.bri ?? 0}*/}
-                    {/*    max={MAX_BRIGHTNESS}*/}
-                    {/*    onChange={setBrightness}*/}
-                    {/*  />*/}
-                    {/*)}*/}
+                    {false && (
+                      <Slider
+                        value={data.action?.bri ?? 0}
+                        // @ts-ignore
+                        onChange={(e, value) => setBrightness(value as number)}
+                        max={MAX_BRIGHTNESS}
+                      />
+                    )}
                   </div>
                 );
               })}
