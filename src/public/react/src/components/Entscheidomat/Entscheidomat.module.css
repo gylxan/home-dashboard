@@ -6,8 +6,8 @@
   max-width: 400px;
 }
 
-.Entscheidomat > * + * {
-  margin-top: 1.1rem;
+.Entscheidomat > * + *:not(h5) {
+  margin-top: 1.1rem !important;
 }
 
 .Entscheidomat > h5 {

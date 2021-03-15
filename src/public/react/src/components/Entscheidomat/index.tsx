@@ -142,6 +142,7 @@ class Entscheidomat extends React.PureComponent<Props, State> {
           variant="outlined"
           fullWidth
           label="Liste von Optionen"
+          autoFocus
         />
         <Checkbox
           id="entscheidomat-music"
