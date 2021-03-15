@@ -1,5 +1,5 @@
 import React from 'react';
-import Spinner from '../Spinner';
+import Spinner, {Size} from '../Spinner';
 import Card from '../Card';
 import Typography from '../Typography';
 import styles from './ReloadableCard.module.css';
@@ -58,7 +58,7 @@ class ReloadableCard extends React.PureComponent<Props, State> {
         <Card.Content>
           <div className={styles.Header}>
             <Typography variant="subtitle1">{title}</Typography>
-            {isLoading && <Spinner size="1rem" />}
+            {isLoading && <Spinner size={Size.Small} />}
           </div>
           {children}
         </Card.Content>

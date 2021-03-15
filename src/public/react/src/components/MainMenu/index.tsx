@@ -1,11 +1,11 @@
 import React from 'react';
 import { Collapse, Divider, Drawer } from '@material-ui/core';
 import IconButton from '../IconButton';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import List from '../List';
 import routes from '../../util/routes';
 
 import MenuItem from './MenuItem';
+import Icon from '../Icon';
 
 export interface Props {
   open?: boolean;
@@ -45,7 +45,7 @@ const MainMenu: React.FC<Props> = ({ open, onClose }: Props) => {
     <Drawer variant="persistent" anchor="left" open={open}>
       <div>
         <IconButton onClick={onClose}>
-          <ChevronLeftIcon />
+          <Icon icon="chevron_left" />
         </IconButton>
       </div>
       <Divider />
@@ -74,8 +74,6 @@ const MainMenu: React.FC<Props> = ({ open, onClose }: Props) => {
           );
         })}
       </List>
-      <Divider />
-      <MenuItem menuItem={{ text: 'Login', route: routes.login }} onSelect={onClose} />
     </Drawer>
   );
 };

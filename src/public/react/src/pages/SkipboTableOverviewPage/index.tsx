@@ -65,7 +65,7 @@ function SkipboTableOverviewPage({ isLoading, games, fetchSkipboGames, deleteSki
                     !!user && (
                       <div>
                         <IconButton aria-haspopup="true" onClick={handleClick} size="small">
-                          <Icon icon="ellipsis-v" size="xs" />
+                          <Icon icon="more_vert" />
                         </IconButton>
                         <Menu anchorEl={menuAnchorEl} keepMounted open={open} onClose={handleClose}>
                           <Menu.Item onClick={() => deleteSkipboGame(game._id as string)}>Löschen</Menu.Item>

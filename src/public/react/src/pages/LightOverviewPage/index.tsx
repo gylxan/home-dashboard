@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { getPageTitle } from '../../util/routes';
-import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import Icon from '../../components/Icon';
 import classNames from 'classnames';
 
@@ -13,11 +12,11 @@ import Page from "../../components/Page";
 import Switch from "../../components/Switch";
 import Spinner from "../../components/Spinner";
 
-const GroupClassIconMapping: Record<string, IconProp> = {
-  Kitchen: 'coffee',
-  'Living room': 'couch',
-  Bedroom: 'bed',
-  Dining: 'utensils',
+const GroupClassIconMapping: Record<string, string> = {
+  Kitchen: 'kitchen',
+  'Living room': 'weekend',
+  Bedroom: 'local_hotel',
+  Dining: 'local_dining',
   Downstairs: 'home',
 };
 
@@ -63,7 +62,7 @@ function LightOverviewPage() {
                 return (
                   <div className={classNames(styles.LightGroup, { [styles.Enabled]: isOn })} key={data.id}>
                     <div>
-                      <Icon icon={GroupClassIconMapping[data.class] ?? ['far', 'lightbulb']} />
+                      <Icon icon={GroupClassIconMapping[data.class] ?? 'emoji_objects_outlined'} />
                       {group._data.name}
                       <Switch
                         color="primary"

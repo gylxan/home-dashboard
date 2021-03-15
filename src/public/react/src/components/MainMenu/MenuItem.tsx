@@ -2,13 +2,11 @@ import React from 'react';
 
 import List from '../List';
 import classNames from 'classnames';
-import ExpandLess from '@material-ui/icons/ExpandLess';
-import ExpandMore from '@material-ui/icons/ExpandMore';
 import { MenuEntry } from './index';
-import {useHistory} from "react-router-dom";
+import { useHistory } from 'react-router-dom';
 
 import styles from './MenuItem.module.css';
-
+import Icon from '../Icon';
 
 export interface Props {
   menuItem: MenuEntry;
@@ -36,7 +34,7 @@ const MenuItem: React.FC<Props> = ({ menuItem, isOpen, isSubMenuItem, onToggle, 
       }}
     >
       <List.ItemText primary={menuItem.text} />
-      {hasChildItems && (isOpen ? <ExpandLess /> : <ExpandMore />)}
+      {hasChildItems && (isOpen ? <Icon icon="expand_less" /> : <Icon icon="expand_more" />)}
     </List.Item>
   );
 };

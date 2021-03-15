@@ -4,12 +4,12 @@ import styles from './UserMenu.module.css';
 import LinkButton from '../LinkButton';
 import { linkTo } from '../../util/routes';
 import IconButton from '../IconButton';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import Menu from '../Menu';
 import { actionLogout } from '../../actions/loginActions';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAuthUser } from '../../selectors/authSelectors';
 import { useHistory } from 'react-router-dom';
+import Icon from '../Icon';
 
 export interface Props {
   className?: string;
@@ -40,7 +40,7 @@ const UserMenu: React.FC<Props> = ({ className }) => {
       ) : (
         <>
           <IconButton className={styles.UserIcon} onClick={handleUserMenuOpen} color="inherit">
-            <AccountCircleIcon />
+            <Icon icon="account_circle" />
           </IconButton>
           <Menu
             id="menu-appbar"
