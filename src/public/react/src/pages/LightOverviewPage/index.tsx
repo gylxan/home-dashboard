@@ -11,8 +11,8 @@ import { withAuth } from '../../hocs/withAuth';
 import Page from '../../components/Page';
 import Switch from '../../components/Switch';
 import Spinner from '../../components/Spinner';
-import { Slide } from '@material-ui/core';
 import Slider from '../../components/Slider';
+import Typography from "../../components/Typography";
 
 const GroupClassIconMapping: Record<string, string> = {
   Kitchen: 'kitchen',
@@ -56,7 +56,7 @@ function LightOverviewPage() {
       ) : (
         Object.values(lightGroupsByType).map((typeGroup) => (
           <React.Fragment key={typeGroup.type}>
-            <h6>{getTypeName(typeGroup.type)}</h6>
+            <Typography variant="h6">{getTypeName(typeGroup.type)}</Typography>
             <div className="LightGroups">
               {typeGroup.groups.map((group) => {
                 const { _data: data } = group;
@@ -65,7 +65,7 @@ function LightOverviewPage() {
                   <div className={classNames(styles.LightGroup, { [styles.Enabled]: isOn })} key={data.id}>
                     <div>
                       <Icon icon={GroupClassIconMapping[data.class] ?? 'emoji_objects_outlined'} />
-                      {group._data.name}
+                      <Typography variant="body1">{group._data.name}</Typography>
                       <Switch
                         color="primary"
                         className={styles.Switch}

@@ -42,7 +42,7 @@ const MainMenu: React.FC<Props> = ({ open, onClose }: Props) => {
   const isOpenItem = (text: string): boolean => openItem === text;
 
   return (
-    <Drawer variant="persistent" anchor="left" open={open}>
+    <Drawer variant="temporary" anchor="left" open={open} onClose={() => onClose()} BackdropProps={{invisible: true}}>
       <div>
         <IconButton onClick={onClose}>
           <Icon icon="chevron_left" />
