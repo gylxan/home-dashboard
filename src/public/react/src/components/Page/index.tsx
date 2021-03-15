@@ -1,8 +1,6 @@
 import React, { HTMLProps, useEffect } from 'react';
 import { getPageTitle } from '../../util/routes';
 
-import styles from './Page.module.css';
-
 export interface Props extends HTMLProps<HTMLDivElement> {
   pageTitle?: string;
 }
