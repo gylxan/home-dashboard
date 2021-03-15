@@ -9,13 +9,13 @@ import { getSkipboGames, isSkipboGamesLoading } from '../../selectors/skipboGame
 import { actionDeleteSkipboGame, actionFetchSkipboGames } from '../../actions/skipboGameActions';
 import { connect, useSelector } from 'react-redux';
 import { getAuthUser } from '../../selectors/authSelectors';
-import Spinner from '../../components/Spinner';
+import Spinner, {Size} from '../../components/Spinner';
 import Alert from '../../components/Alert';
 import Table from '../../components/Table';
 import IconButton from 'components/IconButton';
 import Menu from '../../components/Menu';
 import styles from './SkipboTableOverviewPage.module.css';
-import Page from "../../components/Page";
+import Page from '../../components/Page';
 
 export type Props = StateProps & DispatchProps;
 
@@ -60,7 +60,7 @@ function SkipboTableOverviewPage({ isLoading, games, fetchSkipboGames, deleteSki
               <Table.Row key={game._id ?? game.playTime}>
                 <Table.Cell>
                   {isLoading ? (
-                    <Icon icon="circle-notch" spin />
+                    <Spinner size={Size.Small} />
                   ) : (
                     !!user && (
                       <div>

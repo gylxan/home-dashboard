@@ -5,12 +5,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getAuthUser, isAuthLoading } from '../../selectors/authSelectors';
 import { actionUpdateUser } from '../../actions/userActions';
 import Icon from '../../components/Icon';
-
 import Page from '../../components/Page';
 import TextField from '../../components/TextField';
 import Button from '../../components/Button';
-import Spinner from '../../components/Spinner';
-import Typography from "../../components/Typography";
+import Spinner, {Size} from '../../components/Spinner';
+import Typography from '../../components/Typography';
 import styles from './UserProfilePage.module.css';
 
 const UserProfilePage: React.FC = () => {
@@ -82,7 +81,9 @@ const UserProfilePage: React.FC = () => {
           margin="normal"
         />
         <Button
-          startIcon={isLoading ? <Spinner size="1rem" color="inherit" /> : showSuccess ? <Icon icon="check" /> : null}
+          startIcon={
+            isLoading ? <Spinner size={Size.Small} color="inherit" /> : showSuccess ? <Icon icon="check_circle" /> : null
+          }
           color="primary"
           type="submit"
           variant="contained"

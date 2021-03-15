@@ -16,14 +16,10 @@ import { actionFetchBoards } from '../../actions/boardActions';
 import styles from './HomePage.module.css';
 import { getBoards, getBoardsLoading } from '../../selectors/boardSelectors';
 
-const BOARD_IMAGE_PAtHS: { [gameName: string]: string } = {
+const BOARD_IMAGE_PATHS: { [gameName: string]: string } = {
   skipbo: cardGameIcon,
   entscheidomat: dicesIcon,
   light: lightBulbIcon,
-};
-
-const BOARD_ICONS: { [gameName: string]: IconProp } = {
-  //light: ['far', 'lightbulb'],
 };
 
 export type Props = StateProps & DispatchProps;
@@ -49,8 +45,7 @@ export function HomePage({ boards, isLoading, fetchBoards }: Props) {
                 label={board.label}
                 description={board.description}
                 backgroundColor={DEFAULT_COLORS[index]}
-                imagePath={BOARD_IMAGE_PAtHS[board.name] || undefined}
-                icon={BOARD_ICONS[board.name] || undefined}
+                imagePath={BOARD_IMAGE_PATHS[board.name] || undefined}
               />
             </Col>
           ))}

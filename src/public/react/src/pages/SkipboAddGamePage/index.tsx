@@ -12,7 +12,7 @@ import { withAuth } from '../../hocs/withAuth';
 import Page from '../../components/Page';
 import TextField from '../../components/TextField';
 import Button from '../../components/Button';
-import Spinner from '../../components/Spinner';
+import Spinner, {Size} from '../../components/Spinner';
 import { Autocomplete } from '@material-ui/lab';
 import Typography from "../../components/Typography";
 import styles from './SkipboAddGamePage.module.css';
@@ -80,7 +80,7 @@ function SkipboOverviewPage() {
             Zurück
           </LinkButton>
           <Button
-            startIcon={isLoading && <Spinner size="1rem" color="inherit" />}
+            startIcon={isLoading && <Spinner size={Size.Small} color="inherit" />}
             variant="contained"
             color="primary"
             type="submit"
