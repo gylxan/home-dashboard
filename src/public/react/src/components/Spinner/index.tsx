@@ -1,9 +1,16 @@
 import React from 'react';
 import { CircularProgress, CircularProgressProps } from '@material-ui/core';
 
+export interface Props extends CircularProgressProps {
+  size?: Size;
+}
+export enum Size {
+  Small,
+  Normal,
+}
 
-export type Props = CircularProgressProps;
-
-const Spinner: React.FC<Props> = (props) => <CircularProgress {...props} />;
+const Spinner: React.FC<Props> = ({ size = Size.Normal, ...props }) => (
+  <CircularProgress {...props} size={size === Size.Small ? '1rem' : undefined} />
+);
 
 export default Spinner;
