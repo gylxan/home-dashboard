@@ -55,7 +55,7 @@ const authReducer = (state: AuthState = initialState, action: AnyAction): AuthSt
     case getType(ActionTypes.LOGOUT, ActionType.SUCCESS):
       return {
         ...state,
-        user: initialState.user,
+        user: undefined,
       };
 
     default:
