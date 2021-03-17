@@ -6,6 +6,7 @@ import routes from '../../util/routes';
 
 import MenuItem from './MenuItem';
 import Icon from '../Icon';
+import { useLocation } from 'react-router-dom';
 
 export interface Props {
   open?: boolean;
@@ -36,13 +37,29 @@ const menu: MenuEntry[] = [
   },
 ];
 
+const getInitialOpenMenuItem = (pathname: string, entries: MenuEntry[]): string | null => {
+  if (pathname === '/') {
+    return null;
+  }
+  const entry = entries.find((entry) => {
+    let isEntrySelected = entry.route?.startsWith(pathname);
+    if (!isEntrySelected && !!entry.items?.length) {
+      isEntrySelected = !!getInitialOpenMenuItem(pathname, entry.items);
+    }
+    return isEntrySelected;
+  });
+  return entry?.text ?? null;
+};
+
 const MainMenu: React.FC<Props> = ({ open, onClose }: Props) => {
-  const [openItem, setOpenItem] = React.useState<string | null>(null);
+  const { pathname } = useLocation();
+  const isSelected = (entry: MenuEntry): boolean => entry.route === pathname;
+  const [openItem, setOpenItem] = React.useState<string | null>(getInitialOpenMenuItem(pathname, menu));
 
   const isOpenItem = (text: string): boolean => openItem === text;
 
   return (
-    <Drawer variant="temporary" anchor="left" open={open} onClose={() => onClose()} BackdropProps={{invisible: true}}>
+    <Drawer variant="temporary" anchor="left" open={open} onClose={() => onClose()} BackdropProps={{ invisible: true }}>
       <div>
         <IconButton onClick={onClose}>
           <Icon icon="chevron_left" />
@@ -54,7 +71,13 @@ const MainMenu: React.FC<Props> = ({ open, onClose }: Props) => {
           const isOpen = isOpenItem(item.text);
           return (
             <React.Fragment key={item.text}>
-              <MenuItem menuItem={item} isOpen={isOpen} onSelect={onClose} onToggle={setOpenItem} />
+              <MenuItem
+                menuItem={item}
+                isOpen={isOpen}
+                onSelect={onClose}
+                onToggle={setOpenItem}
+                selected={isSelected(item)}
+              />
               {!!item.items?.length && (
                 <Collapse in={isOpen} timeout="auto">
                   <List disablePadding>
@@ -65,6 +88,7 @@ const MainMenu: React.FC<Props> = ({ open, onClose }: Props) => {
                         isOpen={isOpenItem(subItem.text)}
                         isSubMenuItem
                         onSelect={onClose}
+                        selected={isSelected(subItem)}
                       />
                     ))}
                   </List>

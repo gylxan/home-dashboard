@@ -14,13 +14,15 @@ export interface Props {
   isSubMenuItem?: boolean;
   onToggle?: (itemText: null | string) => void;
   onSelect: () => void;
+  selected?: boolean;
 }
 
-const MenuItem: React.FC<Props> = ({ menuItem, isOpen, isSubMenuItem, onToggle, onSelect }) => {
+const MenuItem: React.FC<Props> = ({ menuItem, isOpen, isSubMenuItem, onToggle, onSelect, selected }) => {
   const history = useHistory();
   const hasChildItems = !!menuItem.items?.length;
   return (
     <List.Item
+      selected={selected}
       className={classNames({ [styles.SubMenuItem]: !!isSubMenuItem })}
       button
       key={menuItem.text}
