@@ -1,10 +1,10 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import GeneralStatisticCard from '../../components/GeneralStatisticCard';
 import PieChartStatisticCard from '../../components/PieChartStatisticCard';
 import ColumnStatisticCard from '../../components/ColumnStatisticCard';
 
 import LineChartStatisticCard from '../../components/LineChartStatisticCard';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   getSkipboGames,
   getSkipboGamesHistory,
@@ -26,8 +26,25 @@ import Spinner from '../../components/Spinner';
 import Alert from '../../components/Alert';
 import Page from '../../components/Page';
 import styles from './SkipboOverviewPage.module.css';
+import FloatingActionButton from '../../components/FloatingActionButton';
+import Icon from '../../components/Icon';
+import { makeStyles } from '@material-ui/core';
+import { linkTo } from '../../util/routes';
+import { useHistory } from 'react-router-dom';
+import { getAuthUser } from '../../selectors/authSelectors';
+
+const useStyles = makeStyles((theme) => ({
+  fab: {
+    position: 'fixed',
+    bottom: theme.spacing(2),
+    right: theme.spacing(2),
+  },
+}));
 
 export function SkipboOverviewPage() {
+  const classes = useStyles();
+  const history = useHistory();
+  const authUser = useSelector(getAuthUser);
   const dispatch = useDispatch();
   const games = useSelector(getSkipboGames);
   const isLoading = useSelector(isSkipboGamesLoading);
@@ -85,6 +102,11 @@ export function SkipboOverviewPage() {
               yAxisTitle="Anzahl Gewinne"
             />
           </div>
+        )}
+        {!!authUser && (
+          <FloatingActionButton className={classes.fab} onClick={() => history.push(linkTo.skipboAddGame())}>
+            <Icon icon="add" />
+          </FloatingActionButton>
         )}
       </div>
     </Page>
