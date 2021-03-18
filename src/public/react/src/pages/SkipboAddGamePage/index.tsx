@@ -12,9 +12,9 @@ import { withAuth } from '../../hocs/withAuth';
 import Page from '../../components/Page';
 import TextField from '../../components/TextField';
 import Button from '../../components/Button';
-import Spinner, {Size} from '../../components/Spinner';
+import Spinner, { Size } from '../../components/Spinner';
 import { Autocomplete } from '@material-ui/lab';
-import Typography from "../../components/Typography";
+import Typography from '../../components/Typography';
 import styles from './SkipboAddGamePage.module.css';
 
 function SkipboOverviewPage() {
@@ -27,9 +27,7 @@ function SkipboOverviewPage() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(actionFetchSkipboGameWinners()).then((action) => {
-      !!action.payload?.length && setSelectedWinner(action.payload[0]);
-    });
+    dispatch(actionFetchSkipboGameWinners());
   }, [dispatch]);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -46,7 +44,6 @@ function SkipboOverviewPage() {
       }
     });
   };
-
   const isFormValid = (): boolean => !!selectedWinner && selectedWinner.trim() !== '' && !!playTime;
 
   return (
@@ -54,11 +51,24 @@ function SkipboOverviewPage() {
       <form className={styles.Form} onSubmit={handleSubmit}>
         <Typography variant="h5">Spiel hinzufügen</Typography>
         <Autocomplete
+          value={selectedWinner}
           freeSolo
           fullWidth
-          renderInput={(params) => <TextField {...params} label="Gewinner" variant="outlined" />}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              margin="normal"
+              label="Gewinner"
+              variant="outlined"
+              onChange={(e) => {
+                setSelectedWinner(e.currentTarget.value as string);
+              }}
+            />
+          )}
           options={winners}
-          onChange={(e, value) => setSelectedWinner(value as string)}
+          onChange={(e, value) => {
+            setSelectedWinner(value as string);
+          }}
           disabled={isLoading}
         />
         <DateTimePicker
@@ -69,7 +79,6 @@ function SkipboOverviewPage() {
           value={playTime}
           disablePast
           format="dd.MM.yyyy HH:mm"
-          showTodayButton
           margin="normal"
           fullWidth
           disabled={isLoading}
