@@ -11,16 +11,20 @@ import configureStore from './util/store';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import deLocale from 'date-fns/locale/de';
+import { ThemeProvider } from '@material-ui/core/styles';
+import {theme} from "./util/theme";
 
 initializeHighCharts();
 
 ReactDOM.render(
   <MuiPickersUtilsProvider utils={DateFnsUtils} locale={deLocale}>
-    <Provider store={configureStore()}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </Provider>
+    <ThemeProvider theme={theme}>
+      <Provider store={configureStore()}>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </Provider>
+    </ThemeProvider>
   </MuiPickersUtilsProvider>,
   document.getElementById('root'),
 );
