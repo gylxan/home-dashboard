@@ -28,7 +28,7 @@
 
 .LightGroup > *:first-child {
   display: grid;
-  grid-template-columns: 1.25em auto 0.2fr;
+  grid-template-columns: 1.25em auto min-content;
   grid-gap: 1rem;
   align-items: center;
 }

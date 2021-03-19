@@ -1,5 +1,7 @@
 import React from 'react';
-import { Card, Spinner } from 'react-bootstrap';
+import Spinner, {Size} from '../Spinner';
+import Card from '../Card';
+import Typography from '../Typography';
 import styles from './ReloadableCard.module.css';
 
 interface State {
@@ -52,18 +54,14 @@ class ReloadableCard extends React.PureComponent<Props, State> {
     const { title, children } = this.props;
     const { isLoading } = this.state;
     return (
-      <Card className="ReloadableStatisticCard">
-        <Card.Body>
-          <Card.Title>
-            <div className={styles.Header}>
-              <div>{title}</div>
-              {isLoading && (
-                <Spinner variant="secondary" as="span" animation="border" size="sm" role="status" aria-hidden="true" />
-              )}
-            </div>
-          </Card.Title>
-          <Card.Body>{children}</Card.Body>
-        </Card.Body>
+      <Card className="ReloadableStatisticCard" variant="outlined">
+        <Card.Content>
+          <div className={styles.Header}>
+            <Typography variant="subtitle1">{title}</Typography>
+            {isLoading && <Spinner size={Size.Small} />}
+          </div>
+          {children}
+        </Card.Content>
       </Card>
     );
   }

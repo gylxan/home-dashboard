@@ -1,6 +1,4 @@
-interface Routes {
-  [routeName: string]: string;
-}
+type Routes = Record<string, string>;
 
 // To be used with <Route path="..."> in components
 const routes: Routes = {
@@ -14,10 +12,7 @@ const routes: Routes = {
   user: '/user',
 };
 
-interface LinkTo {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [routeOrEntityName: string]: (...args: any[]) => string;
-}
+type LinkTo = Record<string, (...args: any[]) => string>;
 
 // To be used with <Link to="..."> in components
 export const linkTo: LinkTo = {

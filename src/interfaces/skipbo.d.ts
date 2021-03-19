@@ -1,4 +1,5 @@
 export interface SkipboGame {
+  _id?: string;
   playTime: string;
   winner: Player;
 }

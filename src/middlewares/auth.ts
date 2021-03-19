@@ -3,6 +3,7 @@ import { verify } from 'jsonwebtoken';
 import { NextFunction, Request, Response } from 'express';
 import { Code, createApiError } from '../helpers/error';
 import { getEnvVar } from '../helpers/environment';
+import { getUserId } from '../helpers/request';
 
 export const verifyToken = (req: Request, res: Response, next: NextFunction): Response | void => {
   const { authorization: bearer } = req.headers;
@@ -25,7 +26,7 @@ export const verifyToken = (req: Request, res: Response, next: NextFunction): Re
 export const verifyIsCurrentUser = (req: Request, res: Response, next: NextFunction): Response | void => {
   const user = req.body;
 
-  if (user.id !== req.params['userId']) {
+  if (user.id !== getUserId(req)) {
     return createApiError(res, 403, Code.Forbidden, 'Zugriff für den Benutzer nicht erlaubt');
   }
   next();

@@ -1,6 +1,4 @@
 import React, { useEffect } from 'react';
-import { Alert, CardColumns, Spinner } from 'react-bootstrap';
-import { getPageTitle } from '../../util/routes';
 import GeneralStatisticCard from '../../components/GeneralStatisticCard';
 import PieChartStatisticCard from '../../components/PieChartStatisticCard';
 import ColumnStatisticCard from '../../components/ColumnStatisticCard';
@@ -24,15 +22,34 @@ import {
   actionFetchSkipboLastPlayDayGames,
 } from '../../actions/skipboGameActions';
 
+import Spinner from '../../components/Spinner';
+import Alert from '../../components/Alert';
+import Page from '../../components/Page';
 import styles from './SkipboOverviewPage.module.css';
+import FloatingActionButton from '../../components/FloatingActionButton';
+import Icon from '../../components/Icon';
+import { makeStyles } from '@material-ui/core';
+import { linkTo } from '../../util/routes';
+import { useHistory } from 'react-router-dom';
+import { getAuthUser } from '../../selectors/authSelectors';
+
+const useStyles = makeStyles((theme) => ({
+  fab: {
+    position: 'fixed',
+    bottom: theme.spacing(2),
+    right: theme.spacing(2),
+  },
+}));
 
 export function SkipboOverviewPage() {
+  const classes = useStyles();
+  const history = useHistory();
+  const authUser = useSelector(getAuthUser);
   const dispatch = useDispatch();
   const games = useSelector(getSkipboGames);
   const isLoading = useSelector(isSkipboGamesLoading);
 
   useEffect(() => {
-    document.title = getPageTitle('Skip-Bo');
     dispatch(actionFetchSkipboGames());
   }, [dispatch]);
 
@@ -43,18 +60,18 @@ export function SkipboOverviewPage() {
   const skipboGamesHistory = useSelector(getSkipboGamesHistory);
 
   return (
-    <div className="SkipboOverviewPage">
+    <Page pageTitle="Skip-Bo" className="SkipboOverviewPage">
       <div className={styles.Content}>
         {games.length === 0 ? (
           isLoading ? (
             <div className={styles.LoadingSpinner}>
-              <Spinner variant="secondary" as="span" animation="border" role="status" aria-hidden="true" />
+              <Spinner />
             </div>
           ) : (
-            <Alert variant="primary">Füge ein Spiel hinzu, um Statistiken zu bekommen</Alert>
+            <Alert severity="info">Füge ein Spiel hinzu, um Statistiken zu bekommen</Alert>
           )
         ) : (
-          <CardColumns>
+          <div className={styles.Cards}>
             <GeneralStatisticCard
               title={'Allgemein'}
               fetchData={() => dispatch(actionFetchSkipboGameStatisticsGeneral())}
@@ -84,10 +101,15 @@ export function SkipboOverviewPage() {
               data={skipboGamesHistory}
               yAxisTitle="Anzahl Gewinne"
             />
-          </CardColumns>
+          </div>
+        )}
+        {!!authUser && (
+          <FloatingActionButton className={classes.fab} onClick={() => history.push(linkTo.skipboAddGame())}>
+            <Icon icon="add" />
+          </FloatingActionButton>
         )}
       </div>
-    </div>
+    </Page>
   );
 }
 

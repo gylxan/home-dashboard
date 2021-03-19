@@ -1,23 +1,10 @@
-import React from 'react';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { fas } from '@fortawesome/free-solid-svg-icons';
-import { far } from '@fortawesome/free-regular-svg-icons';
-import './App.module.css';
-import routes from './util/routes';
-import { Route, Switch } from 'react-router-dom';
-import HomePage from './pages/HomePage';
-import SkipboOverviewPage from './pages/SkipboOverviewPage';
-import SkipboAddGamePage from './pages/SkipboAddGamePage';
-import EntscheidomatPage from './pages/EntscheidomatPage';
+import React, { useState } from 'react';
 import Header from './components/Header';
-import SkipboTableOverviewPage from './pages/SkipboTableOverviewPage';
-import LightOverviewPage from 'pages/LightOverviewPage';
-import LoginPage from "./pages/LoginPage";
-import UserProfilePage from "./pages/UserProfilePage";
+import MainMenu from './components/MainMenu';
 
 import styles from './App.module.css';
+import Routes from './components/Routes';
 
-library.add(fas, far);
 // TODO
 // 3. Save location of game
 // 4. New Tile to control lights at home via hue
@@ -26,38 +13,13 @@ library.add(fas, far);
 // 7. ToDo List
 
 function App() {
+  const [isMenuOpen, setMenuOpen] = useState(false);
   return (
     <div className={styles.App}>
-      <header className={styles.Header}>
-        <Header />
-      </header>
+      <Header onMenuOpen={() => setMenuOpen(true)} />
+      <MainMenu open={isMenuOpen} onClose={() => setMenuOpen(false)} />
       <main className={styles.Main}>
-        <Switch>
-          <Route path={routes.skipboAddGame}>
-            <SkipboAddGamePage />
-          </Route>
-          <Route path={routes.skipboTable}>
-            <SkipboTableOverviewPage />
-          </Route>
-          <Route path={routes.skipbo}>
-            <SkipboOverviewPage />
-          </Route>
-          <Route path={routes.entscheidomat}>
-            <EntscheidomatPage />
-          </Route>
-          <Route path={routes.light}>
-            <LightOverviewPage />
-          </Route>
-          <Route path={routes.login}>
-            <LoginPage />
-          </Route>
-          <Route path={routes.user}>
-            <UserProfilePage />
-          </Route>
-          <Route path={routes.home}>
-            <HomePage />
-          </Route>
-        </Switch>
+        <Routes />
       </main>
     </div>
   );

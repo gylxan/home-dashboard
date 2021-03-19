@@ -3,6 +3,7 @@ import * as DataStore from 'nedb';
 import { SkipboGame } from '../interfaces/skipbo';
 import { verifyToken } from '../middlewares/auth';
 import { getEnvVar } from '../helpers/environment';
+import {getUserId} from "../helpers/request";
 
 const router = Router();
 export const db = new DataStore({ filename: getEnvVar('DB_DIR') + '/games.db', autoload: true });
@@ -20,6 +21,7 @@ router
   })
   .post(verifyToken, (req, res) => {
     db.insert({ playTime: req.body.playTime, winner: req.body.winner }, function (error: unknown, docs: SkipboGame) {
+      console.log(`User ${getUserId(req)} added skipbo game with id ${docs._id}`);
       res.send(docs);
     });
   });
@@ -49,8 +51,12 @@ router
   // Delete one by id
   .delete(verifyToken, (req, res) => {
     db.remove({ _id: req.params.id }, (error: unknown, removedItems) => {
-      console.log(`Removed ${removedItems} skipbo game(s) for id ${req.params.id}`);
-      res.send();
+      console.log(`User ${getUserId(req)} removed ${removedItems} skipbo game(s) for id ${req.params.id}`);
+      db.find({})
+        .sort({ playTime: -1 })
+        .exec(function (err, docs) {
+          res.send(docs);
+        });
     });
   });
 export default router;

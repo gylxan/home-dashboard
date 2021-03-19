@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
@@ -8,17 +7,24 @@ import { BrowserRouter } from 'react-router-dom';
 import { initializeHighCharts } from './util/highcharts';
 import { Provider } from 'react-redux';
 import configureStore from './util/store';
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
+import deLocale from 'date-fns/locale/de';
+import { ThemeProvider } from '@material-ui/core/styles';
+import {theme} from "./util/theme";
 
 initializeHighCharts();
 
 ReactDOM.render(
-  <React.StrictMode>
-    <Provider store={configureStore()}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </Provider>
-  </React.StrictMode>,
+  <MuiPickersUtilsProvider utils={DateFnsUtils} locale={deLocale}>
+    <ThemeProvider theme={theme}>
+      <Provider store={configureStore()}>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </Provider>
+    </ThemeProvider>
+  </MuiPickersUtilsProvider>,
   document.getElementById('root'),
 );
 

@@ -1,6 +1,7 @@
-.Column {
-  margin-top: 15px;
-  margin-bottom: 15px;
+.HomePage {
   display: flex;
+  flex-direction: row;
+  gap: 1rem;
   justify-content: center;
+  flex-wrap: wrap;
 }

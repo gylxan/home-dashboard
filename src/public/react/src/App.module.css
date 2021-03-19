@@ -1,18 +1,12 @@
 .App {
   min-height: 100vh;
+  display: grid;
+  grid-template-rows: min-content auto;
+}
+
+.Main {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-}
-
-.Header {
-  position: fixed;
-  top: 0;
-  width: 100%;
-  z-index: 1;
-}
-
-.Main {
-  margin-top: 4rem; /* Add a top margin to avoid content overlay */
 }

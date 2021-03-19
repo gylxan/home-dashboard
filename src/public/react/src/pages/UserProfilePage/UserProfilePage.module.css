@@ -1,14 +1,14 @@
-.SubTitle {
-  margin-top: 4rem;
-}
-
 .Form {
+  margin-top: 4rem;
   border: 1px solid rgba(0, 0, 0, 0.125);
   border-radius: 15px;
   padding: 1rem 1rem 1rem 1rem;
   width: 90vw;
 }
 
+.Form > h5 {
+  text-align: center;
+}
 
 @media (min-width: 768px) {
   .Form {

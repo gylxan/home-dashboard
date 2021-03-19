@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Form, Spinner } from 'react-bootstrap';
 import { linkTo } from '../../util/routes';
 import { useHistory } from 'react-router-dom';
 
@@ -9,14 +8,17 @@ import DateTimePicker from '../../components/DateTimePicker';
 import { getSkipboGameWinners, isSkipboGamesLoading } from '../../selectors/skipboGamesSelectors';
 import { useDispatch, useSelector } from 'react-redux';
 import { actionAddSkipboGame, actionFetchSkipboGameWinners } from '../../actions/skipboGameActions';
-import styles from './SkipboAddGamePage.module.css';
 import { withAuth } from '../../hocs/withAuth';
-
-const NEW_WINNER = '-1';
+import Page from '../../components/Page';
+import TextField from '../../components/TextField';
+import Button from '../../components/Button';
+import Spinner, { Size } from '../../components/Spinner';
+import { Autocomplete } from '@material-ui/lab';
+import Typography from '../../components/Typography';
+import styles from './SkipboAddGamePage.module.css';
 
 function SkipboOverviewPage() {
-  const [selectedWinner, setSelectedWinner] = useState(NEW_WINNER);
-  const [insertedWinner, setInsertedWinner] = useState('');
+  const [selectedWinner, setSelectedWinner] = useState('');
   const [playTime, setPlayTime] = useState(new Date());
   const history = useHistory();
   const isLoading = useSelector(isSkipboGamesLoading);
@@ -25,9 +27,7 @@ function SkipboOverviewPage() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(actionFetchSkipboGameWinners()).then((action) => {
-      !!action.payload?.length && setSelectedWinner(action.payload[0]);
-    });
+    dispatch(actionFetchSkipboGameWinners());
   }, [dispatch]);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -36,7 +36,7 @@ function SkipboOverviewPage() {
     dispatch(
       actionAddSkipboGame({
         playTime: playTime.toISOString(),
-        winner: { name: selectedWinner === NEW_WINNER ? insertedWinner : selectedWinner },
+        winner: { name: selectedWinner },
       }),
     ).then((action) => {
       if (!action.payload.error) {
@@ -44,71 +44,62 @@ function SkipboOverviewPage() {
       }
     });
   };
-
-  const handleSelectedWinnerChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
-    const value = e.currentTarget.value;
-    setSelectedWinner(value);
-  };
-
-  const handlePlayTimeChange = (date: Date): void => {
-    setPlayTime(date);
-  };
-
-  const isFormValid = (): boolean => {
-    return selectedWinner !== NEW_WINNER || (selectedWinner === NEW_WINNER && insertedWinner.trim() !== '');
-  };
+  const isFormValid = (): boolean => !!selectedWinner && selectedWinner.trim() !== '' && !!playTime;
 
   return (
-    <div className="SkipboAddGamePage">
-      <Form onSubmit={handleSubmit}>
-        <Form.Group controlId="winner">
-          <Form.Label>Gewinner</Form.Label>
-          {isLoading ||
-            (winners.length >= 1 && selectedWinner !== NEW_WINNER && (
-              <Form.Control autoFocus required value={selectedWinner} as="select" onChange={handleSelectedWinnerChange}>
-                {winners.map((winner: string) => (
-                  <option key={winner} value={winner}>
-                    {winner}
-                  </option>
-                ))}
-                <option key={'new-winner'} value={NEW_WINNER}>
-                  Gewinner eingeben...
-                </option>
-              </Form.Control>
-            ))}
-          {(winners.length === 0 || selectedWinner === NEW_WINNER) && !isLoading && (
-            <Form.Control
-              autoFocus
-              required
-              value={insertedWinner}
-              type="text"
-              placeholder="Gebe den Gewinner ein"
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInsertedWinner(e.currentTarget.value)}
+    <Page pageTitle="Skip-Bo" className="SkipboAddGamePage">
+      <form className={styles.Form} onSubmit={handleSubmit}>
+        <Typography variant="h5">Spiel hinzufügen</Typography>
+        <Autocomplete
+          value={selectedWinner}
+          freeSolo
+          fullWidth
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              margin="normal"
+              label="Gewinner"
+              variant="outlined"
+              onChange={(e) => {
+                setSelectedWinner(e.currentTarget.value as string);
+              }}
             />
           )}
-        </Form.Group>
-        <Form.Group controlId="playTime">
-          <Form.Label>Spielzeitpunkt</Form.Label>
-          <Form.Group>
-            <DateTimePicker onChange={handlePlayTimeChange} selected={playTime} />
-          </Form.Group>
-        </Form.Group>
+          options={winners}
+          onChange={(e, value) => {
+            setSelectedWinner(value as string);
+          }}
+          disabled={isLoading}
+        />
+        <DateTimePicker
+          variant="inline"
+          inputVariant="outlined"
+          label="Spielzeitpunkt"
+          onChange={(e) => setPlayTime(e as Date)}
+          value={playTime}
+          disablePast
+          format="dd.MM.yyyy HH:mm"
+          margin="normal"
+          fullWidth
+          disabled={isLoading}
+        />
+
         <div className={styles.ButtonControlBar}>
-          <LinkButton to={linkTo.skipbo()} variant="secondary" type="button" disabled={isLoading}>
+          <LinkButton to={linkTo.skipbo()} color="secondary" variant="contained" type="button" disabled={isLoading}>
             Zurück
           </LinkButton>
-          <Button variant="primary" type="submit" disabled={isLoading || !isFormValid()}>
-            {isLoading ? (
-              <>
-                <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" /> Lade...
-              </>
-            ) : (
-              'Hinzufügen'
-            )}
+          <Button
+            startIcon={isLoading && <Spinner size={Size.Small} color="inherit" />}
+            variant="contained"
+            color="primary"
+            type="submit"
+            disabled={isLoading || !isFormValid()}
+          >
+            {isLoading ? 'Lade...' : 'Hinzufügen'}
           </Button>
         </div>
-      </Form>
-    </div>
+      </form>
+    </Page>
   );
 }
 

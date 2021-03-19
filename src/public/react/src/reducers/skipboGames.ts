@@ -39,16 +39,10 @@ const skipboGamesReducer = (state: SkipboGamesState = initialState, action: AnyA
       };
 
     case getType(ActionTypes.SKIPBO_GAMES_FETCH, ActionType.SUCCESS):
-      return {
-        ...state,
-        games: action.payload,
-        isLoading: false,
-      };
-
     case getType(ActionTypes.SKIPBO_GAMES_DELETE, ActionType.SUCCESS):
       return {
         ...state,
-        games: state.games.filter((game) => game._id !== action.payload.gameId),
+        games: action.payload,
         isLoading: false,
       };
 

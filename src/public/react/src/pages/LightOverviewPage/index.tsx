@@ -1,7 +1,5 @@
 import React, { useEffect } from 'react';
-import { Form, Spinner } from 'react-bootstrap';
 import { getPageTitle } from '../../util/routes';
-import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import Icon from '../../components/Icon';
 import classNames from 'classnames';
 
@@ -9,13 +7,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getLightGroupsByType, isLightsLoading } from '../../selectors/lightsSelectors';
 import { actionFetchLightGroups, actionUpdateLightGroup } from '../../actions/lightActions';
 import styles from './LightOverViewPage.module.css';
-import {withAuth} from "../../hocs/withAuth";
+import { withAuth } from '../../hocs/withAuth';
+import Page from '../../components/Page';
+import Switch from '../../components/Switch';
+import Spinner from '../../components/Spinner';
+import Slider from '../../components/Slider';
+import Typography from "../../components/Typography";
 
-const GroupClassIconMapping: Record<string, IconProp> = {
-  Kitchen: 'coffee',
-  'Living room': 'couch',
-  Bedroom: 'bed',
-  Dining: 'utensils',
+const GroupClassIconMapping: Record<string, string> = {
+  Kitchen: 'kitchen',
+  'Living room': 'weekend',
+  Bedroom: 'local_hotel',
+  Dining: 'local_dining',
   Downstairs: 'home',
 };
 
@@ -40,20 +43,20 @@ function LightOverviewPage() {
     }
   };
 
-  const setBrightness = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    console.log(e.currentTarget.value);
+  const setBrightness = (value: number): void => {
+    console.log(value);
   };
 
   return (
-    <div className={styles.LightOverviewPage}>
+    <Page pageTitle="Licht" className={styles.LightOverviewPage}>
       {isLoading && Object.keys(lightGroupsByType).length === 0 ? (
         <div className={styles.LoadingSpinner}>
-          <Spinner variant="secondary" as="span" animation="border" role="status" aria-hidden="true" />
+          <Spinner color="primary" />
         </div>
       ) : (
         Object.values(lightGroupsByType).map((typeGroup) => (
-          <>
-            <h6>{getTypeName(typeGroup.type)}</h6>
+          <React.Fragment key={typeGroup.type}>
+            <Typography variant="h6">{getTypeName(typeGroup.type)}</Typography>
             <div className="LightGroups">
               {typeGroup.groups.map((group) => {
                 const { _data: data } = group;
@@ -61,32 +64,31 @@ function LightOverviewPage() {
                 return (
                   <div className={classNames(styles.LightGroup, { [styles.Enabled]: isOn })} key={data.id}>
                     <div>
-                      <Icon icon={GroupClassIconMapping[data.class] ?? ['far', 'lightbulb']} />
-                      {group._data.name}
-                      <Form.Switch
-                        id={`light-group-${data.id}-switch`}
+                      <Icon icon={GroupClassIconMapping[data.class] ?? 'emoji_objects_outlined'} />
+                      <Typography variant="body1">{group._data.name}</Typography>
+                      <Switch
+                        color="primary"
                         className={styles.Switch}
                         checked={isOn}
                         onChange={() => dispatch(actionUpdateLightGroup(data.id, !isOn))}
                       />
                     </div>
                     {false && (
-                      <Form.Control
-                        type="range"
-                        className={styles.BrightnessRange}
+                      <Slider
                         value={data.action?.bri ?? 0}
+                        // @ts-ignore
+                        onChange={(e, value) => setBrightness(value as number)}
                         max={MAX_BRIGHTNESS}
-                        onChange={setBrightness}
                       />
                     )}
                   </div>
                 );
               })}
             </div>
-          </>
+          </React.Fragment>
         ))
       )}
-    </div>
+    </Page>
   );
 }
 
