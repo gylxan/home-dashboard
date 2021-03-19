@@ -9,7 +9,7 @@ import { getSkipboGames, isSkipboGamesLoading } from '../../selectors/skipboGame
 import { actionDeleteSkipboGame, actionFetchSkipboGames } from '../../actions/skipboGameActions';
 import { connect, useSelector } from 'react-redux';
 import { getAuthUser } from '../../selectors/authSelectors';
-import Spinner, {Size} from '../../components/Spinner';
+import Spinner, { Size } from '../../components/Spinner';
 import Alert from '../../components/Alert';
 import Table from '../../components/Table';
 import IconButton from 'components/IconButton';
@@ -22,14 +22,17 @@ export type Props = StateProps & DispatchProps;
 function SkipboTableOverviewPage({ isLoading, games, fetchSkipboGames, deleteSkipboGame }: Props) {
   const user = useSelector(getAuthUser);
   const [menuAnchorEl, setMenuAnchorEl] = React.useState<HTMLButtonElement | null>(null);
+  const [currentGameId, setCurrentGameId] = React.useState<string | null>(null);
   const open = Boolean(menuAnchorEl);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setMenuAnchorEl(event.currentTarget);
+    setCurrentGameId(event.currentTarget.value);
   };
 
   const handleClose = () => {
     setMenuAnchorEl(null);
+    setCurrentGameId(null);
   };
 
   useEffect(() => {
@@ -64,11 +67,18 @@ function SkipboTableOverviewPage({ isLoading, games, fetchSkipboGames, deleteSki
                   ) : (
                     !!user && (
                       <div>
-                        <IconButton aria-haspopup="true" onClick={handleClick} size="small">
+                        <IconButton aria-haspopup="true" onClick={handleClick} size="small" value={game._id}>
                           <Icon icon="more_vert" />
                         </IconButton>
                         <Menu anchorEl={menuAnchorEl} keepMounted open={open} onClose={handleClose}>
-                          <Menu.Item onClick={() => deleteSkipboGame(game._id as string)}>Löschen</Menu.Item>
+                          <Menu.Item
+                            onClick={() => {
+                              deleteSkipboGame(currentGameId as string);
+                              handleClose();
+                            }}
+                          >
+                            Löschen
+                          </Menu.Item>
                         </Menu>
                       </div>
                     )
