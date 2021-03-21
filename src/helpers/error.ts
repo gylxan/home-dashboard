@@ -9,6 +9,8 @@ export enum Code {
   InvalidCredentials = 'invalidCredentials',
   Unauthorized = 'unauthorized',
   MissingToken = 'missingToken',
+  TokenExpired = 'tokenExpired',
+  RefreshTokenInvalid = 'refreshTokenInvalid',
   Forbidden = 'forbidden',
 }
 
