@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { verifyIsCurrentUser, verifyToken } from '../middlewares/auth';
 import { hashSync } from 'bcryptjs';
-import { db } from './login';
+import { db } from './auth';
 
 const router = Router();
 export const ROUTE = '/users';
