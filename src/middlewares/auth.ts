@@ -1,4 +1,4 @@
-import { verify } from 'jsonwebtoken';
+import { TokenExpiredError, verify } from 'jsonwebtoken';
 
 import { NextFunction, Request, Response } from 'express';
 import { Code, createApiError } from '../helpers/error';
@@ -16,6 +16,9 @@ export const verifyToken = (req: Request, res: Response, next: NextFunction): Re
 
   verify(bearerToken, getEnvVar('JWT_TOKEN_SECRET') as string, (err, decoded) => {
     if (err) {
+      if (err instanceof TokenExpiredError) {
+        return createApiError(res, 403, Code.TokenExpired, 'Token ist abgelaufen');
+      }
       return createApiError(res, 401, Code.Unauthorized, 'Unautorisiert');
     }
     req.params['userId'] = (decoded as { id: string }).id;

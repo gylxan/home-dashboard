@@ -1,6 +1,6 @@
 import { isEmpty } from '../helpers/string';
 import { Code, createApiError } from '../helpers/error';
-import { db } from '../controllers/login';
+import { db } from '../controllers/auth';
 import { NextFunction, Request, Response } from 'express';
 
 export const checkDuplicateUser = (req: Request, res: Response, next: NextFunction): void => {
