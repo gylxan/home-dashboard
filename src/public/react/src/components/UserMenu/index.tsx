@@ -67,7 +67,7 @@ const UserMenu: React.FC<Props> = ({ className }) => {
             </Menu.Item>
             <Menu.Item
               onClick={() => {
-                dispatch(actionLogout());
+                dispatch(actionLogout(user?.refreshToken ?? ''));
                 handleUserMenuClose();
               }}
             >

@@ -17,6 +17,7 @@ export default {
 
   LOGIN: 'LOGIN',
   LOGOUT: 'LOGOUT',
+  REFRESH_TOKEN: 'REFRESH_TOKEN',
 
   USER_UPDATE: 'USER_UPDATE',
 };

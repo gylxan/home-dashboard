@@ -1,14 +1,15 @@
-import React, { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react';
+import React, { ChangeEvent, FormEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { actionLogin, actionLogout } from '../../actions/loginActions';
-import { getAuthError, isAuthLoading } from '../../selectors/authSelectors';
+import { getAuthError, getAuthUser, isAuthLoading } from '../../selectors/authSelectors';
 import { useHistory } from 'react-router-dom';
 import { setUser } from '../../util/localStorage';
 import Page from '../../components/Page';
 import Typography from '../../components/Typography';
 import TextField from '../../components/TextField';
 import Button from '../../components/Button';
+import { linkTo } from '../../util/routes';
 
 import styles from './LoginPage.module.css';
 
@@ -18,6 +19,7 @@ export interface Props {
 
 const LoginPage: React.FC<Props> = ({ redirect = true }) => {
   const [credentials, setCredentials] = useState({ username: '', password: '' });
+  const authUser = useSelector(getAuthUser);
   const dispatch = useDispatch();
   const isAuthenticating = useSelector(isAuthLoading);
   const error = useSelector(getAuthError);
@@ -25,8 +27,8 @@ const LoginPage: React.FC<Props> = ({ redirect = true }) => {
   const history = useHistory();
 
   useEffect(() => {
-    dispatch(actionLogout());
-  }, [dispatch]);
+    dispatch(actionLogout(authUser?.refreshToken ?? ''));
+  }, []);
 
   const handleSubmit = (event: FormEvent): void => {
     event.preventDefault();
@@ -35,7 +37,7 @@ const LoginPage: React.FC<Props> = ({ redirect = true }) => {
         usernameInputRef.current?.focus();
       } else {
         setUser(action.payload);
-        redirect && history.push('/');
+        redirect && history.push(linkTo.home());
       }
     });
   };

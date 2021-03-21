@@ -16,6 +16,7 @@ export function actionAddSkipboGame(game: SkipboGame) {
     method: ApiMethod.POST,
     url: `skipbo`,
     payload: game,
+    authRequired: true
   });
 }
 
@@ -25,6 +26,7 @@ export const actionDeleteSkipboGame = (gameId: string) =>
     method: ApiMethod.DELETE,
     url: `skipbo/${gameId}`,
     payload: { gameId },
+    authRequired: true
   });
 
 export const actionFetchSkipboGameWinners = () =>

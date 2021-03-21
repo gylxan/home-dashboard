@@ -35,6 +35,7 @@ const authReducer = (state: AuthState = initialState, action: AnyAction): AuthSt
       };
 
     case getType(ActionTypes.USER_UPDATE, ActionType.SUCCESS):
+    case getType(ActionTypes.REFRESH_TOKEN, ActionType.SUCCESS):
     return {
       ...state,
       user: {

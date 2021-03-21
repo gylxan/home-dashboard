@@ -1,7 +1,6 @@
-import { createDispatchAction, createLocalAction, createThunkAction } from './helpers';
+import { createThunkAction } from './helpers';
 import ActionTypes from './actionTypes';
-import { ActionType, ApiMethod, getType } from '../middlewares/api';
-import { Dispatch } from 'redux';
+import { ApiMethod } from '../middlewares/api';
 import { clearUser } from '../util/localStorage';
 
 export const actionLogin = (username: string, password: string) =>
@@ -12,20 +11,20 @@ export const actionLogin = (username: string, password: string) =>
     payload: { username, password },
   });
 
-export const actionLogout = () => {
-  return createDispatchAction((dispatch: Dispatch) => {
-    dispatch(
-      createLocalAction({
-        type: getType(ActionTypes.LOGOUT, ActionType.REQUEST),
-      }),
-    );
-
-    clearUser();
-
-    dispatch(
-      createLocalAction({
-        type: getType(ActionTypes.LOGOUT, ActionType.SUCCESS),
-      }),
-    );
+export const actionLogout = (refreshToken: string) => {
+  clearUser();
+  return createThunkAction({
+    type: ActionTypes.LOGOUT,
+    method: ApiMethod.POST,
+    url: 'logout',
+    payload: { refreshToken },
   });
 };
+
+export const actionRefreshToken = (refreshToken: string) =>
+  createThunkAction({
+    type: ActionTypes.REFRESH_TOKEN,
+    method: ApiMethod.POST,
+    url: `token`,
+    payload: { refreshToken },
+  });

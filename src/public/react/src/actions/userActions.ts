@@ -8,4 +8,5 @@ export const actionUpdateUser = ({ id, password }: { id: string; password?: stri
     method: ApiMethod.PUT,
     url: `users/${id}`,
     payload: { id, password },
+    authRequired: true
   });

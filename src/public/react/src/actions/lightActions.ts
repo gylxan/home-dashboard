@@ -15,4 +15,5 @@ export const actionUpdateLightGroup = (id: string, on: boolean) =>
     method: ApiMethod.PUT,
     url: `light/groups/${id}`,
     payload: { on },
+    authRequired: true,
   });
