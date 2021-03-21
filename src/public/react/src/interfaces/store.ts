@@ -19,6 +19,7 @@ export interface ReduxThunkAction<D = any, A = any> {
   data?: {
     errors: Error[];
   };
+  authRequired?: boolean;
 }
 
 export type ReduxDispatchAction = (dispatch: Dispatch) => void;
