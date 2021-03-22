@@ -3,7 +3,7 @@ import * as DataStore from 'nedb';
 import { SkipboGame } from '../interfaces/skipbo';
 import { verifyToken } from '../middlewares/auth';
 import { getEnvVar } from '../helpers/environment';
-import {getUserId} from "../helpers/request";
+import { getUserId } from '../helpers/request';
 
 const router = Router();
 export const db = new DataStore({ filename: getEnvVar('DB_DIR') + '/games.db', autoload: true });

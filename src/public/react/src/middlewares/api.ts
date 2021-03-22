@@ -9,6 +9,7 @@ import { history } from '../util/history';
 import { getUser, setUser } from '../util/localStorage';
 import { User } from '../interfaces/user';
 import { actionRefreshToken } from '../actions/loginActions';
+import { Code } from '../util/error';
 
 export enum ApiMethod {
   GET = 'get',
@@ -60,7 +61,10 @@ const isAccessTokenExpired = (store: MiddlewareAPI): boolean => {
 };
 
 const isTokenError = (error: AxiosError): boolean =>
-  error.response?.data?.error?.code === 'refreshTokenInvalid' || error.response?.data?.error?.code === 'tokenExpired';
+  error.response?.data?.error?.code === Code.RefreshTokenInvalid ||
+  error.response?.data?.error?.code === Code.TokenExpired;
+
+const isUnauthorized = (error: AxiosError): boolean => error.response?.status === 401;
 
 export const api: Middleware = (store) => (next) => async (action: ReduxAction) => {
   if (!isThunkAction(action)) {
@@ -74,7 +78,7 @@ export const api: Middleware = (store) => (next) => async (action: ReduxAction) 
   }
 
   const handleError = (error: AxiosError) => {
-    if (isTokenError(error)) {
+    if (isTokenError(error) || isUnauthorized(error)) {
       history.push(linkTo.login());
     }
 

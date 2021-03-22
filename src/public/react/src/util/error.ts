@@ -1,5 +1,7 @@
 export enum Code {
   InvalidClientVersion = 'invalidClientVersion',
+  RefreshTokenInvalid = 'refreshTokenInvalid',
+  TokenExpired = 'tokenExpired',
 }
 
 export interface Error {
