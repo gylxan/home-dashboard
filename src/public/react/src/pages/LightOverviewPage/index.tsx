@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react';
-import { getPageTitle } from '../../util/routes';
+import React from 'react';
 import Icon from '../../components/Icon';
 import classNames from 'classnames';
 
