@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { linkTo } from '../../util/routes';
 import { useHistory } from 'react-router-dom';
 
@@ -16,6 +16,7 @@ import Spinner, { Size } from '../../components/Spinner';
 import { Autocomplete } from '@material-ui/lab';
 import Typography from '../../components/Typography';
 import styles from './SkipboAddGamePage.module.css';
+import { useComponentDidMount } from '../../hocs/useComponentDidMount';
 
 function SkipboOverviewPage() {
   const [selectedWinner, setSelectedWinner] = useState('');
@@ -26,9 +27,9 @@ function SkipboOverviewPage() {
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
+  useComponentDidMount(() => {
     dispatch(actionFetchSkipboGameWinners());
-  }, [dispatch]);
+  });
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();

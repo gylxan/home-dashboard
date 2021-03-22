@@ -7,3 +7,5 @@ export const isAuthLoading = (state: RootState): boolean => state.auth.isLoading
 export const getAuthUser = (state: RootState): User | undefined => state.auth.user;
 
 export const getAuthError = (state: RootState): Error | undefined => state.auth.error;
+
+export const getAuthUserRefreshToken = (state: RootState): string => state.auth.user?.refreshToken ?? '';

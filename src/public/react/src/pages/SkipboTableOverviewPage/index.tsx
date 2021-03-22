@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react';
-import { getPageTitle } from '../../util/routes';
+import React from 'react';
 import { getFormattedDate } from '../../util/date';
 import Icon from '../../components/Icon';
 import { getSkipboGames, isSkipboGamesLoading } from '../../selectors/skipboGamesSelectors';
@@ -13,6 +12,7 @@ import Menu from '../../components/Menu';
 import Page from '../../components/Page';
 import { actionDeleteSkipboGame, actionFetchSkipboGames } from '../../actions/skipboGameActions';
 import styles from './SkipboTableOverviewPage.module.css';
+import { useComponentDidMount } from '../../hocs/useComponentDidMount';
 
 function SkipboTableOverviewPage() {
   const user = useSelector(getAuthUser);
@@ -34,10 +34,9 @@ function SkipboTableOverviewPage() {
     setCurrentGameId(null);
   };
 
-  useEffect(() => {
-    document.title = getPageTitle('Skip-Bo');
+  useComponentDidMount(() => {
     dispatch(actionFetchSkipboGames());
-  }, [dispatch]);
+  });
 
   return (
     <Page pageTitle="Skip-Bo" className="SkipboTableOverviewPage">

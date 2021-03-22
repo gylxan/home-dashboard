@@ -8,7 +8,7 @@ import Icon from '../../components/Icon';
 import Page from '../../components/Page';
 import TextField from '../../components/TextField';
 import Button from '../../components/Button';
-import Spinner, {Size} from '../../components/Spinner';
+import Spinner, { Size } from '../../components/Spinner';
 import Typography from '../../components/Typography';
 import styles from './UserProfilePage.module.css';
 
@@ -82,7 +82,11 @@ const UserProfilePage: React.FC = () => {
         />
         <Button
           startIcon={
-            isLoading ? <Spinner size={Size.Small} color="inherit" /> : showSuccess ? <Icon icon="check_circle" /> : null
+            isLoading ? (
+              <Spinner size={Size.Small} color="inherit" />
+            ) : showSuccess ? (
+              <Icon icon="check_circle" />
+            ) : null
           }
           color="primary"
           type="submit"

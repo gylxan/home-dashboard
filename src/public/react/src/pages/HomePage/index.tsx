@@ -1,6 +1,5 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Board } from '../../interfaces/board';
-import { getPageTitle } from 'util/routes';
 import Tile from './Tile';
 import { DEFAULT_COLORS } from '../../util/colors';
 import cardGameIcon from '../../assets/icons/card-game.png';
@@ -12,7 +11,9 @@ import { connect } from 'react-redux';
 import { actionFetchBoards } from '../../actions/boardActions';
 
 import { getBoards, getBoardsLoading } from '../../selectors/boardSelectors';
-import Spinner from "../../components/Spinner";
+import Spinner from '../../components/Spinner';
+import { useComponentDidMount } from '../../hocs/useComponentDidMount';
+import Page from '../../components/Page';
 import styles from './HomePage.module.css';
 
 const BOARD_IMAGE_PATHS: { [gameName: string]: string } = {
@@ -24,17 +25,16 @@ const BOARD_IMAGE_PATHS: { [gameName: string]: string } = {
 export type Props = StateProps & DispatchProps;
 
 export function HomePage({ boards, isLoading, fetchBoards }: Props) {
-  useEffect(() => {
-    document.title = getPageTitle();
+  useComponentDidMount(() => {
     fetchBoards();
-  }, [fetchBoards]);
+  });
 
   if (isLoading && boards.length === 0) {
     return <Spinner />;
   }
 
   return (
-    <div className={styles.HomePage}>
+    <Page className={styles.HomePage}>
       {boards.map((board, index) => (
         <Tile
           key={board.name}
@@ -45,7 +45,7 @@ export function HomePage({ boards, isLoading, fetchBoards }: Props) {
           imagePath={BOARD_IMAGE_PATHS[board.name] || undefined}
         />
       ))}
-    </div>
+    </Page>
   );
 }
 

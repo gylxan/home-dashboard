@@ -12,7 +12,8 @@ import Page from '../../components/Page';
 import Switch from '../../components/Switch';
 import Spinner from '../../components/Spinner';
 import Slider from '../../components/Slider';
-import Typography from "../../components/Typography";
+import Typography from '../../components/Typography';
+import { useComponentDidMount } from '../../hocs/useComponentDidMount';
 
 const GroupClassIconMapping: Record<string, string> = {
   Kitchen: 'kitchen',
@@ -29,10 +30,9 @@ function LightOverviewPage() {
   const lightGroupsByType = useSelector(getLightGroupsByType);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    document.title = getPageTitle('Skip-Bo');
+  useComponentDidMount(() => {
     dispatch(actionFetchLightGroups());
-  }, [dispatch]);
+  });
 
   const getTypeName = (type: string): string => {
     switch (type) {

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import GeneralStatisticCard from '../../components/GeneralStatisticCard';
 import PieChartStatisticCard from '../../components/PieChartStatisticCard';
 import ColumnStatisticCard from '../../components/ColumnStatisticCard';
@@ -32,6 +32,7 @@ import { makeStyles } from '@material-ui/core';
 import { linkTo } from '../../util/routes';
 import { useHistory } from 'react-router-dom';
 import { getAuthUser } from '../../selectors/authSelectors';
+import { useComponentDidMount } from '../../hocs/useComponentDidMount';
 
 const useStyles = makeStyles((theme) => ({
   fab: {
@@ -49,9 +50,9 @@ export function SkipboOverviewPage() {
   const games = useSelector(getSkipboGames);
   const isLoading = useSelector(isSkipboGamesLoading);
 
-  useEffect(() => {
+  useComponentDidMount(() => {
     dispatch(actionFetchSkipboGames());
-  }, [dispatch]);
+  });
 
   const generalStatistic = useSelector(getSkipboGamesStatisticsGeneral);
   const skipboTopWinners = useSelector(getSkipboGamesTopWinners);
