@@ -9,14 +9,14 @@
   },
   "main": "start.js",
   "scripts": {
-    "postinstall": "(cd ./src/public/react && npm install)",
+    "postinstall": "(cd src/client && npm install)",
     "start": "NODE_ENV=production node ./build/start.js",
     "start:dev": "concurrently --kill-others-on-fail \"npm run start:dev-server\" \"npm run start:dev-client\"",
     "start:dev-server": "nodemon --config \"./utils/nodemon.json\"/",
-    "start:dev-client": "cd ./src/public/react && npm start",
+    "start:dev-client": "cd src/client && npm start",
     "build": "./utils/build.sh",
     "lint": "eslint 'src/**/*.{js,ts,tsx}'",
-    "prettify": "prettier --write 'src/public/react/src/**/*.{js,css,json,ts,tsx}' 'src/**/!(public)/*.{js,css,json,ts,tsx}'"
+    "prettify": "prettier --write 'src/client/src/**/*.{js,css,json,ts,tsx}' 'src/**/!(public)/*.{js,css,json,ts,tsx}'"
   },
   "dependencies": {
     "@types/bcryptjs": "^2.4.2",

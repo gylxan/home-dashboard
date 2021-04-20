@@ -51,7 +51,7 @@ class Server {
   }
 
   private serveFrontend(): void {
-    const dir = path.join(__dirname, 'public/client/');
+    const dir = path.join(__dirname, '../client/');
     // Set the static and views directory
     this.app.set('views', dir);
     this.app.use(express.static(dir));

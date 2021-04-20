@@ -18,7 +18,7 @@ const getCurrentVersion = (): string => {
     return DEFAULT_VERSION;
   }
 
-  const dir = path.join(__dirname, '../public/client/static/js/');
+  const dir = path.join(__dirname, '../../client/static/js/');
   let version = DEFAULT_VERSION;
   fs.readdirSync(dir).forEach((file) => {
     if (file.startsWith('main') && file.endsWith('.js')) {

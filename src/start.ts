@@ -5,8 +5,8 @@ const argv = minimist(process.argv.slice(2));
 // Load .env file before importing server and other things
 config({ path: argv.config_path || path.resolve(process.cwd(), '.env') });
 
-import Server from './Server';
-import { getEnvVar, getNonFilledRequiredEnvVars } from './helpers/environment';
+import Server from './server/Server';
+import { getEnvVar, getNonFilledRequiredEnvVars } from './server/helpers/environment';
 
 const nonFilledRequiredEnvVars = getNonFilledRequiredEnvVars();
 if (getNonFilledRequiredEnvVars().length >= 1) {
