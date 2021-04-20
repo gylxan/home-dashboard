@@ -69,7 +69,7 @@ const LoginPage: React.FC<Props> = ({ redirect = true }) => {
         <TextField
           name="password"
           variant="outlined"
-          label="Password"
+          label="Passwort"
           required
           type="password"
           value={credentials.password}

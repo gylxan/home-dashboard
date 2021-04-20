@@ -45,12 +45,12 @@ const UserProfilePage: React.FC = () => {
 
   return (
     <Page pageTitle="Profil">
-      <h2>Hi {user?.username}!</h2>
+      <Typography variant="h2">Hi {user?.username}!</Typography>
 
       <form onSubmit={handleSubmit} className={styles.Form}>
         <Typography variant="h5">Passwort ändern</Typography>
         <TextField
-          label="Neues Password"
+          label="Neues Passwort"
           variant="outlined"
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             setShowSuccess(false);
@@ -65,7 +65,7 @@ const UserProfilePage: React.FC = () => {
           margin="normal"
         />
         <TextField
-          label="Neues Password bestätigen"
+          label="Neues Passwort bestätigen"
           variant="outlined"
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             setShowSuccess(false);
