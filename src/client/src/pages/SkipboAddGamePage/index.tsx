@@ -17,10 +17,13 @@ import { Autocomplete } from '@material-ui/lab';
 import Typography from '../../components/Typography';
 import styles from './SkipboAddGamePage.module.css';
 import { useComponentDidMount } from '../../hocs/useComponentDidMount';
+import { watchPosition } from '../../util/geoLocation';
 
 function SkipboOverviewPage() {
   const [selectedWinner, setSelectedWinner] = useState('');
   const [playTime, setPlayTime] = useState(new Date());
+  const [geoLocation, setGeoLocation] = useState(undefined as GeolocationPosition | undefined);
+  const [geoLocationError, setGeoLocationError] = useState(undefined as string | undefined);
   const history = useHistory();
   const isLoading = useSelector(isSkipboGamesLoading);
   const winners = useSelector(getSkipboGameWinners);
@@ -29,6 +32,8 @@ function SkipboOverviewPage() {
 
   useComponentDidMount(() => {
     dispatch(actionFetchSkipboGameWinners());
+
+    watchPosition(setGeoLocation, (error) => !!error && setGeoLocationError(error.message));
   });
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -38,6 +43,10 @@ function SkipboOverviewPage() {
       actionAddSkipboGame({
         playTime: playTime.toISOString(),
         winner: { name: selectedWinner },
+        location: {
+          latitude: geoLocation?.coords.latitude ?? 0,
+          longitude: geoLocation?.coords.longitude ?? 0,
+        },
       }),
     ).then((action) => {
       if (!action.payload.error) {
@@ -83,6 +92,23 @@ function SkipboOverviewPage() {
           margin="normal"
           fullWidth
           disabled={isLoading}
+        />
+
+        <TextField
+          className={styles.Location}
+          value={
+            !geoLocation
+              ? !!geoLocationError
+                ? geoLocationError
+                : 'Geo Position wird ermittelt...'
+              : `Latitude: ${geoLocation.coords.latitude}, Longitude: ${geoLocation.coords.longitude}`
+          }
+          margin="normal"
+          label="Geo Position"
+          variant="outlined"
+          error={!!geoLocationError}
+          disabled
+          fullWidth
         />
 
         <div className={styles.ButtonControlBar}>

@@ -4,9 +4,12 @@ import { SkipboGame } from '../interfaces/skipbo';
 import { verifyToken } from '../middlewares/auth';
 import { getEnvVar } from '../helpers/environment';
 import { getUserId } from '../helpers/request';
+import { migrate } from '../migrations/skipbo';
 
-const router = Router();
 export const db = new DataStore({ filename: getEnvVar('DB_DIR') + '/games.db', autoload: true });
+
+migrate(db);
+const router = Router();
 
 export const ROUTE = '/skipbo';
 // Root without parameter
@@ -20,10 +23,13 @@ router
       });
   })
   .post(verifyToken, (req, res) => {
-    db.insert({ playTime: req.body.playTime, winner: req.body.winner }, function (error: unknown, docs: SkipboGame) {
-      console.log(`User ${getUserId(req)} added skipbo game with id ${docs._id}`);
-      res.send(docs);
-    });
+    db.insert(
+      { playTime: req.body.playTime, winner: req.body.winner, location: req.body.location },
+      function (error: unknown, docs: SkipboGame) {
+        console.log(`User ${getUserId(req)} added skipbo game with id ${docs._id}`);
+        res.send(docs);
+      },
+    );
   });
 
 router

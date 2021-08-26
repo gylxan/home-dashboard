@@ -6,6 +6,10 @@
   text-align: center;
 }
 
+.Location {
+  margin-top: 2rem !important;
+}
+
 .ButtonControlBar {
   display: flex;
   width: 100%;
