@@ -57,7 +57,7 @@ class Logger {
         break;
       case Level.Info:
       default:
-        logLevel = 'DEBUG';
+        logLevel = 'INFO';
         break;
     }
 
