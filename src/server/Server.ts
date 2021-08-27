@@ -65,22 +65,27 @@ class Server {
     });
   }
 
-  private static getHttpsOptions(): { cert: Buffer; key: Buffer } {
-    if (!fs.existsSync(getEnvVar('PRIVATE_KEY_PATH') ?? '')) {
+  private static getHttpsOptions(): { cert: Buffer | undefined; key: Buffer | undefined } {
+    const privateKeyPath = getEnvVar('PRIVATE_KEY_PATH') ?? '';
+    const certificatePath = getEnvVar('CERTIFICATE_PATH') ?? '';
+    if (!privateKeyPath || !certificatePath) {
+      return { key: undefined, cert: undefined };
+    }
+    if (!fs.existsSync(privateKeyPath)) {
       throw "Path for ENV_VAR 'PRIVATE_KEY_PATH' does not exist";
     }
-    if (!fs.existsSync(getEnvVar('CERTIFICATE_PATH') ?? '')) {
+    if (!fs.existsSync(certificatePath)) {
       throw "Path for ENV_VAR 'CERTIFICATE_PATH' does not exist";
     }
     return {
-      key: fs.readFileSync(getEnvVar('PRIVATE_KEY_PATH') ?? ''),
-      cert: fs.readFileSync(getEnvVar('CERTIFICATE_PATH') ?? ''),
+      key: fs.readFileSync(privateKeyPath),
+      cert: fs.readFileSync(certificatePath),
     };
   }
 
   public start(host: string, port: number): void {
     const httpsOptions = Server.getHttpsOptions();
-    if (httpsOptions.cert.length && httpsOptions.key.length) {
+    if (httpsOptions.cert?.length && httpsOptions.key?.length) {
       createHttpsServer(Server.getHttpsOptions(), this.app).listen(port, host, () =>
         Logger.info(`Listening on ${host}:${port} per HTTPS`),
       );
