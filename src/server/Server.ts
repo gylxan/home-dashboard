@@ -8,6 +8,7 @@ import { NextFunction } from 'express';
 import { createServer as createHttpServer } from 'http';
 import { createServer as createHttpsServer } from 'https';
 import * as fs from 'fs';
+import Logger from './classes/Logger';
 
 class Server {
   private app: express.Application;
@@ -27,12 +28,12 @@ class Server {
   private initializeControllers(): void {
     // Define the routes
     this.app.use('/api', controllers);
-    console.debug(`[DEBUG] Add ${controllers.stack.length} API controllers to server`);
+    Logger.debug(`Add ${controllers.stack.length} API controllers to server`);
     if (isProductionEnvironment()) {
-      console.log('[INFO] Start server in production mode');
+      Logger.info('Start server in production mode');
       this.serveFrontend();
     } else {
-      console.log('[INFO] Start server in development mode');
+      Logger.info('Start server in development mode');
     }
   }
 
@@ -81,10 +82,10 @@ class Server {
     const httpsOptions = Server.getHttpsOptions();
     if (httpsOptions.cert.length && httpsOptions.key.length) {
       createHttpsServer(Server.getHttpsOptions(), this.app).listen(port, host, () =>
-        console.log(`[INFO] Listening on ${host}:${port} per HTTPS`),
+        Logger.info(`Listening on ${host}:${port} per HTTPS`),
       );
     } else {
-      createHttpServer(this.app).listen(port, host, () => console.log(`[INFO] Listening on ${host}:${port} per HTTP`));
+      createHttpServer(this.app).listen(port, host, () => Logger.info(`Listening on ${host}:${port} per HTTP`));
     }
   }
 }

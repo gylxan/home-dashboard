@@ -5,6 +5,7 @@ import { verifyToken } from '../middlewares/auth';
 import { getEnvVar } from '../helpers/environment';
 import { getUserId } from '../helpers/request';
 import { migrate } from '../migrations/skipbo';
+import Logger from "../classes/Logger";
 
 export const db = new DataStore({ filename: getEnvVar('DB_DIR') + '/games.db', autoload: true });
 
@@ -26,7 +27,7 @@ router
     db.insert(
       { playTime: req.body.playTime, winner: req.body.winner, location: req.body.location },
       function (error: unknown, docs: SkipboGame) {
-        console.log(`User ${getUserId(req)} added skipbo game with id ${docs._id}`);
+        Logger.debug(`User ${getUserId(req)} added skipbo game with id ${docs._id}`);
         res.send(docs);
       },
     );
@@ -57,7 +58,7 @@ router
   // Delete one by id
   .delete(verifyToken, (req, res) => {
     db.remove({ _id: req.params.id }, (error: unknown, removedItems) => {
-      console.log(`User ${getUserId(req)} removed ${removedItems} skipbo game(s) for id ${req.params.id}`);
+      console.debug(`User ${getUserId(req)} removed ${removedItems} skipbo game(s) for id ${req.params.id}`);
       db.find({})
         .sort({ playTime: -1 })
         .exec(function (err, docs) {

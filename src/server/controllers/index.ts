@@ -9,6 +9,7 @@ import { Code, createError } from '../helpers/error';
 import { isProductionEnvironment } from '../helpers/environment';
 import * as path from 'path';
 import * as fs from 'fs';
+import Logger from '../classes/Logger';
 
 const DEFAULT_VERSION = 'develop';
 const HEADER_CLIENT_VERSION = 'x-client-version';
@@ -25,7 +26,7 @@ const getCurrentVersion = (): string => {
       version = file.replace('main.', '').replace(/\..*$/, '');
     }
   });
-  console.log(`Current version is: "${version}"`);
+  Logger.debug(`Current version is: "${version}"`);
   return version;
 };
 
@@ -36,7 +37,7 @@ router.use((req, res, next) => {
   const clientVersion = req.header(HEADER_CLIENT_VERSION);
   res.setHeader(HEADER_CLIENT_VERSION, version);
   if (!clientVersion || clientVersion !== version) {
-    console.warn(
+    Logger.warn(
       `Invalid client version "${clientVersion}" received from "${req.ip}". Current server version: "${version}"`,
     );
     res.status(403);

@@ -6,7 +6,8 @@ import { Response } from 'express-serve-static-core';
 import { Router } from 'express';
 import { GroupLightState } from 'node-hue-api/lib/model/lightstate';
 import { verifyToken } from '../middlewares/auth';
-import {getEnvVar} from "../helpers/environment";
+import { getEnvVar } from '../helpers/environment';
+import Logger from '../classes/Logger';
 
 const router = Router();
 export const ROUTE = '/light';
@@ -14,20 +15,24 @@ export const ROUTE = '/light';
 let hueApi: undefined | Api;
 let error: undefined | string;
 
-discoverBridge().then((ipAddress) => {
-  if (ipAddress) {
-    connect(ipAddress, getEnvVar('HUE_USER') ?? undefined)
-      .then((api) => {
-        console.log(`Connection to Hue Bridge ${ipAddress} established with ${getEnvVar('HUE_USER')}`);
-        hueApi = api;
-      })
-      .catch((e) => {
-        hueApi = undefined;
-        console.error(`Couldn't establish connection to Hue Bridge ${ipAddress}. Reason: ${e.message}`);
-        error = e.message;
-      });
-  }
-});
+discoverBridge()
+  .then((ipAddress) => {
+    if (ipAddress) {
+      connect(ipAddress, getEnvVar('HUE_USER') ?? undefined)
+        .then((api) => {
+          Logger.info(`Connection to Hue Bridge ${ipAddress} established with ${getEnvVar('HUE_USER')}`);
+          hueApi = api;
+        })
+        .catch((e) => {
+          Logger.error(`Couldn't establish connection to Hue Bridge ${ipAddress}. Reason: ${e.message}`);
+          error = e.message;
+        });
+    }
+  })
+  .catch((e) => {
+    Logger.error(`Couldn't establish connection to Hue Bridge. Reason: ${e.message}`);
+    error = e.message;
+  });
 
 const checkBridgeConnection = (res: Response): boolean => {
   if (!hueApi) {

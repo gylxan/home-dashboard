@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { verifyIsCurrentUser, verifyToken } from '../middlewares/auth';
 import { hashSync } from 'bcryptjs';
 import { db } from './auth';
+import Logger from "../classes/Logger";
 
 const router = Router();
 export const ROUTE = '/users';
@@ -36,7 +37,7 @@ router
     }
 
     db.update({ _id: req.params.id }, { $set: updatedUser }, {}, () => {
-      console.log(`Updated user ${id} with data: ${JSON.stringify(updatedUser)}`);
+      Logger.debug(`Updated user ${id} with data: ${JSON.stringify(updatedUser)}`);
       res.send();
     });
   });
