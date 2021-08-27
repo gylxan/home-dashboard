@@ -3,8 +3,11 @@ import controllers from './controllers';
 import * as path from 'path';
 import * as bodyParser from 'body-parser';
 import { Error } from './interfaces/error';
-import { isProductionEnvironment } from './helpers/environment';
+import { getEnvVar, isProductionEnvironment } from './helpers/environment';
 import { NextFunction } from 'express';
+import { createServer as createHttpServer } from 'http';
+import { createServer as createHttpsServer } from 'https';
+import * as fs from 'fs';
 
 class Server {
   private app: express.Application;
@@ -24,12 +27,12 @@ class Server {
   private initializeControllers(): void {
     // Define the routes
     this.app.use('/api', controllers);
-    console.debug(`Add ${controllers.stack.length} API controllers to server`);
+    console.debug(`[DEBUG] Add ${controllers.stack.length} API controllers to server`);
     if (isProductionEnvironment()) {
-      console.log('Start server in production mode');
+      console.log('[INFO] Start server in production mode');
       this.serveFrontend();
     } else {
-      console.log('Start server in development mode');
+      console.log('[INFO] Start server in development mode');
     }
   }
 
@@ -61,8 +64,28 @@ class Server {
     });
   }
 
+  private static getHttpsOptions(): { cert: Buffer; key: Buffer } {
+    if (!fs.existsSync(getEnvVar('PRIVATE_KEY_PATH') ?? '')) {
+      throw "Path for ENV_VAR 'PRIVATE_KEY_PATH' does not exist";
+    }
+    if (!fs.existsSync(getEnvVar('CERTIFICATE_PATH') ?? '')) {
+      throw "Path for ENV_VAR 'CERTIFICATE_PATH' does not exist";
+    }
+    return {
+      key: fs.readFileSync(getEnvVar('PRIVATE_KEY_PATH') ?? ''),
+      cert: fs.readFileSync(getEnvVar('CERTIFICATE_PATH') ?? ''),
+    };
+  }
+
   public start(host: string, port: number): void {
-    this.app.listen(port, host, () => console.log(`Listening on ${host}:${port}`));
+    const httpsOptions = Server.getHttpsOptions();
+    if (httpsOptions.cert.length && httpsOptions.key.length) {
+      createHttpsServer(Server.getHttpsOptions(), this.app).listen(port, host, () =>
+        console.log(`[INFO] Listening on ${host}:${port} per HTTPS`),
+      );
+    } else {
+      createHttpServer(this.app).listen(port, host, () => console.log(`[INFO] Listening on ${host}:${port} per HTTP`));
+    }
   }
 }
 
