@@ -33,6 +33,8 @@ import { linkTo } from '../../util/routes';
 import { useHistory } from 'react-router-dom';
 import { getAuthUser } from '../../selectors/authSelectors';
 import { useComponentDidMount } from '../../hocs/useComponentDidMount';
+import MapCard from '../../components/MapCard';
+import { getGamesWithLocationFilter } from '../../util/game';
 
 const useStyles = makeStyles((theme) => ({
   fab: {
@@ -85,6 +87,7 @@ export function SkipboOverviewPage() {
               fetchData={() => dispatch(actionFetchSkipboGamesPerWinnerStatistics())}
               data={skipboTopWinners}
             />
+            <MapCard title="Karte" games={games.filter(getGamesWithLocationFilter)} />
             <LineChartStatisticCard
               title="Spiele des letztes Spieltags"
               fetchData={() => dispatch(actionFetchSkipboLastPlayDayGames())}

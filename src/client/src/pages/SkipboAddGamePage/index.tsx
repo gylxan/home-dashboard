@@ -17,7 +17,8 @@ import { Autocomplete } from '@material-ui/lab';
 import Typography from '../../components/Typography';
 import styles from './SkipboAddGamePage.module.css';
 import { useComponentDidMount } from '../../hocs/useComponentDidMount';
-import { watchPosition } from '../../util/geoLocation';
+import {CENTER, watchPosition} from '../../util/geoLocation';
+import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
 
 function SkipboOverviewPage() {
   const [selectedWinner, setSelectedWinner] = useState('');
@@ -126,6 +127,17 @@ function SkipboOverviewPage() {
           </Button>
         </div>
       </form>
+      <MapContainer className={styles.Map} center={CENTER} zoom={11} scrollWheelZoom={true}>
+        <TileLayer
+          attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+        {!!geoLocation && (
+          <Marker position={[geoLocation.coords.latitude, geoLocation.coords.longitude]}>
+            <Popup>Du spielst aktuell hier </Popup>
+          </Marker>
+        )}
+      </MapContainer>
     </Page>
   );
 }

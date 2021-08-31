@@ -14,7 +14,12 @@
   display: flex;
   width: 100%;
   justify-content: space-between;
-  margin-top: 1.5rem
+  margin-top: 1.5rem;
+}
+
+.Map {
+  margin-top: 2rem;
+  height: 20rem;
 }
 
 @media (min-width: 768px) {
@@ -22,6 +27,3 @@
     width: 600px;
   }
 }
-
-
-
